@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "meknuc:beryllium_deepslate_ore_block",
+    "meknuc:boron_deepslate_ore_block",
+    "meknuc:chrome_deepslate_ore_block",
+    "meknuc:thorium_deepslate_ore_block",
+    "meknuc:zircon_deepslate_ore_block"
+  ]
+}

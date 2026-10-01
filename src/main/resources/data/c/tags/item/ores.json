@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "#c:ores/beryllium",
+    "#c:ores/boron",
+    "#c:ores/chromium",
+    "#c:ores/thorium",
+    "#c:ores/zirconium"
+  ]
+}

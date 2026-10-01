@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "meknuc:beryllium_ore_block",
+    "meknuc:boron_ore_block",
+    "meknuc:chrome_ore_block",
+    "meknuc:thorium_ore_block",
+    "meknuc:zircon_ore_block"
+  ]
+}

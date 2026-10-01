@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "#c:ingots/beryllium",
+    "#c:ingots/boron",
+    "#c:ingots/chromium",
+    "#c:ingots/thorium",
+    "#c:ingots/zirconium"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "#c:raw_materials/beryllium",
+    "#c:raw_materials/boron",
+    "#c:raw_materials/chromium",
+    "#c:raw_materials/thorium",
+    "#c:raw_materials/zirconium"
+  ]
+}
