@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "ingredient": {
+    "item": "meknuc:chrome_ore_block"
+  },
+  "result": {
+    "id": "meknuc:chrome_ingot"
+  },
+  "experience": 0.7,
+  "cookingtime": 200
+}

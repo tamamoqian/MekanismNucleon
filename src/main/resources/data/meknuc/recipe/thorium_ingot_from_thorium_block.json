@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "meknuc:thorium_block"
+    }
+  ],
+  "result": {
+    "id": "meknuc:thorium_ingot",
+    "count": 9
+  }
+}

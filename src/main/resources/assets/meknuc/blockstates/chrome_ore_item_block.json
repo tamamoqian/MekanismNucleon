@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "meknuc:block/chrome_ore_item_block"
+    }
+  }
+}

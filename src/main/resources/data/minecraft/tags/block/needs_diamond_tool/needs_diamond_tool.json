@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "meknuc:chrome_ore_block",
+    "meknuc:chrome_ore_item_block",
+    "meknuc:chrome_block",
+    "meknuc:chrome_deepslate_ore_block"
+  ]
+}

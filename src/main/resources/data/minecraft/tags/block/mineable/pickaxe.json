@@ -1,0 +1,25 @@
+{
+  "replace": false,
+  "values": [
+    "meknuc:thorium_deepslate_ore_block",
+    "meknuc:zircon_deepslate_ore_block",
+    "meknuc:chrome_deepslate_ore_block",
+    "meknuc:boron_deepslate_ore_block",
+    "meknuc:beryllium_deepslate_ore_block",
+    "meknuc:thorium_ore_block",
+    "meknuc:thorium_ore_item_block",
+    "meknuc:thorium_block",
+    "meknuc:zircon_ore_block",
+    "meknuc:zircon_ore_item_block",
+    "meknuc:zircon_block",
+    "meknuc:beryllium_ore_block",
+    "meknuc:beryllium_ore_item_block",
+    "meknuc:beryllium_block",
+    "meknuc:boron_ore_block",
+    "meknuc:boron_ore_item_block",
+    "meknuc:boron_block",
+    "meknuc:chrome_ore_block",
+    "meknuc:chrome_ore_item_block",
+    "meknuc:chrome_block"
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "meknuc:zircon_ore_block",
+    "meknuc:zircon_deepslate_ore_block"
+  ]
+}

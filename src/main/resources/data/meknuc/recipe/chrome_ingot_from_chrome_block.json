@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "meknuc:chrome_block"
+    }
+  ],
+  "result": {
+    "id": "meknuc:chrome_ingot",
+    "count": 9
+  }
+}

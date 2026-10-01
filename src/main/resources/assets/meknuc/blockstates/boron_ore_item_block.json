@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "meknuc:block/boron_ore_item_block"
+    }
+  }
+}

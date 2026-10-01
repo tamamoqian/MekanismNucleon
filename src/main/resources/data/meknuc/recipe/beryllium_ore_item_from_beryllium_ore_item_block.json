@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "meknuc:beryllium_ore_item_block"
+    }
+  ],
+  "result": {
+    "id": "meknuc:beryllium_ore_item",
+    "count": 9
+  }
+}

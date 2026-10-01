@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "meknuc:zircon_block"
+    }
+  ],
+  "result": {
+    "id": "meknuc:zircon_ingot",
+    "count": 9
+  }
+}

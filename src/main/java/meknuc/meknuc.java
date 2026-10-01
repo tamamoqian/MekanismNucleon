@@ -31,7 +31,7 @@ public class meknuc {
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MEKNUC_TAB = CREATIVE_MODE_TABS.register("meknuc_tab", () -> CreativeModeTab.builder()
             .title(Component.translatable("itemGroup.meknuc"))
             .withTabsBefore(CreativeModeTabs.COMBAT)
-            .icon(() -> MeknucItemBase.MEKNUC_ITEM.get().getDefaultInstance())
+            .icon(() -> MeknucItemBase.BERYLLIUM_INGOT.get().getDefaultInstance())
             .displayItems((parameters, output) -> {
                 MeknucItemBase.addTabItems(output);
                 MeknucBlockBase.addTabBlocks(output);

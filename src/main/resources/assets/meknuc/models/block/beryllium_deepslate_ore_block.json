@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "meknuc:block/beryllium_deepslate_ore_block"
+  }
+}

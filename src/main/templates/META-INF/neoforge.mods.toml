@@ -4,10 +4,10 @@ license="${mod_license}"
 
 [[mods]]
     modId="${mod_id}"
-    version="${mod_version}"
+    version="${mod_version}(es)"
     displayName="${mod_name}"
     description='''
-    Example mod description.
+    Mekanism: Nucleon description.
     '''
 
 [[dependencies.${mod_id}]]

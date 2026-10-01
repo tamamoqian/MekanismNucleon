@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "meknuc:zircon_ore_item_block"
+    }
+  ],
+  "result": {
+    "id": "meknuc:zircon_ore_item",
+    "count": 9
+  }
+}

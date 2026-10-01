@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "XXX",
+    "XXX",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "meknuc:chrome_ore_item"
+    }
+  },
+  "result": {
+    "id": "meknuc:chrome_ore_item_block",
+    "count": 1
+  }
+}
