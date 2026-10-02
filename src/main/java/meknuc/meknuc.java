@@ -2,6 +2,8 @@ package meknuc;
 
 import meknuc.blocks.MeknucBlockBase;
 import meknuc.items.MeknucItemBase;
+import meknuc.reactor.MeknucReactorBlocks;
+import meknuc.reactor.MeknucReactorTileEntityTypes;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -35,6 +37,7 @@ public class meknuc {
             .displayItems((parameters, output) -> {
                 MeknucItemBase.addTabItems(output);
                 MeknucBlockBase.addTabBlocks(output);
+                MeknucReactorBlocks.addTabBlocks(output);
             }).build());
 
     public meknuc(IEventBus modEventBus, ModContainer modContainer) {
@@ -42,6 +45,8 @@ public class meknuc {
 
         MeknucBlockBase.BLOCKS.register(modEventBus);
         MeknucItemBase.ITEMS.register(modEventBus);
+        MeknucReactorBlocks.BLOCKS.register(modEventBus);
+        MeknucReactorTileEntityTypes.TILE_ENTITY_TYPES.register(modEventBus);
         CREATIVE_MODE_TABS.register(modEventBus);
 
         NeoForge.EVENT_BUS.register(this);

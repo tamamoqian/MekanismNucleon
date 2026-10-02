@@ -79,7 +79,7 @@ configurations {
 }
 
 dependencies {
-    compileOnly "mekanism:Mekanism:${mekanism_version}:api"
+    compileOnly "mekanism:Mekanism:${mekanism_version}"
 
     runtimeOnly "mekanism:Mekanism:${mekanism_version}"
     runtimeOnly "mekanism:Mekanism:${mekanism_version}:additions"
