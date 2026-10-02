@@ -10,6 +10,7 @@ import net.minecraft.world.item.ItemStack;
 public class MeknucReactorCache extends MultiblockCache<MeknucReactorMultiblockData> {
 
     private boolean active;
+    private boolean autoStopOnFuelExhausted = true;
     private int controlRodInsertion = -1;
     private int burnTime;
     private double damage;
@@ -23,6 +24,7 @@ public class MeknucReactorCache extends MultiblockCache<MeknucReactorMultiblockD
         super.merge(mergeCache, rejectContents);
         MeknucReactorCache other = (MeknucReactorCache) mergeCache;
         active = active || other.active;
+        autoStopOnFuelExhausted = autoStopOnFuelExhausted || other.autoStopOnFuelExhausted;
         controlRodInsertion = Math.max(controlRodInsertion, other.controlRodInsertion);        burnTime = Math.max(burnTime, other.burnTime);
         damage = Math.max(damage, other.damage);
         meltdownTimer = Math.max(meltdownTimer, other.meltdownTimer);
@@ -37,6 +39,7 @@ public class MeknucReactorCache extends MultiblockCache<MeknucReactorMultiblockD
     public void apply(Provider provider, MeknucReactorMultiblockData data) {
         super.apply(provider, data);
         data.setActive(active);
+        data.restoreAutoStopOnFuelExhausted(autoStopOnFuelExhausted);
         if (controlRodInsertion >= 0) {
             data.restoreControlRodInsertion(controlRodInsertion);
         }
@@ -58,6 +61,7 @@ public class MeknucReactorCache extends MultiblockCache<MeknucReactorMultiblockD
     public void sync(MeknucReactorMultiblockData data) {
         super.sync(data);
         active = data.isActive();
+        autoStopOnFuelExhausted = data.isAutoStopOnFuelExhausted();
         controlRodInsertion = data.getControlRodInsertion();
         burnTime = data.getBurnTime();
         damage = data.getDamage();
@@ -71,6 +75,8 @@ public class MeknucReactorCache extends MultiblockCache<MeknucReactorMultiblockD
     public void load(Provider provider, CompoundTag nbtTags) {
         super.load(provider, nbtTags);
         active = nbtTags.getBoolean("active");
+        NBTUtils.setBooleanIfPresent(nbtTags, "auto_stop_on_fuel_exhausted",
+              value -> autoStopOnFuelExhausted = value);
         NBTUtils.setIntIfPresent(nbtTags, "control_rod_insertion", value -> controlRodInsertion = value);
         NBTUtils.setIntIfPresent(nbtTags, "burn_time", value -> burnTime = value);
         NBTUtils.setDoubleIfPresent(nbtTags, "damage", value -> damage = value);
@@ -86,6 +92,7 @@ public class MeknucReactorCache extends MultiblockCache<MeknucReactorMultiblockD
     public void save(Provider provider, CompoundTag nbtTags) {
         super.save(provider, nbtTags);
         nbtTags.putBoolean("active", active);
+        nbtTags.putBoolean("auto_stop_on_fuel_exhausted", autoStopOnFuelExhausted);
         nbtTags.putInt("control_rod_insertion", controlRodInsertion);
         nbtTags.putInt("burn_time", burnTime);
         nbtTags.putDouble("damage", damage);

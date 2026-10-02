@@ -70,7 +70,7 @@ public class MeknucReactorGui extends GuiMekanismTile<TileEntityPressurizedWater
 
     private GuiDoubleGraph heatGraph;
     private TranslationButton activateButton;
-    private TranslationButton scramButton;
+    private TranslationButton autoStopButton;
     private boolean draggingInsertion;
     private int pendingInsertion = -1;
 
@@ -103,11 +103,12 @@ public class MeknucReactorGui extends GuiMekanismTile<TileEntityPressurizedWater
                   pressButton(MeknucReactorContainer.BUTTON_ACTIVATE);
                   return true;
               }, () -> EnumColor.DARK_GREEN));
-        scramButton = addRenderableWidget(new TranslationButton(this, 92, BUTTON_Y, 80, BUTTON_HEIGHT,
-              MeknucReactorLang.GUI_SCRAM, (element, mouseX, mouseY) -> {
-                  pressButton(MeknucReactorContainer.BUTTON_SCRAM);
+        autoStopButton = addRenderableWidget(new TranslationButton(this, 92, BUTTON_Y, 80, BUTTON_HEIGHT,
+              MeknucReactorLang.GUI_AUTO_STOP, (element, mouseX, mouseY) -> {
+                  pressButton(MeknucReactorContainer.BUTTON_AUTO_STOP);
                   return true;
-              }, () -> EnumColor.DARK_RED));
+              }, () -> multiblock().isAutoStopOnFuelExhausted() ? EnumColor.DARK_GREEN : EnumColor.DARK_GRAY));
+        refreshAutoStopButton();
         addRenderableWidget(new GuiBigLight(this, 175, BUTTON_Y, () -> multiblock().isActive()));
         addRenderableWidget(new GuiDynamicHorizontalRateBar(this, heatBarHandler(), 8, TEMPERATURE_BAR_Y, imageWidth - 16,
               ColorFunction.HEAT));
@@ -118,6 +119,12 @@ public class MeknucReactorGui extends GuiMekanismTile<TileEntityPressurizedWater
 
     private MeknucReactorMultiblockData multiblock() {
         return tile.getMultiblock();
+    }
+
+    private void refreshAutoStopButton() {
+        autoStopButton.setMessage(multiblock().isAutoStopOnFuelExhausted()
+              ? MeknucReactorLang.GUI_AUTO_STOP.translate(MeknucReactorLang.GUI_AUTO_STOP_ON.translate())
+              : MeknucReactorLang.GUI_AUTO_STOP.translate(MeknucReactorLang.GUI_AUTO_STOP_OFF.translate()));
     }
 
     private void pressButton(int id) {
@@ -163,8 +170,9 @@ public class MeknucReactorGui extends GuiMekanismTile<TileEntityPressurizedWater
         }
         return List.of(
               status,
-              MeknucReactorLang.GUI_BURN_TIME.translate(EnumColor.WHITE,
-                    Component.literal(formatBurnTime(multiblock.getDisplayedBurnTime()))),
+              MeknucReactorLang.GUI_BURN_TIME.translate(EnumColor.WHITE, multiblock.isBurnPaused()
+                    ? MeknucReactorLang.GUI_BURN_STOPPED.translate()
+                    : Component.literal(formatBurnTime(multiblock.getDisplayedBurnTime()))),
               MeknucReactorLang.GUI_TEMPERATURE.translate(EnumColor.RED,
                     MekanismUtils.getTemperatureDisplay(multiblock.getTemperature(), TemperatureUnit.KELVIN, true)),
               damage,
@@ -190,7 +198,6 @@ public class MeknucReactorGui extends GuiMekanismTile<TileEntityPressurizedWater
         renderInventoryText(guiGraphics);
         MeknucReactorMultiblockData multiblock = multiblock();
         activateButton.active = !multiblock.isActive() && !multiblock.isMeltedDown();
-        scramButton.active = multiblock.isActive();
         drawCacheBar(guiGraphics, FUEL_BAR_X, multiblock.getFuelCount(), multiblock.getInCoreCount(),
               multiblock.getFuelItemId(), CACHE_FUEL_COLOR, MeknucReactorLang.GUI_FUEL, MeknucReactorLang.GUI_FUEL_HINT,
               mouseX, mouseY);
@@ -332,6 +339,7 @@ public class MeknucReactorGui extends GuiMekanismTile<TileEntityPressurizedWater
     @Override
     public void containerTick() {
         super.containerTick();
+        refreshAutoStopButton();
         if (heatGraph != null) {
             heatGraph.addData(multiblock().getTemperature());
         }

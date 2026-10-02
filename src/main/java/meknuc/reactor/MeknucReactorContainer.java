@@ -8,7 +8,7 @@ import net.minecraft.world.entity.player.Player;
 public class MeknucReactorContainer extends MekanismTileContainer<TileEntityPressurizedWaterReactorPart> {
 
     public static final int BUTTON_ACTIVATE = 0;
-    public static final int BUTTON_SCRAM = 1;
+    public static final int BUTTON_AUTO_STOP = 1;
     public static final int BUTTON_INSERTION = 1000;
 
     public MeknucReactorContainer(int id, Inventory inv, TileEntityPressurizedWaterReactorPart tile) {
@@ -34,7 +34,7 @@ public class MeknucReactorContainer extends MekanismTileContainer<TileEntityPres
         MeknucReactorMultiblockData multiblock = tile.getMultiblock();
         switch (id) {
             case BUTTON_ACTIVATE -> multiblock.setActive(true);
-            case BUTTON_SCRAM -> multiblock.setActive(false);
+            case BUTTON_AUTO_STOP -> multiblock.setAutoStopOnFuelExhausted(!multiblock.isAutoStopOnFuelExhausted());
             default -> {
                 if (id < BUTTON_INSERTION) {
                     return false;

@@ -96,9 +96,13 @@ public class MeknucReactorMultiblockData extends MultiblockData {
     @ContainerSync(getter = "getBurnTime", setter = "setBurnTime")
     private int burnTime;
 
+    @ContainerSync(getter = "isAutoStopOnFuelExhausted", setter = "setAutoStopOnFuelExhausted")
+    private boolean autoStopOnFuelExhausted = true;
+
     private double burnPartial;
     private boolean insertionFromCache;
     private boolean temperatureFromCache;
+    private boolean autoStopFromCache;
 
     @ContainerSync(getter = "getDamage", setter = "setDamage")
     private double damage;
@@ -165,6 +169,10 @@ public class MeknucReactorMultiblockData extends MultiblockData {
             setControlRodInsertion(NOMINAL_INSERTION_PERCENT);
         }
         insertionFromCache = false;
+        if (!autoStopFromCache) {
+            setAutoStopOnFuelExhausted(true);
+        }
+        autoStopFromCache = false;
     }
 
     @Override
@@ -185,6 +193,7 @@ public class MeknucReactorMultiblockData extends MultiblockData {
         NBTUtils.setBooleanIfPresent(tag, "reactor_melted", value -> meltedDown = value);
         NBTUtils.setIntIfPresent(tag, "reactor_burn_time", value -> burnTime = value);
         NBTUtils.setIntIfPresent(tag, "reactor_insertion", value -> controlRodInsertion = value);
+        NBTUtils.setBooleanIfPresent(tag, "reactor_auto_stop", value -> autoStopOnFuelExhausted = value);
     }
 
     @Override
@@ -194,6 +203,7 @@ public class MeknucReactorMultiblockData extends MultiblockData {
         tag.putBoolean("reactor_melted", meltedDown);
         tag.putInt("reactor_burn_time", burnTime);
         tag.putInt("reactor_insertion", controlRodInsertion);
+        tag.putBoolean("reactor_auto_stop", autoStopOnFuelExhausted);
     }
 
     private void tickReaction() {
@@ -364,6 +374,9 @@ public class MeknucReactorMultiblockData extends MultiblockData {
         if (!active) {
             return;
         }
+        if (isBurnPaused()) {
+            return;
+        }
         if (burnTime > 0) {
             burnPartial += 1.0 / getBurnTimeMultiplier();
             int steps = (int) burnPartial;
@@ -372,6 +385,9 @@ public class MeknucReactorMultiblockData extends MultiblockData {
                 setBurnTime(burnTime - steps);
                 if (burnTime <= 0) {
                     finishCycle();
+                    if (autoStopOnFuelExhausted && fuelSlot.getStack().isEmpty() && runningProduct.isEmpty()) {
+                        setActive(false);
+                    }
                 }
             }
             return;
@@ -505,6 +521,26 @@ public class MeknucReactorMultiblockData extends MultiblockData {
 
     public int getBurnTime() {
         return burnTime;
+    }
+
+    public boolean isBurnPaused() {
+        return controlRodInsertion >= 100;
+    }
+
+    public boolean isAutoStopOnFuelExhausted() {
+        return autoStopOnFuelExhausted;
+    }
+
+    public void setAutoStopOnFuelExhausted(boolean enabled) {
+        if (autoStopOnFuelExhausted != enabled) {
+            autoStopOnFuelExhausted = enabled;
+            markDirty();
+        }
+    }
+
+    void restoreAutoStopOnFuelExhausted(boolean value) {
+        setAutoStopOnFuelExhausted(value);
+        autoStopFromCache = true;
     }
 
     void restoreControlRodInsertion(int value) {
