@@ -7,7 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 public enum MeknucReactorLang implements ILangEntry {
     DESCRIPTION_PRESSURIZED_WATER_REACTOR_CASING("description", "pressurized_water_reactor_casing"),
     DESCRIPTION_PRESSURIZED_WATER_REACTOR_PORT("description", "pressurized_water_reactor_port"),
-    DESCRIPTION_PRESSURIZED_WATER_REACTOR_SIGNAL_PORT("description", "pressurized_water_reactor_signal_port"),
+    DESCRIPTION_PRESSURIZED_WATER_REACTOR_LOGIC_ADAPTER("description", "pressurized_water_reactor_logic_adapter"),
     DESCRIPTION_PRESSURIZED_WATER_REACTOR_FUEL_ASSEMBLY("description", "pressurized_water_reactor_fuel_assembly"),
     DESCRIPTION_PRESSURIZED_WATER_REACTOR_CONTROL_ASSEMBLY("description", "pressurized_water_reactor_control_assembly"),
 
@@ -28,6 +28,7 @@ public enum MeknucReactorLang implements ILangEntry {
     INVALID_GAP_IN_COLUMN("reactor", "invalid_gap_in_column"),
     INVALID_RIM_REQUIRES_CASING("reactor", "invalid_rim_requires_casing"),
 
+    GUI_TITLE("reactor", "title"),
     GUI_ACTIVATE("reactor", "activate"),
     GUI_SCRAM("reactor", "scram"),
     GUI_STATUS("reactor", "status"),
@@ -35,6 +36,7 @@ public enum MeknucReactorLang implements ILangEntry {
     GUI_STATE_STOPPED("reactor", "state_stopped"),
     GUI_TEMPERATURE("reactor", "temperature"),
     GUI_BURN_TIME("reactor", "burn_time"),
+    GUI_DAMAGE("reactor", "damage"),
     GUI_FUEL("reactor", "fuel"),
     GUI_FUEL_TYPE("reactor", "fuel_type"),
     GUI_WASTE("reactor", "waste"),

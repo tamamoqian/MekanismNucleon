@@ -8,6 +8,7 @@ import mekanism.common.registration.impl.BlockDeferredRegister;
 import mekanism.common.registration.impl.BlockRegistryObject;
 import meknuc.reactor.tile.TileEntityPressurizedWaterReactorControlAssembly;
 import meknuc.reactor.tile.TileEntityPressurizedWaterReactorFuelAssembly;
+import meknuc.reactor.tile.TileEntityPressurizedWaterReactorLogicAdapter;
 import meknuc.reactor.tile.TileEntityPressurizedWaterReactorPart;
 import meknuc.reactor.tile.TileEntityPressurizedWaterReactorPort;
 import net.minecraft.world.item.CreativeModeTab;
@@ -27,9 +28,11 @@ public class MeknucReactorBlocks {
                 () -> new BlockBasicMultiblock<>(MeknucReactorBlockTypes.PRESSURIZED_WATER_REACTOR_PORT,
                       properties -> properties.mapColor(MapColor.COLOR_LIGHT_GRAY)));
 
-    public static final BlockRegistryObject<BlockBasicMultiblock<TileEntityPressurizedWaterReactorPart>,
-          ItemBlockTooltip<BlockBasicMultiblock<TileEntityPressurizedWaterReactorPart>>> PRESSURIZED_WATER_REACTOR_SIGNAL_PORT =
-          registerPart("pressurized_water_reactor_signal_port", MeknucReactorBlockTypes.PRESSURIZED_WATER_REACTOR_SIGNAL_PORT);
+    public static final BlockRegistryObject<BlockBasicMultiblock<TileEntityPressurizedWaterReactorLogicAdapter>,
+          ItemBlockTooltip<BlockBasicMultiblock<TileEntityPressurizedWaterReactorLogicAdapter>>> PRESSURIZED_WATER_REACTOR_LOGIC_ADAPTER =
+          BLOCKS.registerDetails("pressurized_water_reactor_logic_adapter",
+                () -> new BlockBasicMultiblock<>(MeknucReactorBlockTypes.PRESSURIZED_WATER_REACTOR_LOGIC_ADAPTER,
+                      properties -> properties.mapColor(MapColor.COLOR_LIGHT_GRAY)));
 
     public static final BlockRegistryObject<BlockTileModel<TileEntityPressurizedWaterReactorFuelAssembly, BlockTypeTile<TileEntityPressurizedWaterReactorFuelAssembly>>,
           ItemBlockTooltip<BlockTileModel<TileEntityPressurizedWaterReactorFuelAssembly, BlockTypeTile<TileEntityPressurizedWaterReactorFuelAssembly>>>> PRESSURIZED_WATER_REACTOR_FUEL_ASSEMBLY =
@@ -53,7 +56,7 @@ public class MeknucReactorBlocks {
     public static void addTabBlocks(CreativeModeTab.Output output) {
         output.accept(PRESSURIZED_WATER_REACTOR_CASING);
         output.accept(PRESSURIZED_WATER_REACTOR_PORT);
-        output.accept(PRESSURIZED_WATER_REACTOR_SIGNAL_PORT);
+        output.accept(PRESSURIZED_WATER_REACTOR_LOGIC_ADAPTER);
         output.accept(PRESSURIZED_WATER_REACTOR_FUEL_ASSEMBLY);
         output.accept(PRESSURIZED_WATER_REACTOR_CONTROL_ASSEMBLY);
     }

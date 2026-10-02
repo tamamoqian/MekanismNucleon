@@ -8,6 +8,7 @@ import mekanism.common.registration.impl.TileEntityTypeRegistryObject;
 import mekanism.common.tile.base.TileEntityMekanism;
 import meknuc.reactor.tile.TileEntityPressurizedWaterReactorControlAssembly;
 import meknuc.reactor.tile.TileEntityPressurizedWaterReactorFuelAssembly;
+import meknuc.reactor.tile.TileEntityPressurizedWaterReactorLogicAdapter;
 import meknuc.reactor.tile.TileEntityPressurizedWaterReactorPart;
 import meknuc.reactor.tile.TileEntityPressurizedWaterReactorPort;
 
@@ -21,9 +22,9 @@ public class MeknucReactorBlockTypes {
           createPort(MeknucReactorLang.DESCRIPTION_PRESSURIZED_WATER_REACTOR_PORT,
                 () -> MeknucReactorTileEntityTypes.PRESSURIZED_WATER_REACTOR_PORT);
 
-    public static final BlockTypeTile<TileEntityPressurizedWaterReactorPart> PRESSURIZED_WATER_REACTOR_SIGNAL_PORT =
-          createExternal(MeknucReactorLang.DESCRIPTION_PRESSURIZED_WATER_REACTOR_SIGNAL_PORT,
-                () -> MeknucReactorTileEntityTypes.PRESSURIZED_WATER_REACTOR_SIGNAL_PORT, false);
+    public static final BlockTypeTile<TileEntityPressurizedWaterReactorLogicAdapter> PRESSURIZED_WATER_REACTOR_LOGIC_ADAPTER =
+          createExternal(MeknucReactorLang.DESCRIPTION_PRESSURIZED_WATER_REACTOR_LOGIC_ADAPTER,
+                () -> MeknucReactorTileEntityTypes.PRESSURIZED_WATER_REACTOR_LOGIC_ADAPTER, false);
 
     public static final BlockTypeTile<TileEntityPressurizedWaterReactorFuelAssembly> PRESSURIZED_WATER_REACTOR_FUEL_ASSEMBLY =
           createInternal(MeknucReactorLang.DESCRIPTION_PRESSURIZED_WATER_REACTOR_FUEL_ASSEMBLY,
@@ -44,7 +45,7 @@ public class MeknucReactorBlockTypes {
     private static <TILE extends TileEntityMekanism> BlockTypeTile<TILE> createPort(
           MeknucReactorLang description, Supplier<TileEntityTypeRegistryObject<TILE>> tileType) {
         BlockTileBuilder builder = (BlockTileBuilder) BlockTileBuilder.createBlock(tileType, description);
-        builder.with(new Attribute[]{new AttributeStatePortMode()});
+        builder.with(new Attribute[]{new AttributeStateReactorPortMode()});
         builder = (BlockTileBuilder) builder.externalMultiblock();
         return (BlockTypeTile<TILE>) builder.build();
     }

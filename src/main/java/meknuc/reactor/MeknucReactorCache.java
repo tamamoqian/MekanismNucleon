@@ -11,6 +11,7 @@ public class MeknucReactorCache extends MultiblockCache<MeknucReactorMultiblockD
     private boolean active;
     private int controlRodInsertion;
     private int burnTime;
+    private double damage;
 
     @Override
     public void merge(MultiblockCache<MeknucReactorMultiblockData> mergeCache, RejectContents rejectContents) {
@@ -19,6 +20,7 @@ public class MeknucReactorCache extends MultiblockCache<MeknucReactorMultiblockD
         active = active || other.active;
         controlRodInsertion = Math.max(controlRodInsertion, other.controlRodInsertion);
         burnTime = Math.max(burnTime, other.burnTime);
+        damage = Math.max(damage, other.damage);
     }
 
     @Override
@@ -27,6 +29,7 @@ public class MeknucReactorCache extends MultiblockCache<MeknucReactorMultiblockD
         data.setActive(active);
         data.setControlRodInsertion(controlRodInsertion);
         data.setBurnTime(burnTime);
+        data.setDamage(damage);
     }
 
     @Override
@@ -35,6 +38,7 @@ public class MeknucReactorCache extends MultiblockCache<MeknucReactorMultiblockD
         active = data.isActive();
         controlRodInsertion = data.getControlRodInsertion();
         burnTime = data.getBurnTime();
+        damage = data.getDamage();
     }
 
     @Override
@@ -43,6 +47,7 @@ public class MeknucReactorCache extends MultiblockCache<MeknucReactorMultiblockD
         active = nbtTags.getBoolean("active");
         NBTUtils.setIntIfPresent(nbtTags, "control_rod_insertion", value -> controlRodInsertion = value);
         NBTUtils.setIntIfPresent(nbtTags, "burn_time", value -> burnTime = value);
+        NBTUtils.setDoubleIfPresent(nbtTags, "damage", value -> damage = value);
     }
 
     @Override
@@ -51,5 +56,6 @@ public class MeknucReactorCache extends MultiblockCache<MeknucReactorMultiblockD
         nbtTags.putBoolean("active", active);
         nbtTags.putInt("control_rod_insertion", controlRodInsertion);
         nbtTags.putInt("burn_time", burnTime);
+        nbtTags.putDouble("damage", damage);
     }
 }

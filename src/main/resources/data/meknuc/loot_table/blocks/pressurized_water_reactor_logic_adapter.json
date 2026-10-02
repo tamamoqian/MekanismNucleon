@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "meknuc:pressurized_water_reactor_signal_port"
+          "name": "meknuc:pressurized_water_reactor_logic_adapter"
         }
       ],
       "conditions": [

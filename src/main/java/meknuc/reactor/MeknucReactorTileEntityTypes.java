@@ -6,6 +6,7 @@ import mekanism.common.registration.impl.TileEntityTypeRegistryObject;
 import mekanism.common.tile.base.TileEntityMekanism;
 import meknuc.reactor.tile.TileEntityPressurizedWaterReactorControlAssembly;
 import meknuc.reactor.tile.TileEntityPressurizedWaterReactorFuelAssembly;
+import meknuc.reactor.tile.TileEntityPressurizedWaterReactorLogicAdapter;
 import meknuc.reactor.tile.TileEntityPressurizedWaterReactorPart;
 import meknuc.reactor.tile.TileEntityPressurizedWaterReactorPort;
 
@@ -26,8 +27,8 @@ public class MeknucReactorTileEntityTypes {
                 .withSimple(Capabilities.CONFIGURABLE)
                 .build();
 
-    public static final TileEntityTypeRegistryObject<TileEntityPressurizedWaterReactorPart> PRESSURIZED_WATER_REACTOR_SIGNAL_PORT =
-          TILE_ENTITY_TYPES.mekBuilder(MeknucReactorBlocks.PRESSURIZED_WATER_REACTOR_SIGNAL_PORT, TileEntityPressurizedWaterReactorPart::new)
+    public static final TileEntityTypeRegistryObject<TileEntityPressurizedWaterReactorLogicAdapter> PRESSURIZED_WATER_REACTOR_LOGIC_ADAPTER =
+          TILE_ENTITY_TYPES.mekBuilder(MeknucReactorBlocks.PRESSURIZED_WATER_REACTOR_LOGIC_ADAPTER, TileEntityPressurizedWaterReactorLogicAdapter::new)
                 .clientTicker(TileEntityMekanism::tickClient)
                 .serverTicker(TileEntityMekanism::tickServer)
                 .build();

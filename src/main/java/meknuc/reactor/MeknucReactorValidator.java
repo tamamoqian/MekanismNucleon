@@ -137,7 +137,7 @@ public class MeknucReactorValidator extends CuboidStructureValidator<MeknucReact
             return CasingType.FRAME;
         }
         if (BlockType.is(block, MeknucReactorBlockTypes.PRESSURIZED_WATER_REACTOR_PORT,
-              MeknucReactorBlockTypes.PRESSURIZED_WATER_REACTOR_SIGNAL_PORT)) {
+              MeknucReactorBlockTypes.PRESSURIZED_WATER_REACTOR_LOGIC_ADAPTER)) {
             return CasingType.VALVE;
         }
         if (isReactorGlass(block)) {

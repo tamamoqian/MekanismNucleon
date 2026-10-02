@@ -19,7 +19,7 @@
     "meknuc:boron_block",
     "meknuc:pressurized_water_reactor_casing",
     "meknuc:pressurized_water_reactor_port",
-    "meknuc:pressurized_water_reactor_signal_port",
+    "meknuc:pressurized_water_reactor_logic_adapter",
     "meknuc:pressurized_water_reactor_fuel_assembly",
     "meknuc:pressurized_water_reactor_control_assembly"
   ]

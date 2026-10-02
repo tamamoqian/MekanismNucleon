@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/block",
-  "textures": {"0": "meknuc:block/pressurized_water_reactor_signal_port", "particle": "meknuc:block/pressurized_water_reactor_signal_port"},
+  "textures": {"0": "meknuc:block/pressurized_water_reactor_logic_adapter", "particle": "meknuc:block/pressurized_water_reactor_logic_adapter"},
   "elements": [
     {
       "from": [0, 0, 0],

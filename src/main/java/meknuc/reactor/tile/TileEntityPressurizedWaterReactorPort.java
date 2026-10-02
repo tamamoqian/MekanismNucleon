@@ -8,8 +8,8 @@ import mekanism.common.capabilities.Capabilities;
 import mekanism.common.capabilities.holder.chemical.IChemicalTankHolder;
 import mekanism.common.capabilities.holder.fluid.IFluidTankHolder;
 import mekanism.common.capabilities.holder.slot.IInventorySlotHolder;
-import meknuc.reactor.AttributeStatePortMode;
-import meknuc.reactor.AttributeStatePortMode.PortMode;
+import meknuc.reactor.AttributeStateReactorPortMode;
+import meknuc.reactor.AttributeStateReactorPortMode.ReactorPortMode;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionResult;
@@ -28,13 +28,13 @@ public class TileEntityPressurizedWaterReactorPort extends TileEntityPressurized
         super(pos, state);
     }
 
-    public PortMode getMode() {
-        return getBlockState().getValue(AttributeStatePortMode.modeProperty);
+    public ReactorPortMode getMode() {
+        return getBlockState().getValue(AttributeStateReactorPortMode.modeProperty);
     }
 
-    public void setMode(PortMode mode) {
+    public void setMode(ReactorPortMode mode) {
         if (mode != getMode()) {
-            level.setBlockAndUpdate(worldPosition, getBlockState().setValue(AttributeStatePortMode.modeProperty, mode));
+            level.setBlockAndUpdate(worldPosition, getBlockState().setValue(AttributeStateReactorPortMode.modeProperty, mode));
             invalidateCapabilitiesAll(portCapabilities);
         }
     }
@@ -60,7 +60,7 @@ public class TileEntityPressurizedWaterReactorPort extends TileEntityPressurized
     @Override
     public InteractionResult onSneakRightClick(Player player) {
         if (!isRemote()) {
-            PortMode mode = getMode().getNext();
+            ReactorPortMode mode = getMode().getNext();
             setMode(mode);
             player.displayClientMessage(MekanismLang.BOILER_VALVE_MODE_CHANGE.translateColored(EnumColor.GRAY, mode), true);
         }

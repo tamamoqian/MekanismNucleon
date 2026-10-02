@@ -17,7 +17,7 @@ import mekanism.common.capabilities.heat.VariableHeatCapacitor;
 import mekanism.common.inventory.container.sync.dynamic.ContainerSync;
 import mekanism.common.inventory.slot.BasicInventorySlot;
 import mekanism.common.lib.multiblock.MultiblockData;
-import meknuc.reactor.AttributeStatePortMode.PortMode;
+import meknuc.reactor.AttributeStateReactorPortMode.ReactorPortMode;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
@@ -54,6 +54,9 @@ public class MeknucReactorMultiblockData extends MultiblockData {
     @ContainerSync(getter = "getBurnTime", setter = "setBurnTime")
     private int burnTime;
 
+    @ContainerSync(getter = "getDamage", setter = "setDamage")
+    private double damage;
+
     @ContainerSync(getter = "getFuelStack", setter = "setFuelStack")
     private ItemStack fuelStack = ItemStack.EMPTY;
 
@@ -86,6 +89,12 @@ public class MeknucReactorMultiblockData extends MultiblockData {
         return needsPacket;
     }
 
+    @Override
+    public void onContentsChanged() {
+        super.onContentsChanged();
+        updateCacheMirrors();
+    }
+
     private void updateCacheMirrors() {
         ItemStack fuel = fuelSlot.getStack();
         if (fuel.getCount() != fuelStack.getCount() || !ItemStack.isSameItemSameComponents(fuel, fuelStack)) {
@@ -97,7 +106,7 @@ public class MeknucReactorMultiblockData extends MultiblockData {
         }
     }
 
-    public List<IInventorySlot> getInventorySlots(PortMode mode) {
+    public List<IInventorySlot> getInventorySlots(ReactorPortMode mode) {
         if (!isFormed() && !isRemote()) {
             return Collections.emptyList();
         }
@@ -108,7 +117,7 @@ public class MeknucReactorMultiblockData extends MultiblockData {
         };
     }
 
-    public List<IExtendedFluidTank> getFluidTanks(PortMode mode) {
+    public List<IExtendedFluidTank> getFluidTanks(ReactorPortMode mode) {
         if (!isFormed() && !isRemote()) {
             return Collections.emptyList();
         }
@@ -118,7 +127,7 @@ public class MeknucReactorMultiblockData extends MultiblockData {
         };
     }
 
-    public List<IChemicalTank> getChemicalTanks(PortMode mode) {
+    public List<IChemicalTank> getChemicalTanks(ReactorPortMode mode) {
         if (!isFormed() && !isRemote()) {
             return Collections.emptyList();
         }
@@ -161,6 +170,22 @@ public class MeknucReactorMultiblockData extends MultiblockData {
             burnTime = clamped;
             markDirty();
         }
+    }
+
+    public double getDamage() {
+        return damage;
+    }
+
+    public void setDamage(double damage) {
+        double clamped = Mth.clamp(damage, 0.0, 100.0);
+        if (this.damage != clamped) {
+            this.damage = clamped;
+            markDirty();
+        }
+    }
+
+    public int getDamagePercent() {
+        return (int) Math.round(damage);
     }
 
     public ItemStack getFuelStack() {
