@@ -1,0 +1,1 @@
+{"ctm":{"ctm_version":1,"type":"CTM","layer":"SOLID","textures":["meknuc:ctm/pressurized_water_reactor_waste_output_port_ctm"],"extra":{"connect_to":[{"block":"meknuc:pressurized_water_reactor_casing"},{"block":"meknuc:pressurized_water_reactor_port"},{"block":"meknuc:pressurized_water_reactor_logic_adapter"}]}}}

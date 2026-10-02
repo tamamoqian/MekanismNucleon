@@ -1,0 +1,8 @@
+{
+  "tile.machine.pressurized_water_reactor_running": {
+    "sounds": [
+      "meknuc:pressurized_water_reactor_running"
+    ],
+    "subtitle": "subtitles.meknuc.reactor_running"
+  }
+}

@@ -1,9 +1,15 @@
 package meknuc;
 
 import meknuc.blocks.MeknucBlockBase;
+import meknuc.chemicals.MeknucChemicals;
 import meknuc.items.MeknucItemBase;
+import meknuc.reactor.MeknucReactor;
 import meknuc.reactor.MeknucReactorBlocks;
+import meknuc.reactor.MeknucReactorContainerTypes;
+import meknuc.reactor.MeknucReactorLogicPacket;
+import meknuc.reactor.MeknucReactorOpenGuiPacket;
 import meknuc.reactor.MeknucReactorTileEntityTypes;
+import meknuc.reactor.MeknucSounds;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -20,6 +26,8 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -42,11 +50,16 @@ public class meknuc {
 
     public meknuc(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::commonSetup);
+        modEventBus.addListener(this::registerPayloads);
 
+        MeknucReactor.initialize();
         MeknucBlockBase.BLOCKS.register(modEventBus);
         MeknucItemBase.ITEMS.register(modEventBus);
         MeknucReactorBlocks.BLOCKS.register(modEventBus);
+        MeknucChemicals.CHEMICALS.register(modEventBus);
         MeknucReactorTileEntityTypes.TILE_ENTITY_TYPES.register(modEventBus);
+        MeknucReactorContainerTypes.CONTAINER_TYPES.register(modEventBus);
+        MeknucSounds.SOUND_EVENTS.register(modEventBus);
         CREATIVE_MODE_TABS.register(modEventBus);
 
         NeoForge.EVENT_BUS.register(this);
@@ -56,6 +69,14 @@ public class meknuc {
 
     private void commonSetup(FMLCommonSetupEvent event) {
         LOGGER.info("HELLO FROM COMMON SETUP");
+    }
+
+    private void registerPayloads(RegisterPayloadHandlersEvent event) {
+        PayloadRegistrar registrar = event.registrar("1");
+        registrar.playToServer(MeknucReactorLogicPacket.TYPE, MeknucReactorLogicPacket.STREAM_CODEC,
+              MeknucReactorLogicPacket::handle);
+        registrar.playToServer(MeknucReactorOpenGuiPacket.TYPE, MeknucReactorOpenGuiPacket.STREAM_CODEC,
+              MeknucReactorOpenGuiPacket::handle);
     }
 
     @SubscribeEvent

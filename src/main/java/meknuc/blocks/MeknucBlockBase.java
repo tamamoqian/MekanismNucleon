@@ -60,6 +60,8 @@ public class MeknucBlockBase extends Block {
             () -> new MeknucBlockOreDeepslateBoron(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(5.0F, 5.0F).requiresCorrectToolForDrops()));
     public static final DeferredBlock<MeknucBlockOreDeepslateBeryllium> BERYLLIUM_DEEPSLATE_ORE_BLOCK = register("beryllium_deepslate_ore_block",
             () -> new MeknucBlockOreDeepslateBeryllium(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(5.0F, 5.0F).requiresCorrectToolForDrops()));
+    public static final DeferredBlock<MeknucBlockRadioisotopeThermoelectricGenerator> RADIOISOTOPE_THERMOELECTRIC_GENERATOR = register("radioisotope_thermoelectric_generator",
+            () -> new MeknucBlockRadioisotopeThermoelectricGenerator(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(5.0F, 5.0F).requiresCorrectToolForDrops()));
 
     public MeknucBlockBase(Properties properties) {
         super(properties);

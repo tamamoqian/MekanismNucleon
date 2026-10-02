@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import mekanism.api.text.EnumColor;
+import mekanism.common.MekanismLang;
 import mekanism.common.content.blocktype.BlockType;
 import mekanism.common.lib.math.voxel.VoxelCuboid;
 import mekanism.common.lib.multiblock.CuboidStructureValidator;
@@ -25,14 +27,15 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 
 public class MeknucReactorValidator extends CuboidStructureValidator<MeknucReactorMultiblockData> {
 
     public static final int DIAMETER = 7;
-    public static final int MIN_HEIGHT = 5;
-    public static final int MAX_HEIGHT = 18;
+    public static final int MIN_HEIGHT = 7;
+    public static final int MAX_HEIGHT = 20;
 
     private static final double RADIUS_SQ = (DIAMETER / 2.0) * (DIAMETER / 2.0);
 
@@ -160,56 +163,60 @@ public class MeknucReactorValidator extends CuboidStructureValidator<MeknucReact
 
     @Override
     public FormationResult postcheck(MeknucReactorMultiblockData structure, Long2ObjectMap<ChunkAccess> chunkMap) {
-        if (bounds == null) {
-            return FormationResult.FAIL;
-        }
-        int interiorBottom = bounds.getMinPos().getY() + 1;
-
-        Map<Long, List<BlockPos>> byColumn = new HashMap<>();
+        Map<Long, Column> byColumn = new HashMap<>();
         for (BlockPos pos : structure.internalLocations) {
-            byColumn.computeIfAbsent(columnKey(pos.getX(), pos.getZ()), key -> new ArrayList<>()).add(pos);
+            Column column = byColumn.computeIfAbsent(columnKey(pos.getX(), pos.getZ()), key -> new Column());
+            BlockEntity tile = WorldUtils.getTileEntity(world, chunkMap, pos);
+            if (tile instanceof TileEntityPressurizedWaterReactorFuelAssembly) {
+                column.fuel.add(pos);
+            } else if (tile instanceof TileEntityPressurizedWaterReactorControlAssembly) {
+                if (column.controlRod != null) {
+                    return FormationResult.fail(MeknucReactorLang.INVALID_EXTRA_CONTROL_ROD, pos);
+                }
+                column.controlRod = pos;
+            }
         }
         if (byColumn.isEmpty()) {
             return FormationResult.fail(MeknucReactorLang.INVALID_MISSING_FUEL);
         }
 
         List<MeknucReactorMultiblockData.FuelColumn> columns = new ArrayList<>();
-        Integer staggerParity = null;
-        for (List<BlockPos> column : byColumn.values()) {
-            column.sort(Comparator.comparingInt(BlockPos::getY));
-            BlockPos base = column.get(0);
-            BlockPos top = column.get(column.size() - 1);
-            if (base.getY() != interiorBottom) {
-                return FormationResult.fail(MeknucReactorLang.INVALID_GAP_IN_COLUMN, base);
+        for (Map.Entry<Long, Column> entry : byColumn.entrySet()) {
+            Column column = entry.getValue();
+            if (column.fuel.isEmpty() && column.controlRod == null) {
+                continue;
             }
-            for (int i = 1; i < column.size(); i++) {
-                if (column.get(i).getY() != column.get(i - 1).getY() + 1) {
-                    return FormationResult.fail(MeknucReactorLang.INVALID_GAP_IN_COLUMN, column.get(i));
+            if (column.fuel.isEmpty()) {
+                return FormationResult.fail(MeknucReactorLang.INVALID_BAD_FUEL_ASSEMBLY, column.controlRod);
+            }
+            List<BlockPos> fuel = new ArrayList<>(column.fuel);
+            fuel.sort(Comparator.comparingInt(BlockPos::getY));
+            BlockPos base = fuel.get(0);
+            BlockPos top = fuel.get(fuel.size() - 1);
+            if (column.controlRod == null) {
+                return FormationResult.fail(MeknucReactorLang.INVALID_MISSING_CONTROL_ROD.translateColored(EnumColor.GRAY,
+                      EnumColor.INDIGO, MekanismLang.GENERIC_PARENTHESIS.translate(
+                            MekanismLang.GENERIC_WITH_COMMA.translate(base.getX(), base.getZ()))));
+            }
+            for (int i = 1; i < fuel.size(); i++) {
+                if (fuel.get(i).getY() != fuel.get(i - 1).getY() + 1) {
+                    return FormationResult.fail(MeknucReactorLang.INVALID_MALFORMED_FUEL_ASSEMBLY, fuel.get(i));
                 }
             }
-            if (column.size() < 2) {
-                return FormationResult.fail(MeknucReactorLang.INVALID_MISSING_FUEL, base);
+            if (column.controlRod.getY() != top.getY() + 1) {
+                return FormationResult.fail(MeknucReactorLang.INVALID_BAD_CONTROL_ROD, column.controlRod);
             }
-            if (!(WorldUtils.getTileEntity(world, chunkMap, top) instanceof TileEntityPressurizedWaterReactorControlAssembly)) {
-                return FormationResult.fail(MeknucReactorLang.INVALID_MISSING_CONTROL, top);
-            }
-            for (int i = 0; i < column.size() - 1; i++) {
-                BlockPos pos = column.get(i);
-                if (!(WorldUtils.getTileEntity(world, chunkMap, pos) instanceof TileEntityPressurizedWaterReactorFuelAssembly)) {
-                    return FormationResult.fail(MeknucReactorLang.INVALID_MISSING_FUEL, pos);
-                }
-            }
-            int parity = Math.floorMod((base.getX() - centerX) + (base.getZ() - centerZ), 2);
-            if (staggerParity == null) {
-                staggerParity = parity;
-            } else if (staggerParity != parity) {
-                return FormationResult.fail(MeknucReactorLang.INVALID_BAD_STAGGER, base);
-            }
-            columns.add(new MeknucReactorMultiblockData.FuelColumn(base, column.size() - 1, top));
+            columns.add(new MeknucReactorMultiblockData.FuelColumn(base, fuel.size(), column.controlRod));
         }
 
         structure.setFuelColumns(columns);
         return FormationResult.SUCCESS;
+    }
+
+    private static class Column {
+
+        private final List<BlockPos> fuel = new ArrayList<>();
+        private BlockPos controlRod;
     }
 
     private static boolean isReactorGlass(Block block) {

@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "meknuc:block/radioisotope_thermoelectric_generator"
+    }
+  }
+}

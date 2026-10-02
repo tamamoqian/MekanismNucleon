@@ -4,6 +4,7 @@ import java.util.List;
 import mekanism.api.IContentsListener;
 import mekanism.api.text.EnumColor;
 import mekanism.common.MekanismLang;
+import mekanism.common.attachments.containers.ContainerType;
 import mekanism.common.capabilities.Capabilities;
 import mekanism.common.capabilities.holder.chemical.IChemicalTankHolder;
 import mekanism.common.capabilities.holder.fluid.IFluidTankHolder;
@@ -55,6 +56,11 @@ public class TileEntityPressurizedWaterReactorPort extends TileEntityPressurized
     @Override
     public IChemicalTankHolder getInitialChemicalTanks(IContentsListener listener) {
         return side -> getMultiblock().getChemicalTanks(getMode());
+    }
+
+    @Override
+    public boolean persists(ContainerType<?, ?, ?> type) {
+        return type != ContainerType.HEAT && type != ContainerType.CHEMICAL && type != ContainerType.FLUID && super.persists(type);
     }
 
     @Override
