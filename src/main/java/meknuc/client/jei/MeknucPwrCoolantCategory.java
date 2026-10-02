@@ -12,8 +12,8 @@ import mekanism.client.recipe_viewer.jei.BaseRecipeCategory;
 import mekanism.client.recipe_viewer.jei.MekanismJEI;
 import mekanism.client.recipe_viewer.type.IRecipeViewerRecipeType;
 import meknuc.chemicals.MeknucChemicals;
-import meknuc.reactor.MeknucReactorBlocks;
-import meknuc.reactor.MeknucReactorLang;
+import meknuc.reactor.MeknucPwrBlocks;
+import meknuc.reactor.MeknucPwrLang;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
 import mezz.jei.api.helpers.ICodecHelper;
@@ -30,7 +30,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.fluids.FluidStack;
 import org.jetbrains.annotations.Nullable;
 
-public class MeknucReactorCoolantCategory extends BaseRecipeCategory<MeknucReactorCoolantCategory.CoolantLoopRecipe> {
+public class MeknucPwrCoolantCategory extends BaseRecipeCategory<MeknucPwrCoolantCategory.CoolantLoopRecipe> {
 
     public static final RecipeType<CoolantLoopRecipe> RECIPE_TYPE = RecipeType.create(
           meknuc.meknuc.MODID, "reactor_coolant", CoolantLoopRecipe.class);
@@ -46,12 +46,12 @@ public class MeknucReactorCoolantCategory extends BaseRecipeCategory<MeknucReact
     private final GuiGauge<?> waterTank;
     private final GuiGauge<?> steamTank;
 
-    public MeknucReactorCoolantCategory(IGuiHelper helper) {
+    public MeknucPwrCoolantCategory(IGuiHelper helper) {
         super(helper, RECIPE_VIEWER_TYPE);
         this.waterTank = addElement(GuiFluidGauge.getDummy(GaugeType.STANDARD, this, WATER_TANK_X, TANK_Y)
-              .setLabel(MeknucReactorLang.GUI_COOLANT_TANK.translateColored(EnumColor.INDIGO)));
+              .setLabel(MeknucPwrLang.GUI_COOLANT_TANK.translateColored(EnumColor.INDIGO)));
         this.steamTank = addElement(GuiChemicalGauge.getDummy(GaugeType.STANDARD, this, STEAM_TANK_X, TANK_Y)
-              .setLabel(MeknucReactorLang.GUI_HEATED_COOLANT_TANK.translateColored(EnumColor.ORANGE)));
+              .setLabel(MeknucPwrLang.GUI_HEATED_COOLANT_TANK.translateColored(EnumColor.ORANGE)));
     }
 
     public static List<CoolantLoopRecipe> recipes() {
@@ -97,11 +97,11 @@ public class MeknucReactorCoolantCategory extends BaseRecipeCategory<MeknucReact
         private static final int WIDTH = 176;
         private static final int HEIGHT = 100;
         private static final List<ItemLike> WORKSTATIONS = List.of(
-              MeknucReactorBlocks.PRESSURIZED_WATER_REACTOR_CASING,
-              MeknucReactorBlocks.PRESSURIZED_WATER_REACTOR_PORT,
-              MeknucReactorBlocks.PRESSURIZED_WATER_REACTOR_LOGIC_ADAPTER,
-              MeknucReactorBlocks.PRESSURIZED_WATER_REACTOR_FUEL_ASSEMBLY,
-              MeknucReactorBlocks.PRESSURIZED_WATER_REACTOR_CONTROL_ASSEMBLY);
+              MeknucPwrBlocks.PRESSURIZED_WATER_REACTOR_CASING,
+              MeknucPwrBlocks.PRESSURIZED_WATER_REACTOR_PORT,
+              MeknucPwrBlocks.PRESSURIZED_WATER_REACTOR_LOGIC_ADAPTER,
+              MeknucPwrBlocks.PRESSURIZED_WATER_REACTOR_FUEL_ASSEMBLY,
+              MeknucPwrBlocks.PRESSURIZED_WATER_REACTOR_CONTROL_ASSEMBLY);
 
         @Override
         public ResourceLocation id() {
@@ -120,7 +120,7 @@ public class MeknucReactorCoolantCategory extends BaseRecipeCategory<MeknucReact
 
         @Override
         public ItemStack iconStack() {
-            return new ItemStack(MeknucReactorBlocks.PRESSURIZED_WATER_REACTOR_CASING.asItem());
+            return new ItemStack(MeknucPwrBlocks.PRESSURIZED_WATER_REACTOR_CASING.asItem());
         }
 
         @Nullable
@@ -156,7 +156,7 @@ public class MeknucReactorCoolantCategory extends BaseRecipeCategory<MeknucReact
 
         @Override
         public Component getTextComponent() {
-            return MeknucReactorLang.JEI_REACTOR_COOLANT.translate();
+            return MeknucPwrLang.JEI_REACTOR_COOLANT.translate();
         }
     }
 }

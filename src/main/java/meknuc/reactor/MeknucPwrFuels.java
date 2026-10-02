@@ -14,7 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.registries.datamaps.DataMapType;
 import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
 
-public class MeknucReactorFuels {
+public class MeknucPwrFuels {
 
     public static final ResourceLocation REACTOR_FUEL_ID = ResourceLocation.fromNamespaceAndPath(meknuc.MODID, "reactor_fuel");
 
@@ -52,6 +52,6 @@ public class MeknucReactorFuels {
         ).apply(instance, ReactorFuel::new));
     }
 
-    private MeknucReactorFuels() {
+    private MeknucPwrFuels() {
     }
 }

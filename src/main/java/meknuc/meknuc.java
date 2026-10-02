@@ -3,14 +3,14 @@ package meknuc;
 import meknuc.blocks.MeknucBlockBase;
 import meknuc.chemicals.MeknucChemicals;
 import meknuc.items.MeknucItemBase;
-import meknuc.reactor.MeknucReactor;
-import meknuc.reactor.MeknucReactorBlocks;
-import meknuc.reactor.MeknucReactorContainerTypes;
-import meknuc.reactor.MeknucReactorFuels;
-import meknuc.reactor.MeknucReactorLogicPacket;
-import meknuc.reactor.MeknucReactorOpenGuiPacket;
-import meknuc.reactor.MeknucReactorTileEntityTypes;
-import meknuc.reactor.MeknucSounds;
+import meknuc.reactor.MeknucPwrMultiblock;
+import meknuc.reactor.MeknucPwrBlocks;
+import meknuc.reactor.MeknucPwrContainerTypes;
+import meknuc.reactor.MeknucPwrFuels;
+import meknuc.reactor.MeknucPwrLogicPacket;
+import meknuc.reactor.MeknucPwrOpenGuiPacket;
+import meknuc.reactor.MeknucPwrTileEntityTypes;
+import meknuc.reactor.MeknucPwrSounds;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -46,22 +46,22 @@ public class meknuc {
             .displayItems((parameters, output) -> {
                 MeknucItemBase.addTabItems(output);
                 MeknucBlockBase.addTabBlocks(output);
-                MeknucReactorBlocks.addTabBlocks(output);
+                MeknucPwrBlocks.addTabBlocks(output);
             }).build());
 
     public meknuc(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::registerPayloads);
-        modEventBus.addListener(MeknucReactorFuels::register);
+        modEventBus.addListener(MeknucPwrFuels::register);
 
-        MeknucReactor.initialize();
+        MeknucPwrMultiblock.initialize();
         MeknucBlockBase.BLOCKS.register(modEventBus);
         MeknucItemBase.ITEMS.register(modEventBus);
-        MeknucReactorBlocks.BLOCKS.register(modEventBus);
+        MeknucPwrBlocks.BLOCKS.register(modEventBus);
         MeknucChemicals.CHEMICALS.register(modEventBus);
-        MeknucReactorTileEntityTypes.TILE_ENTITY_TYPES.register(modEventBus);
-        MeknucReactorContainerTypes.CONTAINER_TYPES.register(modEventBus);
-        MeknucSounds.SOUND_EVENTS.register(modEventBus);
+        MeknucPwrTileEntityTypes.TILE_ENTITY_TYPES.register(modEventBus);
+        MeknucPwrContainerTypes.CONTAINER_TYPES.register(modEventBus);
+        MeknucPwrSounds.SOUND_EVENTS.register(modEventBus);
         CREATIVE_MODE_TABS.register(modEventBus);
 
         NeoForge.EVENT_BUS.register(this);
@@ -75,10 +75,10 @@ public class meknuc {
 
     private void registerPayloads(RegisterPayloadHandlersEvent event) {
         PayloadRegistrar registrar = event.registrar("1");
-        registrar.playToServer(MeknucReactorLogicPacket.TYPE, MeknucReactorLogicPacket.STREAM_CODEC,
-              MeknucReactorLogicPacket::handle);
-        registrar.playToServer(MeknucReactorOpenGuiPacket.TYPE, MeknucReactorOpenGuiPacket.STREAM_CODEC,
-              MeknucReactorOpenGuiPacket::handle);
+        registrar.playToServer(MeknucPwrLogicPacket.TYPE, MeknucPwrLogicPacket.STREAM_CODEC,
+              MeknucPwrLogicPacket::handle);
+        registrar.playToServer(MeknucPwrOpenGuiPacket.TYPE, MeknucPwrOpenGuiPacket.STREAM_CODEC,
+              MeknucPwrOpenGuiPacket::handle);
     }
 
     @SubscribeEvent

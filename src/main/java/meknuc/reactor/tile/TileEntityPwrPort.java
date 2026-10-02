@@ -9,8 +9,8 @@ import mekanism.common.capabilities.Capabilities;
 import mekanism.common.capabilities.holder.chemical.IChemicalTankHolder;
 import mekanism.common.capabilities.holder.fluid.IFluidTankHolder;
 import mekanism.common.capabilities.holder.slot.IInventorySlotHolder;
-import meknuc.reactor.AttributeStateReactorPortMode;
-import meknuc.reactor.AttributeStateReactorPortMode.ReactorPortMode;
+import meknuc.reactor.AttributeStatePwrPortMode;
+import meknuc.reactor.AttributeStatePwrPortMode.ReactorPortMode;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionResult;
@@ -20,22 +20,22 @@ import net.neoforged.neoforge.capabilities.BlockCapability;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class TileEntityPressurizedWaterReactorPort extends TileEntityPressurizedWaterReactorPart {
+public class TileEntityPwrPort extends TileEntityPwrPart {
 
     private final List<BlockCapability<?, @Nullable Direction>> portCapabilities = List.of(Capabilities.ITEM.block(),
           Capabilities.FLUID.block(), Capabilities.CHEMICAL.block());
 
-    public TileEntityPressurizedWaterReactorPort(BlockPos pos, BlockState state) {
+    public TileEntityPwrPort(BlockPos pos, BlockState state) {
         super(pos, state);
     }
 
     public ReactorPortMode getMode() {
-        return getBlockState().getValue(AttributeStateReactorPortMode.modeProperty);
+        return getBlockState().getValue(AttributeStatePwrPortMode.modeProperty);
     }
 
     public void setMode(ReactorPortMode mode) {
         if (mode != getMode()) {
-            level.setBlockAndUpdate(worldPosition, getBlockState().setValue(AttributeStateReactorPortMode.modeProperty, mode));
+            level.setBlockAndUpdate(worldPosition, getBlockState().setValue(AttributeStatePwrPortMode.modeProperty, mode));
             invalidateCapabilitiesAll(portCapabilities);
         }
     }

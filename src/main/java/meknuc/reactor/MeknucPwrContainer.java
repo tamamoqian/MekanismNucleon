@@ -1,18 +1,18 @@
 package meknuc.reactor;
 
 import mekanism.common.inventory.container.tile.MekanismTileContainer;
-import meknuc.reactor.tile.TileEntityPressurizedWaterReactorPart;
+import meknuc.reactor.tile.TileEntityPwrPart;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 
-public class MeknucReactorContainer extends MekanismTileContainer<TileEntityPressurizedWaterReactorPart> {
+public class MeknucPwrContainer extends MekanismTileContainer<TileEntityPwrPart> {
 
     public static final int BUTTON_ACTIVATE = 0;
     public static final int BUTTON_AUTO_STOP = 1;
     public static final int BUTTON_INSERTION = 1000;
 
-    public MeknucReactorContainer(int id, Inventory inv, TileEntityPressurizedWaterReactorPart tile) {
-        super(MeknucReactorContainerTypes.PRESSURIZED_WATER_REACTOR, id, inv, tile);
+    public MeknucPwrContainer(int id, Inventory inv, TileEntityPwrPart tile) {
+        super(MeknucPwrContainerTypes.PRESSURIZED_WATER_REACTOR, id, inv, tile);
     }
 
     @Override
@@ -31,7 +31,7 @@ public class MeknucReactorContainer extends MekanismTileContainer<TileEntityPres
 
     @Override
     public boolean clickMenuButton(Player player, int id) {
-        MeknucReactorMultiblockData multiblock = tile.getMultiblock();
+        MeknucPwrMultiblockData multiblock = tile.getMultiblock();
         switch (id) {
             case BUTTON_ACTIVATE -> multiblock.setActive(true);
             case BUTTON_AUTO_STOP -> multiblock.setAutoStopOnFuelExhausted(!multiblock.isAutoStopOnFuelExhausted());

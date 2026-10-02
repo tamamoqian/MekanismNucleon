@@ -20,8 +20,8 @@ import mekanism.common.lib.multiblock.FormationProtocol.FormationResult;
 import mekanism.common.lib.multiblock.FormationProtocol.StructureRequirement;
 import mekanism.common.util.EnumUtils;
 import mekanism.common.util.WorldUtils;
-import meknuc.reactor.tile.TileEntityPressurizedWaterReactorControlAssembly;
-import meknuc.reactor.tile.TileEntityPressurizedWaterReactorFuelAssembly;
+import meknuc.reactor.tile.TileEntityPwrControlAssembly;
+import meknuc.reactor.tile.TileEntityPwrFuelAssembly;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -31,7 +31,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 
-public class MeknucReactorValidator extends CuboidStructureValidator<MeknucReactorMultiblockData> {
+public class MeknucPwrValidator extends CuboidStructureValidator<MeknucPwrMultiblockData> {
 
     public static final int DIAMETER = 7;
     public static final int MIN_HEIGHT = 7;
@@ -111,7 +111,7 @@ public class MeknucReactorValidator extends CuboidStructureValidator<MeknucReact
     }
 
     @Override
-    protected FormationResult validateNode(FormationProtocol<MeknucReactorMultiblockData> ctx, Long2ObjectMap<ChunkAccess> chunkMap, BlockPos pos) {
+    protected FormationResult validateNode(FormationProtocol<MeknucPwrMultiblockData> ctx, Long2ObjectMap<ChunkAccess> chunkMap, BlockPos pos) {
         if (!inCircle(pos.getX(), pos.getZ())) {
             return FormationResult.SUCCESS;
         }
@@ -136,11 +136,11 @@ public class MeknucReactorValidator extends CuboidStructureValidator<MeknucReact
     @Override
     protected CasingType getCasingType(BlockState state) {
         Block block = state.getBlock();
-        if (BlockType.is(block, MeknucReactorBlockTypes.PRESSURIZED_WATER_REACTOR_CASING)) {
+        if (BlockType.is(block, MeknucPwrBlockTypes.PRESSURIZED_WATER_REACTOR_CASING)) {
             return CasingType.FRAME;
         }
-        if (BlockType.is(block, MeknucReactorBlockTypes.PRESSURIZED_WATER_REACTOR_PORT,
-              MeknucReactorBlockTypes.PRESSURIZED_WATER_REACTOR_LOGIC_ADAPTER)) {
+        if (BlockType.is(block, MeknucPwrBlockTypes.PRESSURIZED_WATER_REACTOR_PORT,
+              MeknucPwrBlockTypes.PRESSURIZED_WATER_REACTOR_LOGIC_ADAPTER)) {
             return CasingType.VALVE;
         }
         if (isReactorGlass(block)) {
@@ -152,8 +152,8 @@ public class MeknucReactorValidator extends CuboidStructureValidator<MeknucReact
     @Override
     protected boolean validateInner(BlockState state, Long2ObjectMap<ChunkAccess> chunkMap, BlockPos pos) {
         return state.isAir() || BlockType.is(state.getBlock(),
-              MeknucReactorBlockTypes.PRESSURIZED_WATER_REACTOR_FUEL_ASSEMBLY,
-              MeknucReactorBlockTypes.PRESSURIZED_WATER_REACTOR_CONTROL_ASSEMBLY);
+              MeknucPwrBlockTypes.PRESSURIZED_WATER_REACTOR_FUEL_ASSEMBLY,
+              MeknucPwrBlockTypes.PRESSURIZED_WATER_REACTOR_CONTROL_ASSEMBLY);
     }
 
     @Override
@@ -162,51 +162,51 @@ public class MeknucReactorValidator extends CuboidStructureValidator<MeknucReact
     }
 
     @Override
-    public FormationResult postcheck(MeknucReactorMultiblockData structure, Long2ObjectMap<ChunkAccess> chunkMap) {
+    public FormationResult postcheck(MeknucPwrMultiblockData structure, Long2ObjectMap<ChunkAccess> chunkMap) {
         Map<Long, Column> byColumn = new HashMap<>();
         for (BlockPos pos : structure.internalLocations) {
             Column column = byColumn.computeIfAbsent(columnKey(pos.getX(), pos.getZ()), key -> new Column());
             BlockEntity tile = WorldUtils.getTileEntity(world, chunkMap, pos);
-            if (tile instanceof TileEntityPressurizedWaterReactorFuelAssembly) {
+            if (tile instanceof TileEntityPwrFuelAssembly) {
                 column.fuel.add(pos);
-            } else if (tile instanceof TileEntityPressurizedWaterReactorControlAssembly) {
+            } else if (tile instanceof TileEntityPwrControlAssembly) {
                 if (column.controlRod != null) {
-                    return FormationResult.fail(MeknucReactorLang.INVALID_EXTRA_CONTROL_ROD, pos);
+                    return FormationResult.fail(MeknucPwrLang.INVALID_EXTRA_CONTROL_ROD, pos);
                 }
                 column.controlRod = pos;
             }
         }
         if (byColumn.isEmpty()) {
-            return FormationResult.fail(MeknucReactorLang.INVALID_MISSING_FUEL);
+            return FormationResult.fail(MeknucPwrLang.INVALID_MISSING_FUEL);
         }
 
-        List<MeknucReactorMultiblockData.FuelColumn> columns = new ArrayList<>();
+        List<MeknucPwrMultiblockData.FuelColumn> columns = new ArrayList<>();
         for (Map.Entry<Long, Column> entry : byColumn.entrySet()) {
             Column column = entry.getValue();
             if (column.fuel.isEmpty() && column.controlRod == null) {
                 continue;
             }
             if (column.fuel.isEmpty()) {
-                return FormationResult.fail(MeknucReactorLang.INVALID_BAD_FUEL_ASSEMBLY, column.controlRod);
+                return FormationResult.fail(MeknucPwrLang.INVALID_BAD_FUEL_ASSEMBLY, column.controlRod);
             }
             List<BlockPos> fuel = new ArrayList<>(column.fuel);
             fuel.sort(Comparator.comparingInt(BlockPos::getY));
             BlockPos base = fuel.get(0);
             BlockPos top = fuel.get(fuel.size() - 1);
             if (column.controlRod == null) {
-                return FormationResult.fail(MeknucReactorLang.INVALID_MISSING_CONTROL_ROD.translateColored(EnumColor.GRAY,
+                return FormationResult.fail(MeknucPwrLang.INVALID_MISSING_CONTROL_ROD.translateColored(EnumColor.GRAY,
                       EnumColor.INDIGO, MekanismLang.GENERIC_PARENTHESIS.translate(
                             MekanismLang.GENERIC_WITH_COMMA.translate(base.getX(), base.getZ()))));
             }
             for (int i = 1; i < fuel.size(); i++) {
                 if (fuel.get(i).getY() != fuel.get(i - 1).getY() + 1) {
-                    return FormationResult.fail(MeknucReactorLang.INVALID_MALFORMED_FUEL_ASSEMBLY, fuel.get(i));
+                    return FormationResult.fail(MeknucPwrLang.INVALID_MALFORMED_FUEL_ASSEMBLY, fuel.get(i));
                 }
             }
             if (column.controlRod.getY() != top.getY() + 1) {
-                return FormationResult.fail(MeknucReactorLang.INVALID_BAD_CONTROL_ROD, column.controlRod);
+                return FormationResult.fail(MeknucPwrLang.INVALID_BAD_CONTROL_ROD, column.controlRod);
             }
-            columns.add(new MeknucReactorMultiblockData.FuelColumn(base, fuel.size(), column.controlRod));
+            columns.add(new MeknucPwrMultiblockData.FuelColumn(base, fuel.size(), column.controlRod));
         }
 
         structure.setFuelColumns(columns);

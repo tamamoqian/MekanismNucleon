@@ -1,7 +1,7 @@
 package meknuc.reactor;
 
 import io.netty.buffer.ByteBuf;
-import meknuc.reactor.tile.TileEntityPressurizedWaterReactorPart;
+import meknuc.reactor.tile.TileEntityPwrPart;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -17,35 +17,35 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.jetbrains.annotations.NotNull;
 
-public record MeknucReactorOpenGuiPacket(BlockPos pos, int gui) implements CustomPacketPayload {
+public record MeknucPwrOpenGuiPacket(BlockPos pos, int gui) implements CustomPacketPayload {
 
-    public static final Type<MeknucReactorOpenGuiPacket> TYPE =
+    public static final Type<MeknucPwrOpenGuiPacket> TYPE =
           new Type<>(ResourceLocation.fromNamespaceAndPath("meknuc", "reactor_open_gui"));
 
-    public static final StreamCodec<ByteBuf, MeknucReactorOpenGuiPacket> STREAM_CODEC = StreamCodec.composite(
-          BlockPos.STREAM_CODEC, MeknucReactorOpenGuiPacket::pos,
-          ByteBufCodecs.VAR_INT, MeknucReactorOpenGuiPacket::gui,
-          MeknucReactorOpenGuiPacket::new);
+    public static final StreamCodec<ByteBuf, MeknucPwrOpenGuiPacket> STREAM_CODEC = StreamCodec.composite(
+          BlockPos.STREAM_CODEC, MeknucPwrOpenGuiPacket::pos,
+          ByteBufCodecs.VAR_INT, MeknucPwrOpenGuiPacket::gui,
+          MeknucPwrOpenGuiPacket::new);
 
     @Override
-    public @NotNull Type<MeknucReactorOpenGuiPacket> type() {
+    public @NotNull Type<MeknucPwrOpenGuiPacket> type() {
         return TYPE;
     }
 
-    public static void handle(MeknucReactorOpenGuiPacket payload, IPayloadContext context) {
+    public static void handle(MeknucPwrOpenGuiPacket payload, IPayloadContext context) {
         Player player = context.player();
         if (player.distanceToSqr(Vec3.atCenterOf(payload.pos())) > 64.0) {
             return;
         }
         Level level = player.level();
         BlockEntity tile = level.getBlockEntity(payload.pos());
-        if (tile instanceof TileEntityPressurizedWaterReactorPart reactor
+        if (tile instanceof TileEntityPwrPart reactor
               && player instanceof ServerPlayer serverPlayer) {
-            MenuProvider provider = payload.gui() == MeknucReactorGuiTarget.STATS
-                  ? MeknucReactorContainerTypes.PRESSURIZED_WATER_REACTOR_STATS
-                        .getProvider(MeknucReactorLang.GUI_STATS_TITLE, reactor)
-                  : MeknucReactorContainerTypes.PRESSURIZED_WATER_REACTOR
-                        .getProvider(MeknucReactorLang.GUI_TITLE, reactor);
+            MenuProvider provider = payload.gui() == MeknucPwrGuiTarget.STATS
+                  ? MeknucPwrContainerTypes.PRESSURIZED_WATER_REACTOR_STATS
+                        .getProvider(MeknucPwrLang.GUI_STATS_TITLE, reactor)
+                  : MeknucPwrContainerTypes.PRESSURIZED_WATER_REACTOR
+                        .getProvider(MeknucPwrLang.GUI_TITLE, reactor);
             if (provider != null) {
                 serverPlayer.openMenu(provider, buffer -> buffer.writeBlockPos(reactor.getBlockPos()));
             }

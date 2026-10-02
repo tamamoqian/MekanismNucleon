@@ -14,13 +14,13 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.Property;
 import org.jetbrains.annotations.NotNull;
 
-public class AttributeStateReactorPortMode implements AttributeState {
+public class AttributeStatePwrPortMode implements AttributeState {
 
     public static final EnumProperty<ReactorPortMode> modeProperty = EnumProperty.create("mode", ReactorPortMode.class);
 
     @Override
     public BlockState copyStateData(BlockState oldState, BlockState newState) {
-        if (Attribute.has(newState, AttributeStateReactorPortMode.class)) {
+        if (Attribute.has(newState, AttributeStatePwrPortMode.class)) {
             newState = newState.setValue(modeProperty, oldState.getValue(modeProperty));
         }
         return newState;
@@ -37,10 +37,10 @@ public class AttributeStateReactorPortMode implements AttributeState {
     }
 
     public enum ReactorPortMode implements StringRepresentable, IHasEnumNameTextComponent {
-        COOLANT_INPUT("input_coolant", MeknucReactorLang.PORT_MODE_COOLANT_INPUT, EnumColor.AQUA),
-        FUEL_INPUT("input_fuel", MeknucReactorLang.PORT_MODE_FUEL_INPUT, EnumColor.BRIGHT_GREEN),
-        COOLANT_OUTPUT("output_coolant", MeknucReactorLang.PORT_MODE_COOLANT_OUTPUT, EnumColor.DARK_AQUA),
-        WASTE_OUTPUT("output_waste", MeknucReactorLang.PORT_MODE_WASTE_OUTPUT, EnumColor.BROWN);
+        COOLANT_INPUT("input_coolant", MeknucPwrLang.PORT_MODE_COOLANT_INPUT, EnumColor.AQUA),
+        FUEL_INPUT("input_fuel", MeknucPwrLang.PORT_MODE_FUEL_INPUT, EnumColor.BRIGHT_GREEN),
+        COOLANT_OUTPUT("output_coolant", MeknucPwrLang.PORT_MODE_COOLANT_OUTPUT, EnumColor.DARK_AQUA),
+        WASTE_OUTPUT("output_waste", MeknucPwrLang.PORT_MODE_WASTE_OUTPUT, EnumColor.BROWN);
 
         private final String name;
         private final ILangEntry langEntry;

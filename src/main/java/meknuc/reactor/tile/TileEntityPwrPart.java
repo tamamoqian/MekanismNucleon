@@ -5,28 +5,28 @@ import java.util.UUID;
 import mekanism.client.sound.SoundHandler;
 import mekanism.common.lib.multiblock.MultiblockManager;
 import mekanism.common.tile.prefab.TileEntityMultiblock;
-import meknuc.reactor.MeknucReactor;
-import meknuc.reactor.MeknucReactorCache;
-import meknuc.reactor.MeknucReactorMultiblockData;
+import meknuc.reactor.MeknucPwrMultiblock;
+import meknuc.reactor.MeknucPwrCache;
+import meknuc.reactor.MeknucPwrMultiblockData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class TileEntityPressurizedWaterReactorPart extends TileEntityMultiblock<MeknucReactorMultiblockData> {
+public class TileEntityPwrPart extends TileEntityMultiblock<MeknucPwrMultiblockData> {
 
     private boolean prevPlaying;
 
-    public TileEntityPressurizedWaterReactorPart(BlockPos pos, BlockState state) {
+    public TileEntityPwrPart(BlockPos pos, BlockState state) {
         super(state.getBlockHolder(), pos, state);
     }
 
     @Override
-    public MeknucReactorMultiblockData createMultiblock() {
-        return new MeknucReactorMultiblockData(this);
+    public MeknucPwrMultiblockData createMultiblock() {
+        return new MeknucPwrMultiblockData(this);
     }
 
     @Override
-    public MultiblockManager<MeknucReactorMultiblockData> getManager() {
-        return MeknucReactor.MANAGER;
+    public MultiblockManager<MeknucPwrMultiblockData> getManager() {
+        return MeknucPwrMultiblock.MANAGER;
     }
 
     @Override
@@ -35,7 +35,7 @@ public class TileEntityPressurizedWaterReactorPart extends TileEntityMultiblock<
     }
 
     @Override
-    protected boolean onUpdateServer(MeknucReactorMultiblockData multiblock) {
+    protected boolean onUpdateServer(MeknucPwrMultiblockData multiblock) {
         boolean needsPacket = super.onUpdateServer(multiblock);
         boolean playing = shouldPlaySound(multiblock);
         if (playing != prevPlaying) {
@@ -45,7 +45,7 @@ public class TileEntityPressurizedWaterReactorPart extends TileEntityMultiblock<
         return needsPacket;
     }
 
-    private boolean shouldPlaySound(MeknucReactorMultiblockData multiblock) {
+    private boolean shouldPlaySound(MeknucPwrMultiblockData multiblock) {
         return isMaster() && multiblock.isFormed() && multiblock.isActive() && !multiblock.isMeltedDown()
               && multiblock.getBurnTime() > 0 && !multiblock.isBurnPaused();
     }
@@ -67,12 +67,12 @@ public class TileEntityPressurizedWaterReactorPart extends TileEntityMultiblock<
     }
 
     @Override
-    protected void structureChanged(MeknucReactorMultiblockData multiblock) {
+    protected void structureChanged(MeknucPwrMultiblockData multiblock) {
         super.structureChanged(multiblock);
         if (!isRemote() && !multiblock.isFormed()) {
             UUID id = getCacheID();
             if (id != null) {
-                MeknucReactor.MANAGER.replaceCaches(Set.of(id), id, new MeknucReactorCache());
+                MeknucPwrMultiblock.MANAGER.replaceCaches(Set.of(id), id, new MeknucPwrCache());
             }
         }
     }

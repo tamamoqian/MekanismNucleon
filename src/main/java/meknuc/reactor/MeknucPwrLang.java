@@ -4,7 +4,7 @@ import mekanism.api.text.ILangEntry;
 import net.minecraft.Util;
 import net.minecraft.resources.ResourceLocation;
 
-public enum MeknucReactorLang implements ILangEntry {
+public enum MeknucPwrLang implements ILangEntry {
     DESCRIPTION_PRESSURIZED_WATER_REACTOR_CASING("description", "pressurized_water_reactor_casing"),
     DESCRIPTION_PRESSURIZED_WATER_REACTOR_PORT("description", "pressurized_water_reactor_port"),
     DESCRIPTION_PRESSURIZED_WATER_REACTOR_LOGIC_ADAPTER("description", "pressurized_water_reactor_logic_adapter"),
@@ -101,11 +101,11 @@ public enum MeknucReactorLang implements ILangEntry {
 
     private final String key;
 
-    MeknucReactorLang(String type, String path) {
+    MeknucPwrLang(String type, String path) {
         this(Util.makeDescriptionId(type, ResourceLocation.fromNamespaceAndPath("meknuc", path)));
     }
 
-    MeknucReactorLang(String key) {
+    MeknucPwrLang(String key) {
         this.key = key;
     }
 

@@ -10,8 +10,8 @@ import mekanism.common.inventory.container.MekanismContainer;
 import mekanism.common.inventory.container.sync.SyncableEnum;
 import mekanism.common.tile.interfaces.IRedstoneControl.RedstoneControl;
 import mekanism.common.util.NBTUtils;
-import meknuc.reactor.MeknucReactorLang;
-import meknuc.reactor.MeknucReactorMultiblockData;
+import meknuc.reactor.MeknucPwrLang;
+import meknuc.reactor.MeknucPwrMultiblockData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup.Provider;
@@ -26,22 +26,22 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.event.EventHooks;
 import org.jetbrains.annotations.NotNull;
 
-public class TileEntityPressurizedWaterReactorLogicAdapter extends TileEntityPressurizedWaterReactorPart {
+public class TileEntityPwrLogicAdapter extends TileEntityPwrPart {
 
     private static final int REDSTONE_MAX = 15;
     private static final int CRITICAL_WASTE_LEVEL =
-          (int) Math.ceil(MeknucReactorMultiblockData.CACHE_CAPACITY * 0.9);
+          (int) Math.ceil(MeknucPwrMultiblockData.CACHE_CAPACITY * 0.9);
 
     public PressurizedWaterReactorLogic logicType = PressurizedWaterReactorLogic.DISABLED;
     private RedstoneStatus prevStatus = RedstoneStatus.IDLE;
 
-    public TileEntityPressurizedWaterReactorLogicAdapter(BlockPos pos, BlockState state) {
+    public TileEntityPwrLogicAdapter(BlockPos pos, BlockState state) {
         super(pos, state);
         setControlType(RedstoneControl.HIGH);
     }
 
     @Override
-    protected boolean onUpdateServer(MeknucReactorMultiblockData multiblock) {
+    protected boolean onUpdateServer(MeknucPwrMultiblockData multiblock) {
         boolean needsPacket = super.onUpdateServer(multiblock);
         if (logicType == PressurizedWaterReactorLogic.CONTROL_ROD && multiblock.isFormed()) {
             Level world = getLevel();
@@ -86,7 +86,7 @@ public class TileEntityPressurizedWaterReactorLogicAdapter extends TileEntityPre
         if (isRemote()) {
             return prevStatus;
         }
-        MeknucReactorMultiblockData multiblock = getMultiblock();
+        MeknucPwrMultiblockData multiblock = getMultiblock();
         if (multiblock.isFormed()) {
             switch (logicType) {
                 case ACTIVATION:
@@ -100,7 +100,7 @@ public class TileEntityPressurizedWaterReactorLogicAdapter extends TileEntityPre
                     }
                     break;
                 case HIGH_TEMPERATURE:
-                    if (multiblock.getTemperature() >= MeknucReactorMultiblockData.DAMAGE_TEMPERATURE) {
+                    if (multiblock.getTemperature() >= MeknucPwrMultiblockData.DAMAGE_TEMPERATURE) {
                         return RedstoneStatus.OUTPUTTING;
                     }
                     break;
@@ -137,7 +137,7 @@ public class TileEntityPressurizedWaterReactorLogicAdapter extends TileEntityPre
     public void onPowerChange() {
         super.onPowerChange();
         if (!isRemote()) {
-            MeknucReactorMultiblockData multiblock = getMultiblock();
+            MeknucPwrMultiblockData multiblock = getMultiblock();
             if (multiblock.isFormed() && logicType == PressurizedWaterReactorLogic.ACTIVATION) {
                 multiblock.setActive(canFunction());
             }
@@ -172,17 +172,17 @@ public class TileEntityPressurizedWaterReactorLogicAdapter extends TileEntityPre
     }
 
     public enum PressurizedWaterReactorLogic implements IHasEnumNameTranslationKey {
-        DISABLED(MeknucReactorLang.LOGIC_DISABLED, MeknucReactorLang.DESCRIPTION_LOGIC_DISABLED,
+        DISABLED(MeknucPwrLang.LOGIC_DISABLED, MeknucPwrLang.DESCRIPTION_LOGIC_DISABLED,
               new ItemStack(Items.GUNPOWDER), EnumColor.DARK_GRAY),
-        ACTIVATION(MeknucReactorLang.LOGIC_ACTIVATION, MeknucReactorLang.DESCRIPTION_LOGIC_ACTIVATION,
+        ACTIVATION(MeknucPwrLang.LOGIC_ACTIVATION, MeknucPwrLang.DESCRIPTION_LOGIC_ACTIVATION,
               new ItemStack(Items.FLINT_AND_STEEL), EnumColor.AQUA),
-        CONTROL_ROD(MeknucReactorLang.LOGIC_CONTROL_ROD, MeknucReactorLang.DESCRIPTION_LOGIC_CONTROL_ROD,
+        CONTROL_ROD(MeknucPwrLang.LOGIC_CONTROL_ROD, MeknucPwrLang.DESCRIPTION_LOGIC_CONTROL_ROD,
               new ItemStack(Items.LEVER), EnumColor.BRIGHT_GREEN),
-        HIGH_TEMPERATURE(MeknucReactorLang.LOGIC_HIGH_TEMPERATURE, MeknucReactorLang.DESCRIPTION_LOGIC_HIGH_TEMPERATURE,
+        HIGH_TEMPERATURE(MeknucPwrLang.LOGIC_HIGH_TEMPERATURE, MeknucPwrLang.DESCRIPTION_LOGIC_HIGH_TEMPERATURE,
               new ItemStack(Items.REDSTONE), EnumColor.RED),
-        CRITICAL_WASTE_LEVEL(MeknucReactorLang.LOGIC_CRITICAL_WASTE_LEVEL,
-              MeknucReactorLang.DESCRIPTION_LOGIC_CRITICAL_WASTE_LEVEL, new ItemStack(Items.REDSTONE), EnumColor.RED),
-        DAMAGED(MeknucReactorLang.LOGIC_DAMAGED, MeknucReactorLang.DESCRIPTION_LOGIC_DAMAGED,
+        CRITICAL_WASTE_LEVEL(MeknucPwrLang.LOGIC_CRITICAL_WASTE_LEVEL,
+              MeknucPwrLang.DESCRIPTION_LOGIC_CRITICAL_WASTE_LEVEL, new ItemStack(Items.REDSTONE), EnumColor.RED),
+        DAMAGED(MeknucPwrLang.LOGIC_DAMAGED, MeknucPwrLang.DESCRIPTION_LOGIC_DAMAGED,
               new ItemStack(Items.REDSTONE), EnumColor.RED);
 
         public static final IntFunction<PressurizedWaterReactorLogic> BY_ID =
@@ -220,8 +220,8 @@ public class TileEntityPressurizedWaterReactorLogicAdapter extends TileEntityPre
 
     public enum RedstoneStatus implements IHasEnumNameTranslationKey {
         IDLE(MekanismLang.IDLE),
-        OUTPUTTING(MeknucReactorLang.LOGIC_OUTPUTTING),
-        POWERED(MeknucReactorLang.LOGIC_POWERED);
+        OUTPUTTING(MeknucPwrLang.LOGIC_OUTPUTTING),
+        POWERED(MeknucPwrLang.LOGIC_POWERED);
 
         public static final IntFunction<RedstoneStatus> BY_ID =
               ByIdMap.continuous(Enum::ordinal, values(), OutOfBoundsStrategy.WRAP);

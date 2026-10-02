@@ -23,7 +23,7 @@ import mekanism.common.inventory.slot.BasicInventorySlot;
 import mekanism.common.lib.multiblock.MultiblockData;
 import mekanism.common.util.NBTUtils;
 import meknuc.chemicals.MeknucChemicals;
-import meknuc.reactor.AttributeStateReactorPortMode.ReactorPortMode;
+import meknuc.reactor.AttributeStatePwrPortMode.ReactorPortMode;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -39,7 +39,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.event.EventHooks;
 
-public class MeknucReactorMultiblockData extends MultiblockData {
+public class MeknucPwrMultiblockData extends MultiblockData {
 
     public static final int CACHE_CAPACITY = 128;
     public static final int WATER_CAPACITY_PER_BLOCK = 400000;
@@ -139,7 +139,7 @@ public class MeknucReactorMultiblockData extends MultiblockData {
 
     private ItemStack runningProduct = ItemStack.EMPTY;
 
-    public MeknucReactorMultiblockData(BlockEntity tile) {
+    public MeknucPwrMultiblockData(BlockEntity tile) {
         super(tile);
         ambientTemp = HeatAPI.getAmbientTemp(tile.getLevel(), tile.getBlockPos());
         temperature = ambientTemp;
@@ -150,7 +150,7 @@ public class MeknucReactorMultiblockData extends MultiblockData {
         fluidTanks.add(waterTank);
         chemicalTanks.add(steamTank);
         fuelSlot = new CacheSlot(CACHE_CAPACITY, ConstantPredicates.alwaysTrueBi(), ConstantPredicates.alwaysTrueBi(),
-              MeknucReactorFuels::isFuel, this);
+              MeknucPwrFuels::isFuel, this);
         wasteSlot = new CacheSlot(CACHE_CAPACITY, ConstantPredicates.alwaysTrueBi(), ConstantPredicates.internalOnly(),
               ConstantPredicates.alwaysTrue(), this);
         inventorySlots.add(fuelSlot);
@@ -393,11 +393,11 @@ public class MeknucReactorMultiblockData extends MultiblockData {
             return;
         }
         ItemStack fuel = fuelSlot.getStack();
-        MeknucReactorFuels.ReactorFuel spec = MeknucReactorFuels.get(fuel);
+        MeknucPwrFuels.ReactorFuel spec = MeknucPwrFuels.get(fuel);
         if (spec == null || fuel.getCount() < rods) {
             return;
         }
-        ItemStack product = MeknucReactorFuels.product(spec, rods);
+        ItemStack product = MeknucPwrFuels.product(spec, rods);
         if (!canStore(product)) {
             return;
         }

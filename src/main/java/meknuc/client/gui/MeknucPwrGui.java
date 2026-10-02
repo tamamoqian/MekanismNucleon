@@ -21,12 +21,12 @@ import mekanism.common.lib.Color.ColorFunction;
 import mekanism.common.util.MekanismUtils;
 import mekanism.common.util.text.TextUtils;
 import mekanism.common.util.UnitDisplayUtils.TemperatureUnit;
-import meknuc.client.gui.element.MeknucReactorTab;
-import meknuc.client.gui.element.MeknucReactorTab.ReactorTab;
-import meknuc.reactor.MeknucReactorContainer;
-import meknuc.reactor.MeknucReactorLang;
-import meknuc.reactor.MeknucReactorMultiblockData;
-import meknuc.reactor.tile.TileEntityPressurizedWaterReactorPart;
+import meknuc.client.gui.element.MeknucPwrTab;
+import meknuc.client.gui.element.MeknucPwrTab.PwrTab;
+import meknuc.reactor.MeknucPwrContainer;
+import meknuc.reactor.MeknucPwrLang;
+import meknuc.reactor.MeknucPwrMultiblockData;
+import meknuc.reactor.tile.TileEntityPwrPart;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -38,7 +38,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.NotNull;
 
-public class MeknucReactorGui extends GuiMekanismTile<TileEntityPressurizedWaterReactorPart, MeknucReactorContainer> {
+public class MeknucPwrGui extends GuiMekanismTile<TileEntityPwrPart, MeknucPwrContainer> {
 
     private static final ResourceLocation BACKGROUND = ResourceLocation.fromNamespaceAndPath("meknuc",
           "gui/pressurized_water_reactor.png");
@@ -74,7 +74,7 @@ public class MeknucReactorGui extends GuiMekanismTile<TileEntityPressurizedWater
     private boolean draggingInsertion;
     private int pendingInsertion = -1;
 
-    public MeknucReactorGui(MeknucReactorContainer container, Inventory inv, Component title) {
+    public MeknucPwrGui(MeknucPwrContainer container, Inventory inv, Component title) {
         super(container, inv, title);
         imageWidth = 195;
         imageHeight = 256;
@@ -89,23 +89,23 @@ public class MeknucReactorGui extends GuiMekanismTile<TileEntityPressurizedWater
         super.addGuiElements();
         addRenderableWidget(new GuiFluidGauge(() -> multiblock().waterTank,
               () -> List.of(multiblock().waterTank), GaugeType.STANDARD, this, COOLANT_GAUGE_X, GAUGE_Y)
-              .setLabel(MeknucReactorLang.GUI_COOLANT_TANK.translate()));
+              .setLabel(MeknucPwrLang.GUI_COOLANT_TANK.translate()));
         addRenderableWidget(new GuiChemicalGauge(() -> multiblock().steamTank,
               () -> List.of(multiblock().steamTank), GaugeType.STANDARD, this, HOT_COOLANT_GAUGE_X, GAUGE_Y)
-              .setLabel(MeknucReactorLang.GUI_HEATED_COOLANT_TANK.translate()));
+              .setLabel(MeknucPwrLang.GUI_HEATED_COOLANT_TANK.translate()));
         addRenderableWidget(new GuiInnerScreen(this, PANEL_X, PANEL_Y, PANEL_WIDTH, PANEL_HEIGHT, this::infoLines).spacing(0));
-        addRenderableWidget(new MeknucReactorTab(this, tile, ReactorTab.STAT));
+        addRenderableWidget(new MeknucPwrTab(this, tile, PwrTab.STAT));
         addRenderableWidget(new GuiHeatTab(this, () -> List.of(MekanismLang.DISSIPATED_RATE.translate(
               MekanismUtils.getTemperatureDisplay(multiblock().getLastEnvironmentLoss(), TemperatureUnit.KELVIN,
                     false)))));
         activateButton = addRenderableWidget(new TranslationButton(this, 8, BUTTON_Y, 80, BUTTON_HEIGHT,
-              MeknucReactorLang.GUI_ACTIVATE, (element, mouseX, mouseY) -> {
-                  pressButton(MeknucReactorContainer.BUTTON_ACTIVATE);
+              MeknucPwrLang.GUI_ACTIVATE, (element, mouseX, mouseY) -> {
+                  pressButton(MeknucPwrContainer.BUTTON_ACTIVATE);
                   return true;
               }, () -> EnumColor.DARK_GREEN));
         autoStopButton = addRenderableWidget(new TranslationButton(this, 92, BUTTON_Y, 80, BUTTON_HEIGHT,
-              MeknucReactorLang.GUI_AUTO_STOP, (element, mouseX, mouseY) -> {
-                  pressButton(MeknucReactorContainer.BUTTON_AUTO_STOP);
+              MeknucPwrLang.GUI_AUTO_STOP, (element, mouseX, mouseY) -> {
+                  pressButton(MeknucPwrContainer.BUTTON_AUTO_STOP);
                   return true;
               }, () -> multiblock().isAutoStopOnFuelExhausted() ? EnumColor.DARK_GREEN : EnumColor.DARK_GRAY));
         refreshAutoStopButton();
@@ -117,14 +117,14 @@ public class MeknucReactorGui extends GuiMekanismTile<TileEntityPressurizedWater
         heatGraph.setMinScale(800.0);
     }
 
-    private MeknucReactorMultiblockData multiblock() {
+    private MeknucPwrMultiblockData multiblock() {
         return tile.getMultiblock();
     }
 
     private void refreshAutoStopButton() {
         autoStopButton.setMessage(multiblock().isAutoStopOnFuelExhausted()
-              ? MeknucReactorLang.GUI_AUTO_STOP.translate(MeknucReactorLang.GUI_AUTO_STOP_ON.translate())
-              : MeknucReactorLang.GUI_AUTO_STOP.translate(MeknucReactorLang.GUI_AUTO_STOP_OFF.translate()));
+              ? MeknucPwrLang.GUI_AUTO_STOP.translate(MeknucPwrLang.GUI_AUTO_STOP_ON.translate())
+              : MeknucPwrLang.GUI_AUTO_STOP.translate(MeknucPwrLang.GUI_AUTO_STOP_OFF.translate()));
     }
 
     private void pressButton(int id) {
@@ -149,42 +149,42 @@ public class MeknucReactorGui extends GuiMekanismTile<TileEntityPressurizedWater
     }
 
     private List<Component> infoLines() {
-        MeknucReactorMultiblockData multiblock = multiblock();
+        MeknucPwrMultiblockData multiblock = multiblock();
         boolean active = multiblock.isActive();
         Component status;
         if (multiblock.isMeltedDown()) {
-            status = MeknucReactorLang.GUI_STATUS.translate(EnumColor.DARK_RED,
-                  MeknucReactorLang.GUI_STATE_MELTDOWN.translate());
+            status = MeknucPwrLang.GUI_STATUS.translate(EnumColor.DARK_RED,
+                  MeknucPwrLang.GUI_STATE_MELTDOWN.translate());
         } else {
-            status = MeknucReactorLang.GUI_STATUS.translate(active ? EnumColor.BRIGHT_GREEN : EnumColor.RED,
-                  active ? MeknucReactorLang.GUI_STATE_ACTIVE.translate() : MeknucReactorLang.GUI_STATE_STOPPED.translate());
+            status = MeknucPwrLang.GUI_STATUS.translate(active ? EnumColor.BRIGHT_GREEN : EnumColor.RED,
+                  active ? MeknucPwrLang.GUI_STATE_ACTIVE.translate() : MeknucPwrLang.GUI_STATE_STOPPED.translate());
         }
         Component damage;
         if (multiblock.getMeltdownTimer() > 0) {
-            damage = MeknucReactorLang.GUI_DAMAGE_MELTDOWN.translate(EnumColor.DARK_RED,
+            damage = MeknucPwrLang.GUI_DAMAGE_MELTDOWN.translate(EnumColor.DARK_RED,
                   Component.literal(multiblock.getDamagePercent() + "%"),
                   Component.literal(Integer.toString(multiblock.getMeltdownSeconds())));
         } else {
-            damage = MeknucReactorLang.GUI_DAMAGE.translate(EnumColor.WHITE,
+            damage = MeknucPwrLang.GUI_DAMAGE.translate(EnumColor.WHITE,
                   Component.literal(multiblock.getDamagePercent() + "%"));
         }
         return List.of(
               status,
-              MeknucReactorLang.GUI_BURN_TIME.translate(EnumColor.WHITE, multiblock.isBurnPaused()
-                    ? MeknucReactorLang.GUI_BURN_STOPPED.translate()
+              MeknucPwrLang.GUI_BURN_TIME.translate(EnumColor.WHITE, multiblock.isBurnPaused()
+                    ? MeknucPwrLang.GUI_BURN_STOPPED.translate()
                     : Component.literal(formatBurnTime(multiblock.getDisplayedBurnTime()))),
-              MeknucReactorLang.GUI_TEMPERATURE.translate(EnumColor.RED,
+              MeknucPwrLang.GUI_TEMPERATURE.translate(EnumColor.RED,
                     MekanismUtils.getTemperatureDisplay(multiblock.getTemperature(), TemperatureUnit.KELVIN, true)),
               damage,
-              MeknucReactorLang.GUI_COOLANT_USAGE.translate(EnumColor.WHITE,
+              MeknucPwrLang.GUI_COOLANT_USAGE.translate(EnumColor.WHITE,
                     Component.literal(TextUtils.format(multiblock.getLastFlow()))),
-              MeknucReactorLang.GUI_STEAM_PRODUCTION.translate(EnumColor.WHITE,
+              MeknucPwrLang.GUI_STEAM_PRODUCTION.translate(EnumColor.WHITE,
                     Component.literal(TextUtils.format(multiblock.getLastFlow())))
         );
     }
 
     private static String fuelCountText(int count) {
-        return count + "/" + MeknucReactorMultiblockData.CACHE_CAPACITY;
+        return count + "/" + MeknucPwrMultiblockData.CACHE_CAPACITY;
     }
 
     private static String formatBurnTime(int ticks) {
@@ -196,23 +196,23 @@ public class MeknucReactorGui extends GuiMekanismTile<TileEntityPressurizedWater
     protected void drawForegroundText(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY) {
         renderTitleText(guiGraphics);
         renderInventoryText(guiGraphics);
-        MeknucReactorMultiblockData multiblock = multiblock();
+        MeknucPwrMultiblockData multiblock = multiblock();
         activateButton.active = !multiblock.isActive() && !multiblock.isMeltedDown();
         drawCacheBar(guiGraphics, FUEL_BAR_X, multiblock.getFuelCount(), multiblock.getInCoreCount(),
-              multiblock.getFuelItemId(), CACHE_FUEL_COLOR, MeknucReactorLang.GUI_FUEL, MeknucReactorLang.GUI_FUEL_HINT,
+              multiblock.getFuelItemId(), CACHE_FUEL_COLOR, MeknucPwrLang.GUI_FUEL, MeknucPwrLang.GUI_FUEL_HINT,
               mouseX, mouseY);
         drawCacheBar(guiGraphics, WASTE_BAR_X, multiblock.getWasteCount(), 0, multiblock.getWasteItemId(),
-              CACHE_WASTE_COLOR, MeknucReactorLang.GUI_WASTE, null, mouseX, mouseY);
+              CACHE_WASTE_COLOR, MeknucPwrLang.GUI_WASTE, null, mouseX, mouseY);
         drawControlRodBar(guiGraphics);
         drawLabels(guiGraphics, multiblock);
         super.drawForegroundText(guiGraphics, mouseX, mouseY);
     }
 
     private void drawCacheBar(GuiGraphics guiGraphics, int x, int count, int inCore, int itemId, int color,
-          MeknucReactorLang label, MeknucReactorLang hint, int mouseX, int mouseY) {
+          MeknucPwrLang label, MeknucPwrLang hint, int mouseX, int mouseY) {
         drawBarFrame(guiGraphics, x, GAUGE_Y, BAR_WIDTH, GAUGE_HEIGHT);
-        int stored = Math.min(MeknucReactorMultiblockData.CACHE_CAPACITY, count + inCore);
-        int fill = (int) ((GAUGE_HEIGHT - 4) * (stored / (double) MeknucReactorMultiblockData.CACHE_CAPACITY));
+        int stored = Math.min(MeknucPwrMultiblockData.CACHE_CAPACITY, count + inCore);
+        int fill = (int) ((GAUGE_HEIGHT - 4) * (stored / (double) MeknucPwrMultiblockData.CACHE_CAPACITY));
         if (fill > 0) {
             guiGraphics.fill(x + 2, GAUGE_Y + GAUGE_HEIGHT - 2 - fill, x + BAR_WIDTH - 2, GAUGE_Y + GAUGE_HEIGHT - 2, color);
         }
@@ -224,7 +224,7 @@ public class MeknucReactorGui extends GuiMekanismTile<TileEntityPressurizedWater
                 lines.add(name);
             }
             if (inCore > 0) {
-                lines.add(MeknucReactorLang.GUI_IN_CORE.translate(EnumColor.AQUA, Component.literal(Integer.toString(inCore))));
+                lines.add(MeknucPwrLang.GUI_IN_CORE.translate(EnumColor.AQUA, Component.literal(Integer.toString(inCore))));
             }
             if (hint != null && stored == 0) {
                 lines.add(hint.translate(EnumColor.GRAY));
@@ -270,7 +270,7 @@ public class MeknucReactorGui extends GuiMekanismTile<TileEntityPressurizedWater
         int percent = (int) Math.round(fraction * 100.0);
         if (percent != displayedInsertion()) {
             pendingInsertion = percent;
-            pressButton(MeknucReactorContainer.BUTTON_INSERTION + percent);
+            pressButton(MeknucPwrContainer.BUTTON_INSERTION + percent);
         }
     }
 
@@ -314,12 +314,12 @@ public class MeknucReactorGui extends GuiMekanismTile<TileEntityPressurizedWater
         }
     }
 
-    private void drawLabels(GuiGraphics guiGraphics, MeknucReactorMultiblockData multiblock) {
-        guiGraphics.drawString(font, MeknucReactorLang.GUI_TEMPERATURE_BAR.translate().getString(), 8, TEMPERATURE_BAR_Y - 10,
+    private void drawLabels(GuiGraphics guiGraphics, MeknucPwrMultiblockData multiblock) {
+        guiGraphics.drawString(font, MeknucPwrLang.GUI_TEMPERATURE_BAR.translate().getString(), 8, TEMPERATURE_BAR_Y - 10,
               LABEL_COLOR, false);
-        guiGraphics.drawString(font, MeknucReactorLang.GUI_CONTROL_ROD.translate().getString(), 8, CONTROL_ROD_BAR_Y - 10,
+        guiGraphics.drawString(font, MeknucPwrLang.GUI_CONTROL_ROD.translate().getString(), 8, CONTROL_ROD_BAR_Y - 10,
               LABEL_COLOR, false);
-        guiGraphics.drawString(font, MeknucReactorLang.GUI_HEAT_GRAPH.translate().getString(), 8, GRAPH_Y - 10, LABEL_COLOR, false);
+        guiGraphics.drawString(font, MeknucPwrLang.GUI_HEAT_GRAPH.translate().getString(), 8, GRAPH_Y - 10, LABEL_COLOR, false);
         String percent = displayedInsertion() + "%";
         guiGraphics.drawString(font, percent, imageWidth - 10 - font.width(percent), CONTROL_ROD_BAR_Y + 1, 0xFFFFFFFF, false);
     }

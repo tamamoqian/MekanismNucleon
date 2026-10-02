@@ -6,11 +6,11 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import mekanism.api.text.EnumColor;
 import mekanism.client.gui.GuiMekanismTile;
 import mekanism.common.inventory.container.tile.EmptyTileContainer;
-import meknuc.reactor.MeknucReactorLang;
-import meknuc.reactor.MeknucReactorLogicPacket;
-import meknuc.reactor.tile.TileEntityPressurizedWaterReactorLogicAdapter;
-import meknuc.reactor.tile.TileEntityPressurizedWaterReactorLogicAdapter.PressurizedWaterReactorLogic;
-import meknuc.reactor.tile.TileEntityPressurizedWaterReactorLogicAdapter.RedstoneStatus;
+import meknuc.reactor.MeknucPwrLang;
+import meknuc.reactor.MeknucPwrLogicPacket;
+import meknuc.reactor.tile.TileEntityPwrLogicAdapter;
+import meknuc.reactor.tile.TileEntityPwrLogicAdapter.PressurizedWaterReactorLogic;
+import meknuc.reactor.tile.TileEntityPwrLogicAdapter.RedstoneStatus;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -18,8 +18,8 @@ import net.minecraft.world.entity.player.Inventory;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 
-public class MeknucReactorLogicAdapterGui extends GuiMekanismTile<TileEntityPressurizedWaterReactorLogicAdapter,
-      EmptyTileContainer<TileEntityPressurizedWaterReactorLogicAdapter>> {
+public class MeknucPwrLogicAdapterGui extends GuiMekanismTile<TileEntityPwrLogicAdapter,
+      EmptyTileContainer<TileEntityPwrLogicAdapter>> {
 
     private static final ResourceLocation BACKGROUND = ResourceLocation.fromNamespaceAndPath("meknuc",
           "gui/pressurized_water_reactor_logic_adapter.png");
@@ -41,7 +41,7 @@ public class MeknucReactorLogicAdapterGui extends GuiMekanismTile<TileEntityPres
     private static final int BORDER_SELECTED = 0xFFFFFFFF;
     private static final int BORDER_HOVER = 0xFFB8BDBE;
 
-    public MeknucReactorLogicAdapterGui(EmptyTileContainer<TileEntityPressurizedWaterReactorLogicAdapter> container,
+    public MeknucPwrLogicAdapterGui(EmptyTileContainer<TileEntityPwrLogicAdapter> container,
           Inventory inv, Component title) {
         super(container, inv, title);
         imageWidth = ROW_X * 2 + ROW_WIDTH;
@@ -55,7 +55,7 @@ public class MeknucReactorLogicAdapterGui extends GuiMekanismTile<TileEntityPres
             if (index >= 0) {
                 PressurizedWaterReactorLogic mode = tile.getModes()[index];
                 if (mode != tile.getMode()) {
-                    PacketDistributor.sendToServer(new MeknucReactorLogicPacket(tile.getBlockPos(), mode.ordinal()));
+                    PacketDistributor.sendToServer(new MeknucPwrLogicPacket(tile.getBlockPos(), mode.ordinal()));
                 }
                 return true;
             }
@@ -105,9 +105,9 @@ public class MeknucReactorLogicAdapterGui extends GuiMekanismTile<TileEntityPres
         guiGraphics.fill(STATUS_X, STATUS_Y, STATUS_X + STATUS_WIDTH, STATUS_Y + STATUS_HEIGHT, ROW_COLOR);
         PressurizedWaterReactorLogic mode = tile.getMode();
         RedstoneStatus status = tile.getStatus();
-        guiGraphics.drawString(font, MeknucReactorLang.GUI_LOGIC_MODE.translate(mode.getColor(),
+        guiGraphics.drawString(font, MeknucPwrLang.GUI_LOGIC_MODE.translate(mode.getColor(),
               mode.getTranslatedName()), STATUS_X + 4, STATUS_Y + 2, 0xFFFFFFFF, false);
-        guiGraphics.drawString(font, MeknucReactorLang.GUI_STATUS.translate(statusColor(status),
+        guiGraphics.drawString(font, MeknucPwrLang.GUI_STATUS.translate(statusColor(status),
               status.getTranslatedName()), STATUS_X + 4, STATUS_Y + 11, 0xFFFFFFFF, false);
     }
 

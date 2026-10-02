@@ -7,7 +7,7 @@ import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 
-public class MeknucReactorCache extends MultiblockCache<MeknucReactorMultiblockData> {
+public class MeknucPwrCache extends MultiblockCache<MeknucPwrMultiblockData> {
 
     private boolean active;
     private boolean autoStopOnFuelExhausted = true;
@@ -20,9 +20,9 @@ public class MeknucReactorCache extends MultiblockCache<MeknucReactorMultiblockD
     private ItemStack runningProduct = ItemStack.EMPTY;
 
     @Override
-    public void merge(MultiblockCache<MeknucReactorMultiblockData> mergeCache, RejectContents rejectContents) {
+    public void merge(MultiblockCache<MeknucPwrMultiblockData> mergeCache, RejectContents rejectContents) {
         super.merge(mergeCache, rejectContents);
-        MeknucReactorCache other = (MeknucReactorCache) mergeCache;
+        MeknucPwrCache other = (MeknucPwrCache) mergeCache;
         active = active || other.active;
         autoStopOnFuelExhausted = autoStopOnFuelExhausted || other.autoStopOnFuelExhausted;
         controlRodInsertion = Math.max(controlRodInsertion, other.controlRodInsertion);        burnTime = Math.max(burnTime, other.burnTime);
@@ -36,7 +36,7 @@ public class MeknucReactorCache extends MultiblockCache<MeknucReactorMultiblockD
     }
 
     @Override
-    public void apply(Provider provider, MeknucReactorMultiblockData data) {
+    public void apply(Provider provider, MeknucPwrMultiblockData data) {
         super.apply(provider, data);
         data.setActive(active);
         data.restoreAutoStopOnFuelExhausted(autoStopOnFuelExhausted);
@@ -58,7 +58,7 @@ public class MeknucReactorCache extends MultiblockCache<MeknucReactorMultiblockD
     }
 
     @Override
-    public void sync(MeknucReactorMultiblockData data) {
+    public void sync(MeknucPwrMultiblockData data) {
         super.sync(data);
         active = data.isActive();
         autoStopOnFuelExhausted = data.isAutoStopOnFuelExhausted();
