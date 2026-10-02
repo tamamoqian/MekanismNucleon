@@ -1,0 +1,218 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "0": "meknuc:block/thorium_molten_salt_reactor_corrosion_resistant_control_assembly_0",
+    "1": "meknuc:block/thorium_molten_salt_reactor_corrosion_resistant_control_assembly_1",
+    "3": "meknuc:block/thorium_molten_salt_reactor_corrosion_resistant_control_assembly_3",
+    "particle": "meknuc:block/thorium_molten_salt_reactor_corrosion_resistant_control_assembly_0"
+  },
+  "elements": [
+    {
+      "from": [
+        1,
+        0,
+        1
+      ],
+      "to": [
+        15,
+        1,
+        15
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            7.0,
+            0.0,
+            14.0,
+            0.5
+          ],
+          "texture": "#0"
+        },
+        "east": {
+          "uv": [
+            7.0,
+            0.5,
+            14.0,
+            1.0
+          ],
+          "texture": "#0"
+        },
+        "south": {
+          "uv": [
+            7.0,
+            1.0,
+            14.0,
+            1.5
+          ],
+          "texture": "#0"
+        },
+        "west": {
+          "uv": [
+            7.0,
+            1.5,
+            14.0,
+            2.0
+          ],
+          "texture": "#0"
+        },
+        "up": {
+          "uv": [
+            0.0,
+            0.0,
+            7.0,
+            7.0
+          ],
+          "texture": "#0"
+        },
+        "down": {
+          "uv": [
+            0.0,
+            0.0,
+            7.0,
+            7.0
+          ],
+          "texture": "#0"
+        }
+      },
+      "name": "cube"
+    },
+    {
+      "from": [
+        6,
+        1,
+        6
+      ],
+      "to": [
+        10,
+        15,
+        10
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            2.0,
+            0.0,
+            4.0,
+            7.0
+          ],
+          "texture": "#1"
+        },
+        "east": {
+          "uv": [
+            2.0,
+            0.0,
+            4.0,
+            7.0
+          ],
+          "texture": "#1"
+        },
+        "south": {
+          "uv": [
+            2.0,
+            0.0,
+            4.0,
+            7.0
+          ],
+          "texture": "#1"
+        },
+        "west": {
+          "uv": [
+            2.0,
+            0.0,
+            4.0,
+            7.0
+          ],
+          "texture": "#1"
+        },
+        "up": {
+          "uv": [
+            0.0,
+            7.0,
+            2.0,
+            9.0
+          ],
+          "texture": "#1"
+        },
+        "down": {
+          "uv": [
+            2.0,
+            7.0,
+            4.0,
+            9.0
+          ],
+          "texture": "#1"
+        }
+      },
+      "name": "cube"
+    },
+    {
+      "from": [
+        3,
+        1,
+        3
+      ],
+      "to": [
+        13,
+        9,
+        13
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            5.0,
+            0.0,
+            10.0,
+            4.0
+          ],
+          "texture": "#3"
+        },
+        "east": {
+          "uv": [
+            5.0,
+            4.0,
+            10.0,
+            8.0
+          ],
+          "texture": "#3"
+        },
+        "south": {
+          "uv": [
+            5.0,
+            8.0,
+            10.0,
+            12.0
+          ],
+          "texture": "#3"
+        },
+        "west": {
+          "uv": [
+            0.0,
+            10.0,
+            5.0,
+            14.0
+          ],
+          "texture": "#3"
+        },
+        "up": {
+          "uv": [
+            0.0,
+            0.0,
+            5.0,
+            5.0
+          ],
+          "texture": "#3"
+        },
+        "down": {
+          "uv": [
+            0.0,
+            5.0,
+            5.0,
+            10.0
+          ],
+          "texture": "#3"
+        }
+      },
+      "name": "cube"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "meknuc:item/depleted_uranium_alloy_ingot"
+  }
+}

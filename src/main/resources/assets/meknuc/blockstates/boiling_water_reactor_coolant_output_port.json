@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "meknuc:block/boiling_water_reactor_coolant_output_port"
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "meknuc:item/corrosion_resistant_alloy_ingot"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "meknuc:block/spent_fuel_pool_signal_port"
+    }
+  }
+}

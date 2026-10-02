@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "meknuc:block/heavy_water_reactor_waste_output_port"
+    }
+  }
+}

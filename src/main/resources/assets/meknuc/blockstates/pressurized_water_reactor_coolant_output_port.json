@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "meknuc:block/pressurized_water_reactor_coolant_output_port"
+    }
+  }
+}

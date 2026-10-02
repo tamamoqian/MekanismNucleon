@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "meknuc:item/radiation_resistant_high_strength_alloy_ingot"
+  }
+}
