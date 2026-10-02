@@ -1,0 +1,94 @@
+{
+  "textures": {"0": "meknuc:item/empty_fuel_unit_0", "2": "meknuc:item/empty_fuel_unit_2", "particle": "meknuc:item/empty_fuel_unit_0"},
+  "elements": [
+    {
+      "from": [4, 0, 4],
+      "to": [12, 1, 12],
+      "faces": {
+        "north": {"uv": [8, 0, 16, 1], "texture": "#0"},
+        "east": {"uv": [8, 1, 16, 2], "texture": "#0"},
+        "south": {"uv": [8, 2, 16, 3], "texture": "#0"},
+        "west": {"uv": [8, 3, 16, 4], "texture": "#0"},
+        "up": {"uv": [0, 0, 8, 8], "texture": "#0"},
+        "down": {"uv": [0, 8, 8, 16], "texture": "#0"}
+      },
+      "name": "cube"
+    },
+    {
+      "from": [4, 15, 4],
+      "to": [12, 16, 12],
+      "faces": {
+        "north": {"uv": [8, 0, 16, 1], "texture": "#0"},
+        "east": {"uv": [8, 1, 16, 2], "texture": "#0"},
+        "south": {"uv": [8, 2, 16, 3], "texture": "#0"},
+        "west": {"uv": [8, 3, 16, 4], "texture": "#0"},
+        "up": {"uv": [0, 0, 8, 8], "texture": "#0"},
+        "down": {"uv": [0, 8, 8, 16], "texture": "#0"}
+      },
+      "name": "cube"
+    },
+    {
+      "from": [11, 1, 4],
+      "to": [12, 15, 5],
+      "faces": {
+        "north": {"uv": [0, 0, 1, 14], "texture": "#2"},
+        "east": {"uv": [0, 0, 1, 14], "texture": "#2"},
+        "south": {"uv": [0, 0, 1, 14], "texture": "#2"},
+        "west": {"uv": [0, 0, 1, 14], "texture": "#2"},
+        "up": {"uv": [4, 0, 5, 1], "texture": "#2"},
+        "down": {"uv": [4, 1, 5, 2], "texture": "#2"}
+      },
+      "name": "cube"
+    },
+    {
+      "from": [11, 1, 11],
+      "to": [12, 15, 12],
+      "faces": {
+        "north": {"uv": [0, 0, 1, 14], "texture": "#2"},
+        "east": {"uv": [0, 0, 1, 14], "texture": "#2"},
+        "south": {"uv": [0, 0, 1, 14], "texture": "#2"},
+        "west": {"uv": [0, 0, 1, 14], "texture": "#2"},
+        "up": {"uv": [4, 0, 5, 1], "texture": "#2"},
+        "down": {"uv": [4, 1, 5, 2], "texture": "#2"}
+      },
+      "name": "cube"
+    },
+    {
+      "from": [4, 1, 11],
+      "to": [5, 15, 12],
+      "faces": {
+        "north": {"uv": [0, 0, 1, 14], "texture": "#2"},
+        "east": {"uv": [0, 0, 1, 14], "texture": "#2"},
+        "south": {"uv": [0, 0, 1, 14], "texture": "#2"},
+        "west": {"uv": [0, 0, 1, 14], "texture": "#2"},
+        "up": {"uv": [4, 0, 5, 1], "texture": "#2"},
+        "down": {"uv": [4, 1, 5, 2], "texture": "#2"}
+      },
+      "name": "cube"
+    },
+    {
+      "from": [4, 1, 4],
+      "to": [5, 15, 5],
+      "faces": {
+        "north": {"uv": [0, 0, 1, 14], "texture": "#2"},
+        "east": {"uv": [0, 0, 1, 14], "texture": "#2"},
+        "south": {"uv": [0, 0, 1, 14], "texture": "#2"},
+        "west": {"uv": [0, 0, 1, 14], "texture": "#2"},
+        "up": {"uv": [4, 0, 5, 1], "texture": "#2"},
+        "down": {"uv": [4, 1, 5, 2], "texture": "#2"}
+      },
+      "name": "cube"
+    }
+  ],
+  "display": {
+    "thirdperson_righthand": {"translation": [-2, 0, 0], "scale": [0.4, 0.4, 0.4]},
+    "thirdperson_lefthand": {"translation": [2, 0, 0], "scale": [0.4, 0.4, 0.4]},
+    "firstperson_righthand": {"scale": [0.4, 0.4, 0.4]},
+    "firstperson_lefthand": {"scale": [0.4, 0.4, 0.4]},
+    "ground": {"translation": [-4, 0, 0], "scale": [0.3, 0.3, 0.3]},
+    "gui": {"rotation": [40, -45, 0], "translation": [0, -1, 0], "scale": [0.55, 0.55, 0.55]},
+    "head": {"translation": [-8, -6.5, 0]},
+    "fixed": {"translation": [-4, -4, 0], "scale": [0.8, 0.8, 0.8]}
+  },
+  "gui_light": "front"
+}

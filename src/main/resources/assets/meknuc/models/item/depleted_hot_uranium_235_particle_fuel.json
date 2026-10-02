@@ -1,0 +1,4 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {"layer0": "meknuc:item/depleted_hot_uranium_235_particle_fuel"}
+}

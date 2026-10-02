@@ -1,0 +1,4 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {"layer0": "meknuc:item/thorium_oxide_particle_fuel"}
+}
