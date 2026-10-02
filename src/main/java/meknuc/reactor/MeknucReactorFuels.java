@@ -1,45 +1,55 @@
 package meknuc.reactor;
 
-import java.util.HashMap;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.Map;
-import meknuc.items.MeknucItemBase;
+import meknuc.meknuc;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.registries.datamaps.DataMapType;
+import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
 
 public class MeknucReactorFuels {
 
-    private static Map<Item, Spec> fuels;
+    public static final ResourceLocation REACTOR_FUEL_ID = ResourceLocation.fromNamespaceAndPath(meknuc.MODID, "reactor_fuel");
 
-    public static Spec get(ItemStack stack) {
+    public static final DataMapType<Item, ReactorFuel> REACTOR_FUEL = DataMapType.builder(
+          REACTOR_FUEL_ID, Registries.ITEM, ReactorFuel.CODEC).synced(ReactorFuel.CODEC, true).build();
+
+    public static void register(RegisterDataMapTypesEvent event) {
+        event.register(REACTOR_FUEL);
+    }
+
+    public static Map<ResourceKey<Item>, ReactorFuel> fuels() {
+        return BuiltInRegistries.ITEM.getDataMap(REACTOR_FUEL);
+    }
+
+    public static ReactorFuel get(ItemStack stack) {
         if (stack.isEmpty()) {
             return null;
         }
-        return fuels().get(stack.getItem());
+        return stack.getItemHolder().getData(REACTOR_FUEL);
     }
 
     public static boolean isFuel(ItemStack stack) {
         return get(stack) != null;
     }
 
-    private static Map<Item, Spec> fuels() {
-        if (fuels == null) {
-            Map<Item, Spec> map = new HashMap<>();
-            add(map, MeknucItemBase.URANIUM_235_MOX_FUEL_ROD.get(), 24000,
-                  MeknucItemBase.DEPLETED_HOT_URANIUM_235_MOX_FUEL_ROD.get());
-            add(map, MeknucItemBase.URANIUM_235_THORIUM_FUEL_ROD.get(), 30000,
-                  MeknucItemBase.DEPLETED_HOT_URANIUM_235_THORIUM_FUEL_ROD.get());
-            add(map, MeknucItemBase.URANIUM_235_PLUTONIUM_239_FUEL_ROD.get(), 36000,
-                  MeknucItemBase.DEPLETED_HOT_URANIUM_235_PLUTONIUM_239_FUEL_ROD.get());
-            fuels = map;
-        }
-        return fuels;
+    public static ItemStack product(ReactorFuel fuel, int count) {
+        return new ItemStack(fuel.product().value(), count);
     }
 
-    private static void add(Map<Item, Spec> map, Item fuel, int burnTime, Item product) {
-        map.put(fuel, new Spec(burnTime, product));
-    }
+    public record ReactorFuel(int burnTime, Holder<Item> product) {
 
-    public record Spec(int burnTime, Item product) {
+        public static final Codec<ReactorFuel> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+              Codec.INT.fieldOf("burn_time").forGetter(ReactorFuel::burnTime),
+              BuiltInRegistries.ITEM.holderByNameCodec().fieldOf("product").forGetter(ReactorFuel::product)
+        ).apply(instance, ReactorFuel::new));
     }
 
     private MeknucReactorFuels() {

@@ -1,0 +1,16 @@
+{
+  "values": {
+    "meknuc:uranium_235_mox_fuel_rod": {
+      "burn_time": 20000,
+      "product": "meknuc:depleted_hot_uranium_235_mox_fuel_rod"
+    },
+    "meknuc:uranium_235_thorium_fuel_rod": {
+      "burn_time": 16000,
+      "product": "meknuc:depleted_hot_uranium_235_thorium_fuel_rod"
+    },
+    "meknuc:uranium_235_plutonium_239_fuel_rod": {
+      "burn_time": 30000,
+      "product": "meknuc:depleted_hot_uranium_235_plutonium_239_fuel_rod"
+    }
+  }
+}

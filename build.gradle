@@ -22,6 +22,7 @@ sourceSets.main.resources {
 repositories {
     //Mekanism API
     maven { url 'https://modmaven.dev/'}
+    maven { url 'https://maven.blamejared.com/' }
 }
 
 base {
@@ -80,6 +81,9 @@ configurations {
 
 dependencies {
     compileOnly "mekanism:Mekanism:${mekanism_version}"
+    compileOnly "mekanism:Mekanism:${mekanism_version}:generators"
+
+    compileOnly "mezz.jei:jei-1.21.1-neoforge-api:${jei_version}"
 
     runtimeOnly "mekanism:Mekanism:${mekanism_version}"
     runtimeOnly "mekanism:Mekanism:${mekanism_version}:additions"

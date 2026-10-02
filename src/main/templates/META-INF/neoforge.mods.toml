@@ -10,6 +10,9 @@ license="${mod_license}"
     Mekanism: Nucleon description.
     '''
 
+[[mixins]]
+    config="meknuc.mixins.json"
+
 [[dependencies.${mod_id}]]
     modId="neoforge"
     type="required"
@@ -26,6 +29,13 @@ license="${mod_license}"
 
 [[dependencies.meknuc]]
     modId="mekanism"
+    type="required"
+    versionRange="[10.7.19,)"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.meknuc]]
+    modId="mekanismgenerators"
     type="required"
     versionRange="[10.7.19,)"
     ordering="AFTER"

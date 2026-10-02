@@ -6,6 +6,7 @@ import meknuc.items.MeknucItemBase;
 import meknuc.reactor.MeknucReactor;
 import meknuc.reactor.MeknucReactorBlocks;
 import meknuc.reactor.MeknucReactorContainerTypes;
+import meknuc.reactor.MeknucReactorFuels;
 import meknuc.reactor.MeknucReactorLogicPacket;
 import meknuc.reactor.MeknucReactorOpenGuiPacket;
 import meknuc.reactor.MeknucReactorTileEntityTypes;
@@ -51,6 +52,7 @@ public class meknuc {
     public meknuc(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::registerPayloads);
+        modEventBus.addListener(MeknucReactorFuels::register);
 
         MeknucReactor.initialize();
         MeknucBlockBase.BLOCKS.register(modEventBus);

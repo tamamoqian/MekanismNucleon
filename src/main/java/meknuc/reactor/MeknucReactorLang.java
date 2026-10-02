@@ -38,7 +38,6 @@ public enum MeknucReactorLang implements ILangEntry {
     GUI_STATE_MELTDOWN("reactor", "state_meltdown"),
     GUI_TEMPERATURE("reactor", "temperature"),
     GUI_BURN_TIME("reactor", "burn_time"),
-    GUI_BURN_STOPPED("reactor", "burn_stopped"),
     GUI_DAMAGE("reactor", "damage"),
     GUI_DAMAGE_MELTDOWN("reactor", "damage_meltdown"),
     GUI_FUEL("reactor", "fuel"),
@@ -48,7 +47,6 @@ public enum MeknucReactorLang implements ILangEntry {
     GUI_WASTE("reactor", "waste"),
     GUI_TEMPERATURE_BAR("reactor", "temperature_bar"),
     GUI_CONTROL_ROD("reactor", "control_rod"),
-    GUI_CONTROL_ROD_HINT("reactor", "control_rod_hint"),
     GUI_HEAT_GRAPH("reactor", "heat_graph"),
     GUI_COOLANT_TANK("reactor", "coolant_tank"),
     GUI_HEATED_COOLANT_TANK("reactor", "heated_coolant_tank"),
@@ -90,7 +88,13 @@ public enum MeknucReactorLang implements ILangEntry {
     DESCRIPTION_LOGIC_DAMAGED("description", "reactor.logic.damaged"),
 
     GUI_LOGIC_TITLE("reactor", "logic.title"),
-    GUI_LOGIC_MODE("reactor", "logic.redstone_mode");
+    GUI_LOGIC_MODE("reactor", "logic.redstone_mode"),
+
+    JEI_REACTOR_FUEL("jei", "reactor_fuel"),
+    JEI_REACTOR_FUEL_BURN_TIME("jei", "reactor_fuel.burn_time"),
+    JEI_REACTOR_FUEL_BATCH("jei", "reactor_fuel.batch"),
+
+    JEI_REACTOR_COOLANT("jei", "reactor_coolant");
 
     private final String key;
 

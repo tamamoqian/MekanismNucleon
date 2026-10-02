@@ -12,12 +12,12 @@ public class MeknucChemicals {
 
     public static final ChemicalDeferredRegister CHEMICALS = new ChemicalDeferredRegister(meknuc.MODID);
 
-    private static final int PRESSURIZED_LIGHT_WATER_COLOR = 0x9FD8F0;
+    private static final int HIGH_PRESSURE_STEAM_COLOR = 0xFFF2B0;
 
-    public static final DeferredChemical<Chemical> PRESSURIZED_LIGHT_WATER = CHEMICALS.register("pressurized_light_water",
+    public static final DeferredChemical<Chemical> HIGH_PRESSURE_STEAM = CHEMICALS.register("high_pressure_steam",
           () -> ChemicalUtil.chemical(ChemicalBuilder.builder(
-                ResourceLocation.fromNamespaceAndPath("mekanism", "liquid/steam")).tint(PRESSURIZED_LIGHT_WATER_COLOR),
-                PRESSURIZED_LIGHT_WATER_COLOR));
+                ResourceLocation.fromNamespaceAndPath("mekanism", "liquid/steam"))
+                .tint(HIGH_PRESSURE_STEAM_COLOR), HIGH_PRESSURE_STEAM_COLOR));
 
     private MeknucChemicals() {
     }

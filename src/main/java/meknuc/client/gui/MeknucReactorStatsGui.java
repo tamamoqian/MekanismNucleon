@@ -62,7 +62,7 @@ public class MeknucReactorStatsGui
         drawRow(guiGraphics, MeknucReactorLang.GUI_MAX_EXCHANGE.translate(
               TextUtils.format(rods * MeknucReactorMultiblockData.EXCHANGE_PER_ROD)), 48, titleTextColor());
         drawRow(guiGraphics, MeknucReactorLang.GUI_COOLANT_CAPACITY.translate(
-              TextUtils.format(multiblock.coolantTank.getCapacity())), 58, titleTextColor());
+              TextUtils.format(multiblock.waterCapacity())), 58, titleTextColor());
         drawRow(guiGraphics, MeknucReactorLang.GUI_TEMPERATURE.translate(
               MekanismUtils.getTemperatureDisplay(multiblock.getTemperature(), TemperatureUnit.KELVIN, true)), 68,
               titleTextColor());
@@ -73,11 +73,9 @@ public class MeknucReactorStatsGui
         drawRow(guiGraphics, MeknucReactorLang.GUI_FUEL_STATISTICS.translate(), 92, headingTextColor());
         drawRow(guiGraphics, MeknucReactorLang.GUI_FUEL_ROD_COUNT.translate(formatCount(rods)), 104,
               titleTextColor());
-        drawRow(guiGraphics, multiblock.isBurnPaused()
-              ? MeknucReactorLang.GUI_BURN_TIME.translate(MeknucReactorLang.GUI_BURN_STOPPED.translate())
-              : MeknucReactorLang.GUI_BURN_TIME_BATCH.translate(
-                    formatBurnTime(multiblock.getDisplayedBurnTime()),
-                    formatBurnTime(multiblock.getDisplayedBatchBurnTime())), 114, titleTextColor());
+        drawRow(guiGraphics, MeknucReactorLang.GUI_BURN_TIME_BATCH.translate(
+              formatBurnTime(multiblock.getDisplayedBurnTime()),
+              formatBurnTime(multiblock.getDisplayedBatchBurnTime())), 114, titleTextColor());
         drawRow(guiGraphics, MeknucReactorLang.GUI_CONTROL_ROD_INSERTION.translate(
               formatCount(multiblock.getControlRodInsertion())), 124, titleTextColor());
         drawRow(guiGraphics, MeknucReactorLang.GUI_IN_CORE_COUNT.translate(formatCount(multiblock.getInCoreCount())),

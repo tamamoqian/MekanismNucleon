@@ -19,6 +19,7 @@ import mekanism.client.gui.element.tab.GuiHeatTab;
 import mekanism.common.MekanismLang;
 import mekanism.common.lib.Color.ColorFunction;
 import mekanism.common.util.MekanismUtils;
+import mekanism.common.util.text.TextUtils;
 import mekanism.common.util.UnitDisplayUtils.TemperatureUnit;
 import meknuc.client.gui.element.MeknucReactorTab;
 import meknuc.client.gui.element.MeknucReactorTab.ReactorTab;
@@ -86,13 +87,13 @@ public class MeknucReactorGui extends GuiMekanismTile<TileEntityPressurizedWater
     @Override
     protected void addGuiElements() {
         super.addGuiElements();
-        addRenderableWidget(new GuiFluidGauge(() -> multiblock().coolantTank,
-              () -> List.of(multiblock().coolantTank), GaugeType.STANDARD, this, COOLANT_GAUGE_X, GAUGE_Y)
+        addRenderableWidget(new GuiFluidGauge(() -> multiblock().waterTank,
+              () -> List.of(multiblock().waterTank), GaugeType.STANDARD, this, COOLANT_GAUGE_X, GAUGE_Y)
               .setLabel(MeknucReactorLang.GUI_COOLANT_TANK.translate()));
-        addRenderableWidget(new GuiChemicalGauge(() -> multiblock().heatedCoolantTank,
-              () -> List.of(multiblock().heatedCoolantTank), GaugeType.STANDARD, this, HOT_COOLANT_GAUGE_X, GAUGE_Y)
+        addRenderableWidget(new GuiChemicalGauge(() -> multiblock().steamTank,
+              () -> List.of(multiblock().steamTank), GaugeType.STANDARD, this, HOT_COOLANT_GAUGE_X, GAUGE_Y)
               .setLabel(MeknucReactorLang.GUI_HEATED_COOLANT_TANK.translate()));
-        addRenderableWidget(new GuiInnerScreen(this, PANEL_X, PANEL_Y, PANEL_WIDTH, PANEL_HEIGHT, this::infoLines).spacing(1));
+        addRenderableWidget(new GuiInnerScreen(this, PANEL_X, PANEL_Y, PANEL_WIDTH, PANEL_HEIGHT, this::infoLines).spacing(0));
         addRenderableWidget(new MeknucReactorTab(this, tile, ReactorTab.STAT));
         addRenderableWidget(new GuiHeatTab(this, () -> List.of(MekanismLang.DISSIPATED_RATE.translate(
               MekanismUtils.getTemperatureDisplay(multiblock().getLastEnvironmentLoss(), TemperatureUnit.KELVIN,
@@ -162,12 +163,15 @@ public class MeknucReactorGui extends GuiMekanismTile<TileEntityPressurizedWater
         }
         return List.of(
               status,
-              MeknucReactorLang.GUI_BURN_TIME.translate(EnumColor.WHITE, multiblock.isBurnPaused()
-                    ? MeknucReactorLang.GUI_BURN_STOPPED.translate()
-                    : Component.literal(formatBurnTime(multiblock.getDisplayedBurnTime()))),
+              MeknucReactorLang.GUI_BURN_TIME.translate(EnumColor.WHITE,
+                    Component.literal(formatBurnTime(multiblock.getDisplayedBurnTime()))),
               MeknucReactorLang.GUI_TEMPERATURE.translate(EnumColor.RED,
                     MekanismUtils.getTemperatureDisplay(multiblock.getTemperature(), TemperatureUnit.KELVIN, true)),
-              damage
+              damage,
+              MeknucReactorLang.GUI_COOLANT_USAGE.translate(EnumColor.WHITE,
+                    Component.literal(TextUtils.format(multiblock.getLastFlow()))),
+              MeknucReactorLang.GUI_STEAM_PRODUCTION.translate(EnumColor.WHITE,
+                    Component.literal(TextUtils.format(multiblock.getLastFlow())))
         );
     }
 
@@ -192,7 +196,7 @@ public class MeknucReactorGui extends GuiMekanismTile<TileEntityPressurizedWater
               mouseX, mouseY);
         drawCacheBar(guiGraphics, WASTE_BAR_X, multiblock.getWasteCount(), 0, multiblock.getWasteItemId(),
               CACHE_WASTE_COLOR, MeknucReactorLang.GUI_WASTE, null, mouseX, mouseY);
-        drawControlRodBar(guiGraphics, mouseX, mouseY);
+        drawControlRodBar(guiGraphics);
         drawLabels(guiGraphics, multiblock);
         super.drawForegroundText(guiGraphics, mouseX, mouseY);
     }
@@ -230,7 +234,7 @@ public class MeknucReactorGui extends GuiMekanismTile<TileEntityPressurizedWater
         return item == null || item == Items.AIR ? null : item.getDefaultInstance().getHoverName();
     }
 
-    private void drawControlRodBar(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+    private void drawControlRodBar(GuiGraphics guiGraphics) {
         drawBarFrame(guiGraphics, 8, CONTROL_ROD_BAR_Y, imageWidth - 16, CONTROL_ROD_HEIGHT);
         int width = imageWidth - 20;
         int fill = (int) Math.round(width * Mth.clamp(displayedInsertion() / 100.0, 0.0, 1.0));
@@ -238,9 +242,6 @@ public class MeknucReactorGui extends GuiMekanismTile<TileEntityPressurizedWater
             guiGraphics.fill(10, CONTROL_ROD_BAR_Y + 2, 10 + fill, CONTROL_ROD_BAR_Y + CONTROL_ROD_HEIGHT - 2, CONTROL_ROD_COLOR);
         }
         guiGraphics.fill(9 + fill, CONTROL_ROD_BAR_Y + 1, 11 + fill, CONTROL_ROD_BAR_Y + CONTROL_ROD_HEIGHT - 1, FRAME_TICK);
-        if (isHovering(mouseX - leftPos, mouseY - topPos, 8, CONTROL_ROD_BAR_Y, imageWidth - 16, CONTROL_ROD_HEIGHT)) {
-            drawTooltip(guiGraphics, mouseX, mouseY, List.of(MeknucReactorLang.GUI_CONTROL_ROD_HINT.translate()));
-        }
     }
 
     private int displayedInsertion() {

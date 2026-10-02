@@ -47,7 +47,7 @@ public class TileEntityPressurizedWaterReactorPart extends TileEntityMultiblock<
 
     private boolean shouldPlaySound(MeknucReactorMultiblockData multiblock) {
         return isMaster() && multiblock.isFormed() && multiblock.isActive() && !multiblock.isMeltedDown()
-              && multiblock.getBurnTime() > 0 && !multiblock.isBurnPaused();
+              && multiblock.getBurnTime() > 0;
     }
 
     @Override

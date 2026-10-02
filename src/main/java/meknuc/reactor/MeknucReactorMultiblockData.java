@@ -42,17 +42,22 @@ import net.neoforged.neoforge.event.EventHooks;
 public class MeknucReactorMultiblockData extends MultiblockData {
 
     public static final int CACHE_CAPACITY = 128;
-    public static final int COOLANT_CAPACITY_PER_BLOCK = 400000;
+    public static final int WATER_CAPACITY_PER_BLOCK = 400000;
     public static final double HEAT_PER_ROD = 17.7083;
     public static final double HEAT_CAPACITY_PER_ROD = 12.5;
-    public static final double AMBIENT_COOLING_PER_ROD = 0.00125;
+    private static final double INVERSE_CONDUCTION_COEFFICIENT = 10.0;
+    private static final double INVERSE_INSULATION_COEFFICIENT = 10000.0;
+    private static final double ENVIRONMENT_INVERSE_CONDUCTION =
+          INVERSE_CONDUCTION_COEFFICIENT + 2.0 * INVERSE_INSULATION_COEFFICIENT;
     public static final double HEAT_PER_MB = 0.00014;
     public static final double NOMINAL_INSERTION = 0.5;
     private static final int NOMINAL_INSERTION_PERCENT = (int) (NOMINAL_INSERTION * 100.0);
+    public static final double MIN_TIME_FACTOR = 0.20;
+    public static final double MAX_TIME_FACTOR = 2.20;
     public static final double OUTPUT_PER_MB = 1.0;
     public static final double DAMAGE_FACTOR = 0.001;
     public static final double MAX_TEMPERATURE_STEP = 2.0;
-    private static final double COOLANT_FLOOR = 373.15;
+    private static final double BOILING_TEMPERATURE = 373.15;
     private static final double NOMINAL_TEMPERATURE = 673.15;
     public static final double DAMAGE_TEMPERATURE = 1073.15;
     public static final double MAX_DAMAGE = 100.0;
@@ -63,7 +68,7 @@ public class MeknucReactorMultiblockData extends MultiblockData {
     public static final double MELTDOWN_RADIATION_MAGNITUDE = 100.0;
     private static final double NOMINAL_STEAM_PER_ROD = 119791.67;
     public static final double EXCHANGE_PER_ROD =
-          NOMINAL_STEAM_PER_ROD * HEAT_PER_MB * (1.0 - NOMINAL_INSERTION) / (NOMINAL_TEMPERATURE - COOLANT_FLOOR);
+          NOMINAL_STEAM_PER_ROD * HEAT_PER_MB * (1.0 - NOMINAL_INSERTION) / (NOMINAL_TEMPERATURE - BOILING_TEMPERATURE);
     private static final int INTERIOR_AREA = 37;
     private static final int BOUNDING_AREA = 49;
 
@@ -72,10 +77,10 @@ public class MeknucReactorMultiblockData extends MultiblockData {
     private final IInventorySlot wasteSlot;
 
     @ContainerSync
-    public final IExtendedFluidTank coolantTank;
+    public final IExtendedFluidTank waterTank;
 
     @ContainerSync
-    public final IChemicalTank heatedCoolantTank;
+    public final IChemicalTank steamTank;
 
     @ContainerSync(getter = "getTemperature", setter = "setTemperature")
     private double temperature = 300.0;
@@ -134,12 +139,12 @@ public class MeknucReactorMultiblockData extends MultiblockData {
         super(tile);
         ambientTemp = HeatAPI.getAmbientTemp(tile.getLevel(), tile.getBlockPos());
         temperature = ambientTemp;
-        coolantTank = VariableCapacityFluidTank.input(this, () -> (int) coolantCapacity(),
+        waterTank = VariableCapacityFluidTank.input(this, () -> (int) waterCapacity(),
               fluid -> fluid.is(FluidTags.WATER), this);
-        heatedCoolantTank = VariableCapacityChemicalTank.output(this, this::coolantCapacity,
+        steamTank = VariableCapacityChemicalTank.output(this, this::waterCapacity,
               ConstantPredicates.alwaysTrue(), this);
-        fluidTanks.add(coolantTank);
-        chemicalTanks.add(heatedCoolantTank);
+        fluidTanks.add(waterTank);
+        chemicalTanks.add(steamTank);
         fuelSlot = new CacheSlot(CACHE_CAPACITY, ConstantPredicates.alwaysTrueBi(), ConstantPredicates.alwaysTrueBi(),
               MeknucReactorFuels::isFuel, this);
         wasteSlot = new CacheSlot(CACHE_CAPACITY, ConstantPredicates.alwaysTrueBi(), ConstantPredicates.internalOnly(),
@@ -199,21 +204,21 @@ public class MeknucReactorMultiblockData extends MultiblockData {
         }
         double capacity = rods * HEAT_CAPACITY_PER_ROD;
         double heat = active && burnTime > 0 ? rods * HEAT_PER_ROD * (1.0 - controlRodInsertion / 100.0) : 0.0;
-        double ambientLoss = rods * AMBIENT_COOLING_PER_ROD * Math.max(0.0, temperature - ambientTemp);
+        double ambientLoss = capacity * (temperature - ambientTemp) / ENVIRONMENT_INVERSE_CONDUCTION;
         setLastEnvironmentLoss(ambientLoss);
         double previous = temperature;
         temperature += (heat - ambientLoss) / capacity;
 
-        long available = coolantTank.getFluidAmount();
-        long room = heatedCoolantTank.getCapacity() - heatedCoolantTank.getStored();
+        long available = getWaterStored();
+        long room = steamTank.getCapacity() - steamTank.getStored();
         double maxFlow = Math.max(0.0, Math.min(available, room) / OUTPUT_PER_MB);
         double exchange = rods * EXCHANGE_PER_ROD;
-        double removed = Math.max(0.0, Math.min(exchange * (temperature - COOLANT_FLOOR), HEAT_PER_MB * maxFlow));
+        double removed = Math.max(0.0, Math.min(exchange * (temperature - BOILING_TEMPERATURE), HEAT_PER_MB * maxFlow));
         double flow = 0.0;
         if (removed > 0.0) {
             flow = removed / HEAT_PER_MB;
-            coolantTank.extract((int) Math.ceil(flow), Action.EXECUTE, AutomationType.INTERNAL);
-            heatedCoolantTank.insert(new ChemicalStack(MeknucChemicals.PRESSURIZED_LIGHT_WATER,
+            extractWater((int) Math.ceil(flow));
+            steamTank.insert(new ChemicalStack(MeknucChemicals.HIGH_PRESSURE_STEAM,
                   (long) Math.floor(flow * OUTPUT_PER_MB)), Action.EXECUTE, AutomationType.INTERNAL);
             temperature -= removed / capacity;
         }
@@ -359,9 +364,6 @@ public class MeknucReactorMultiblockData extends MultiblockData {
         if (!active) {
             return;
         }
-        if (isBurnPaused()) {
-            return;
-        }
         if (burnTime > 0) {
             burnPartial += 1.0 / getBurnTimeMultiplier();
             int steps = (int) burnPartial;
@@ -375,11 +377,11 @@ public class MeknucReactorMultiblockData extends MultiblockData {
             return;
         }
         ItemStack fuel = fuelSlot.getStack();
-        MeknucReactorFuels.Spec spec = MeknucReactorFuels.get(fuel);
+        MeknucReactorFuels.ReactorFuel spec = MeknucReactorFuels.get(fuel);
         if (spec == null || fuel.getCount() < rods) {
             return;
         }
-        ItemStack product = new ItemStack(spec.product(), rods);
+        ItemStack product = MeknucReactorFuels.product(spec, rods);
         if (!canStore(product)) {
             return;
         }
@@ -424,9 +426,17 @@ public class MeknucReactorMultiblockData extends MultiblockData {
         return count;
     }
 
-    private long coolantCapacity() {
+    public long waterCapacity() {
         long height = Math.max(1, getVolume() / BOUNDING_AREA);
-        return (long) INTERIOR_AREA * Math.max(1, height - 2) * COOLANT_CAPACITY_PER_BLOCK;
+        return (long) INTERIOR_AREA * Math.max(1, height - 2) * WATER_CAPACITY_PER_BLOCK;
+    }
+
+    private long getWaterStored() {
+        return waterTank.getFluidAmount();
+    }
+
+    private void extractWater(int amount) {
+        waterTank.extract(amount, Action.EXECUTE, AutomationType.INTERNAL);
     }
 
     @Override
@@ -455,14 +465,14 @@ public class MeknucReactorMultiblockData extends MultiblockData {
 
     public List<IExtendedFluidTank> getFluidTanks(ReactorPortMode mode) {
         return switch (mode) {
-            case COOLANT_INPUT -> List.of(coolantTank);
+            case COOLANT_INPUT -> List.of(waterTank);
             default -> Collections.emptyList();
         };
     }
 
     public List<IChemicalTank> getChemicalTanks(ReactorPortMode mode) {
         return switch (mode) {
-            case COOLANT_OUTPUT -> List.of(heatedCoolantTank);
+            case COOLANT_OUTPUT -> List.of(steamTank);
             default -> Collections.emptyList();
         };
     }
@@ -497,10 +507,6 @@ public class MeknucReactorMultiblockData extends MultiblockData {
         return burnTime;
     }
 
-    public boolean isBurnPaused() {
-        return controlRodInsertion >= 100;
-    }
-
     void restoreControlRodInsertion(int value) {
         setControlRodInsertion(value);
         insertionFromCache = true;
@@ -513,7 +519,13 @@ public class MeknucReactorMultiblockData extends MultiblockData {
 
     public double getBurnTimeMultiplier() {
         int offset = controlRodInsertion - NOMINAL_INSERTION_PERCENT;
-        return offset >= 0 ? Math.max(1, offset) : 1.0 / Math.max(1, -offset);
+        if (offset == 0) {
+            return 1.0;
+        }
+        if (offset > 0) {
+            return 1.0 + (MAX_TIME_FACTOR - 1.0) * offset / (100.0 - NOMINAL_INSERTION_PERCENT);
+        }
+        return 1.0 - (1.0 - MIN_TIME_FACTOR) * (-offset) / (double) NOMINAL_INSERTION_PERCENT;
     }
 
     public int getDisplayedBurnTime() {
