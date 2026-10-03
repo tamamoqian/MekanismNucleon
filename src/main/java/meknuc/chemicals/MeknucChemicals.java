@@ -120,6 +120,45 @@ public class MeknucChemicals {
           () -> ChemicalUtil.chemical(ChemicalBuilder.builder(MeknucChemicals.WATER_TEXTURE)
                 .tint(0xFF97C597), 0xFF97C597));
 
-    private MeknucChemicals() {
+
+    public static final DeferredChemical<Chemical> DIRTY_BERYLLIUM = CHEMICALS.register("dirty_beryllium",
+          () -> ChemicalUtil.chemical(ChemicalBuilder.builder(MeknucChemicals.WATER_TEXTURE)
+                .tint(0xFF6EA125), 0xFF6EA125));
+
+    public static final DeferredChemical<Chemical> CLEAN_BERYLLIUM = CHEMICALS.register("clean_beryllium",
+          () -> ChemicalUtil.chemical(ChemicalBuilder.builder(MeknucChemicals.WATER_TEXTURE)
+                .tint(0xFF6EA125), 0xFF6EA125));
+
+    public static final DeferredChemical<Chemical> DIRTY_BORON = CHEMICALS.register("dirty_boron",
+          () -> ChemicalUtil.chemical(ChemicalBuilder.builder(MeknucChemicals.WATER_TEXTURE)
+                .tint(0xFFA4A3A9), 0xFFA4A3A9));
+
+    public static final DeferredChemical<Chemical> CLEAN_BORON = CHEMICALS.register("clean_boron",
+          () -> ChemicalUtil.chemical(ChemicalBuilder.builder(MeknucChemicals.WATER_TEXTURE)
+                .tint(0xFFA4A3A9), 0xFFA4A3A9));
+
+    public static final DeferredChemical<Chemical> DIRTY_CHROMIUM = CHEMICALS.register("dirty_chromium",
+          () -> ChemicalUtil.chemical(ChemicalBuilder.builder(MeknucChemicals.WATER_TEXTURE)
+                .tint(0xFFBC9F55), 0xFFBC9F55));
+
+    public static final DeferredChemical<Chemical> CLEAN_CHROMIUM = CHEMICALS.register("clean_chromium",
+          () -> ChemicalUtil.chemical(ChemicalBuilder.builder(MeknucChemicals.WATER_TEXTURE)
+                .tint(0xFFBC9F55), 0xFFBC9F55));
+
+    public static final DeferredChemical<Chemical> DIRTY_THORIUM = CHEMICALS.register("dirty_thorium",
+          () -> ChemicalUtil.chemical(ChemicalBuilder.builder(MeknucChemicals.WATER_TEXTURE)
+                .tint(0xFF395D52), 0xFF395D52));
+
+    public static final DeferredChemical<Chemical> CLEAN_THORIUM = CHEMICALS.register("clean_thorium",
+          () -> ChemicalUtil.chemical(ChemicalBuilder.builder(MeknucChemicals.WATER_TEXTURE)
+                .tint(0xFF395D52), 0xFF395D52));
+
+    public static final DeferredChemical<Chemical> DIRTY_ZIRCONIUM = CHEMICALS.register("dirty_zirconium",
+          () -> ChemicalUtil.chemical(ChemicalBuilder.builder(MeknucChemicals.WATER_TEXTURE)
+                .tint(0xFF824680), 0xFF824680));
+
+    public static final DeferredChemical<Chemical> CLEAN_ZIRCONIUM = CHEMICALS.register("clean_zirconium",
+          () -> ChemicalUtil.chemical(ChemicalBuilder.builder(MeknucChemicals.WATER_TEXTURE)
+                .tint(0xFF824680), 0xFF824680));                    private MeknucChemicals() {
     }
 }

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "ingredient": {
+    "item": "meknuc:boron_dust"
+  },
+  "result": {
+    "id": "meknuc:boron_ingot"
+  },
+  "experience": 0.35,
+  "cookingtime": 200
+}

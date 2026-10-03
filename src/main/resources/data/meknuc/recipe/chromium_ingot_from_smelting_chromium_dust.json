@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "ingredient": {
+    "item": "meknuc:chromium_dust"
+  },
+  "result": {
+    "id": "meknuc:chromium_ingot"
+  },
+  "experience": 0.35,
+  "cookingtime": 200
+}

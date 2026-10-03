@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "ingredient": {
+    "item": "meknuc:thorium_dust"
+  },
+  "result": {
+    "id": "meknuc:thorium_ingot"
+  },
+  "experience": 0.35,
+  "cookingtime": 200
+}

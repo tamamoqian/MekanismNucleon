@@ -1,0 +1,1 @@
+{"type":"mekanism:injecting","chemical_input":{"amount":1,"chemical":"mekanism:hydrogen_chloride"},"item_input":{"count":1,"tag":"c:raw_materials/boron"},"output":{"count":8,"id":"meknuc:boron_shard"},"per_tick_usage":true}

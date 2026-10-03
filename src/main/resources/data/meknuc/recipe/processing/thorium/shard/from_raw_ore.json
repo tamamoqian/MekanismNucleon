@@ -1,0 +1,1 @@
+{"type":"mekanism:injecting","chemical_input":{"amount":1,"chemical":"mekanism:hydrogen_chloride"},"item_input":{"count":1,"tag":"c:raw_materials/thorium"},"output":{"count":8,"id":"meknuc:thorium_shard"},"per_tick_usage":true}

@@ -302,5 +302,15 @@
   "chemical.meknuc.enriched_lead": "富集铅",
   "chemical.meknuc.enriched_uranium": "富集铀",
   "item.meknuc.enriched_lead": "富集铅",
-  "item.meknuc.enriched_uranium": "富集铀"
+  "item.meknuc.enriched_uranium": "富集铀",
+  "chemical.meknuc.dirty_beryllium": "污浊铍浆液",
+  "chemical.meknuc.clean_beryllium": "纯净铍浆液",
+  "chemical.meknuc.dirty_boron": "污浊硼浆液",
+  "chemical.meknuc.clean_boron": "纯净硼浆液",
+  "chemical.meknuc.dirty_chromium": "污浊铬浆液",
+  "chemical.meknuc.clean_chromium": "纯净铬浆液",
+  "chemical.meknuc.dirty_thorium": "污浊钍浆液",
+  "chemical.meknuc.clean_thorium": "纯净钍浆液",
+  "chemical.meknuc.dirty_zirconium": "污浊锆浆液",
+  "chemical.meknuc.clean_zirconium": "纯净锆浆液"
 }

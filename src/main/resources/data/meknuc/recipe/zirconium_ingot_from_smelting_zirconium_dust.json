@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "ingredient": {
+    "item": "meknuc:zirconium_dust"
+  },
+  "result": {
+    "id": "meknuc:zirconium_ingot"
+  },
+  "experience": 0.35,
+  "cookingtime": 200
+}

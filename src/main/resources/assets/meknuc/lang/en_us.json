@@ -302,5 +302,15 @@
   "chemical.meknuc.enriched_lead": "Enriched Lead",
   "chemical.meknuc.enriched_uranium": "Enriched Uranium",
   "item.meknuc.enriched_lead": "Enriched Lead",
-  "item.meknuc.enriched_uranium": "Enriched Uranium"
+  "item.meknuc.enriched_uranium": "Enriched Uranium",
+  "chemical.meknuc.dirty_beryllium": "Dirty Beryllium Slurry",
+  "chemical.meknuc.clean_beryllium": "Clean Beryllium Slurry",
+  "chemical.meknuc.dirty_boron": "Dirty Boron Slurry",
+  "chemical.meknuc.clean_boron": "Clean Boron Slurry",
+  "chemical.meknuc.dirty_chromium": "Dirty Chromium Slurry",
+  "chemical.meknuc.clean_chromium": "Clean Chromium Slurry",
+  "chemical.meknuc.dirty_thorium": "Dirty Thorium Slurry",
+  "chemical.meknuc.clean_thorium": "Clean Thorium Slurry",
+  "chemical.meknuc.dirty_zirconium": "Dirty Zirconium Slurry",
+  "chemical.meknuc.clean_zirconium": "Clean Zirconium Slurry"
 }

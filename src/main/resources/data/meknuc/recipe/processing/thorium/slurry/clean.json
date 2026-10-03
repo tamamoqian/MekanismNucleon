@@ -1,0 +1,1 @@
+{"type":"mekanism:washing","chemical_input":{"amount":1,"chemical":"meknuc:dirty_thorium"},"fluid_input":{"amount":5,"tag":"minecraft:water"},"output":{"amount":1,"id":"meknuc:clean_thorium"}}

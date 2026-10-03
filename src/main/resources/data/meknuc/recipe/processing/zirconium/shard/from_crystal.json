@@ -1,0 +1,1 @@
+{"type":"mekanism:injecting","chemical_input":{"amount":1,"chemical":"mekanism:hydrogen_chloride"},"item_input":{"count":1,"tag":"c:crystals/zirconium"},"output":{"count":1,"id":"meknuc:zirconium_shard"},"per_tick_usage":true}
