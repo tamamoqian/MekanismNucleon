@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "meknuc:block/particle_accelerator_radiation_resistant_casing"
+    }
+  }
+}

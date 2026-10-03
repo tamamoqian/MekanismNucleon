@@ -122,6 +122,56 @@ public class MeknucBlockBase extends Block {
             () -> new MeknucBlockThoriumMoltenSaltReactorCorrosionResistantFuelAssembly(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(5.0F, 5.0F).requiresCorrectToolForDrops()));
     public static final DeferredBlock<MeknucBlockThoriumMoltenSaltReactorMoltenCoolantFissionFuelCombinedInputPort> BLOCK_THORIUM_MOLTEN_SALT_REACTOR_MOLTEN_COOLANT_FISSION_FUEL_COMBINED_INPUT_PORT = register("thorium_molten_salt_reactor_molten_coolant_fission_fuel_combined_input_port",
             () -> new MeknucBlockThoriumMoltenSaltReactorMoltenCoolantFissionFuelCombinedInputPort(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(5.0F, 5.0F).requiresCorrectToolForDrops()));
+    public static final DeferredBlock<MeknucBlockHighTemperatureGraphiteGasCooledReactorCasing> BLOCK_HIGH_TEMPERATURE_GRAPHITE_GAS_COOLED_REACTOR_CASING = register("high_temperature_graphite_gas_cooled_reactor_casing",
+            () -> new MeknucBlockHighTemperatureGraphiteGasCooledReactorCasing(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(5.0F, 5.0F).requiresCorrectToolForDrops()));
+    public static final DeferredBlock<MeknucBlockHighTemperatureGraphiteGasCooledReactorCoolantInputPort> BLOCK_HIGH_TEMPERATURE_GRAPHITE_GAS_COOLED_REACTOR_COOLANT_INPUT_PORT = register("high_temperature_graphite_gas_cooled_reactor_coolant_input_port",
+            () -> new MeknucBlockHighTemperatureGraphiteGasCooledReactorCoolantInputPort(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(5.0F, 5.0F).requiresCorrectToolForDrops()));
+    public static final DeferredBlock<MeknucBlockHighTemperatureGraphiteGasCooledReactorCoolantOutputPort> BLOCK_HIGH_TEMPERATURE_GRAPHITE_GAS_COOLED_REACTOR_COOLANT_OUTPUT_PORT = register("high_temperature_graphite_gas_cooled_reactor_coolant_output_port",
+            () -> new MeknucBlockHighTemperatureGraphiteGasCooledReactorCoolantOutputPort(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(5.0F, 5.0F).requiresCorrectToolForDrops()));
+    public static final DeferredBlock<MeknucBlockHighTemperatureGraphiteGasCooledReactorFuelParticleInputPort> BLOCK_HIGH_TEMPERATURE_GRAPHITE_GAS_COOLED_REACTOR_FUEL_PARTICLE_INPUT_PORT = register("high_temperature_graphite_gas_cooled_reactor_fuel_particle_input_port",
+            () -> new MeknucBlockHighTemperatureGraphiteGasCooledReactorFuelParticleInputPort(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(5.0F, 5.0F).requiresCorrectToolForDrops()));
+    public static final DeferredBlock<MeknucBlockHighTemperatureGraphiteGasCooledReactorWasteParticleOutputPort> BLOCK_HIGH_TEMPERATURE_GRAPHITE_GAS_COOLED_REACTOR_WASTE_PARTICLE_OUTPUT_PORT = register("high_temperature_graphite_gas_cooled_reactor_waste_particle_output_port",
+            () -> new MeknucBlockHighTemperatureGraphiteGasCooledReactorWasteParticleOutputPort(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(5.0F, 5.0F).requiresCorrectToolForDrops()));
+    public static final DeferredBlock<MeknucBlockHighTemperatureGraphiteGasCooledReactorSignalPort> BLOCK_HIGH_TEMPERATURE_GRAPHITE_GAS_COOLED_REACTOR_SIGNAL_PORT = register("high_temperature_graphite_gas_cooled_reactor_signal_port",
+            () -> new MeknucBlockHighTemperatureGraphiteGasCooledReactorSignalPort(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(5.0F, 5.0F).requiresCorrectToolForDrops()));
+    public static final DeferredBlock<MeknucBlockHighTemperatureGraphiteGasCooledReactorFuelParticleControlAssembly> BLOCK_HIGH_TEMPERATURE_GRAPHITE_GAS_COOLED_REACTOR_FUEL_PARTICLE_CONTROL_ASSEMBLY = register("high_temperature_graphite_gas_cooled_reactor_fuel_particle_control_assembly",
+            () -> new MeknucBlockHighTemperatureGraphiteGasCooledReactorFuelParticleControlAssembly(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(5.0F, 5.0F).requiresCorrectToolForDrops()));
+    public static final DeferredBlock<MeknucBlockHighTemperatureGraphiteGasCooledReactorFuelPebbleBed> BLOCK_HIGH_TEMPERATURE_GRAPHITE_GAS_COOLED_REACTOR_FUEL_PEBBLE_BED = register("high_temperature_graphite_gas_cooled_reactor_fuel_pebble_bed",
+            () -> new MeknucBlockHighTemperatureGraphiteGasCooledReactorFuelPebbleBed(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(5.0F, 5.0F).requiresCorrectToolForDrops()));
+    public static final DeferredBlock<MeknucBlockFastBreederReactorCasing> BLOCK_FAST_BREEDER_REACTOR_CASING = register("fast_breeder_reactor_casing",
+            () -> new MeknucBlockFastBreederReactorCasing(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(5.0F, 5.0F).requiresCorrectToolForDrops()));
+    public static final DeferredBlock<MeknucBlockFastBreederReactorNeutronReflectorCladding> BLOCK_FAST_BREEDER_REACTOR_NEUTRON_REFLECTOR_CLADDING = register("fast_breeder_reactor_neutron_reflector_cladding",
+            () -> new MeknucBlockFastBreederReactorNeutronReflectorCladding(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(5.0F, 5.0F).requiresCorrectToolForDrops()));
+    public static final DeferredBlock<MeknucBlockFastBreederReactorCoolantInputPort> BLOCK_FAST_BREEDER_REACTOR_COOLANT_INPUT_PORT = register("fast_breeder_reactor_coolant_input_port",
+            () -> new MeknucBlockFastBreederReactorCoolantInputPort(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(5.0F, 5.0F).requiresCorrectToolForDrops()));
+    public static final DeferredBlock<MeknucBlockFastBreederReactorCoolantOutputPort> BLOCK_FAST_BREEDER_REACTOR_COOLANT_OUTPUT_PORT = register("fast_breeder_reactor_coolant_output_port",
+            () -> new MeknucBlockFastBreederReactorCoolantOutputPort(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(5.0F, 5.0F).requiresCorrectToolForDrops()));
+    public static final DeferredBlock<MeknucBlockFastBreederReactorFuelInputPort> BLOCK_FAST_BREEDER_REACTOR_FUEL_INPUT_PORT = register("fast_breeder_reactor_fuel_input_port",
+            () -> new MeknucBlockFastBreederReactorFuelInputPort(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(5.0F, 5.0F).requiresCorrectToolForDrops()));
+    public static final DeferredBlock<MeknucBlockFastBreederReactorBreederFuelOutputPort> BLOCK_FAST_BREEDER_REACTOR_BREEDER_FUEL_OUTPUT_PORT = register("fast_breeder_reactor_breeder_fuel_output_port",
+            () -> new MeknucBlockFastBreederReactorBreederFuelOutputPort(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(5.0F, 5.0F).requiresCorrectToolForDrops()));
+    public static final DeferredBlock<MeknucBlockFastBreederReactorRadiationResistantFuelAssembly> BLOCK_FAST_BREEDER_REACTOR_RADIATION_RESISTANT_FUEL_ASSEMBLY = register("fast_breeder_reactor_radiation_resistant_fuel_assembly",
+            () -> new MeknucBlockFastBreederReactorRadiationResistantFuelAssembly(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(5.0F, 5.0F).requiresCorrectToolForDrops()));
+    public static final DeferredBlock<MeknucBlockFastBreederReactorRadiationResistantControlAssembly> BLOCK_FAST_BREEDER_REACTOR_RADIATION_RESISTANT_CONTROL_ASSEMBLY = register("fast_breeder_reactor_radiation_resistant_control_assembly",
+            () -> new MeknucBlockFastBreederReactorRadiationResistantControlAssembly(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(5.0F, 5.0F).requiresCorrectToolForDrops()));
+    public static final DeferredBlock<MeknucBlockParticleAcceleratorRadiationResistantCasing> BLOCK_PARTICLE_ACCELERATOR_RADIATION_RESISTANT_CASING = register("particle_accelerator_radiation_resistant_casing",
+            () -> new MeknucBlockParticleAcceleratorRadiationResistantCasing(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(5.0F, 5.0F).requiresCorrectToolForDrops()));
+    public static final DeferredBlock<MeknucBlockParticleAcceleratorBeamInputPort> BLOCK_PARTICLE_ACCELERATOR_BEAM_INPUT_PORT = register("particle_accelerator_beam_input_port",
+            () -> new MeknucBlockParticleAcceleratorBeamInputPort(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(5.0F, 5.0F).requiresCorrectToolForDrops()));
+    public static final DeferredBlock<MeknucBlockParticleAcceleratorBeamOutputPort> BLOCK_PARTICLE_ACCELERATOR_BEAM_OUTPUT_PORT = register("particle_accelerator_beam_output_port",
+            () -> new MeknucBlockParticleAcceleratorBeamOutputPort(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(5.0F, 5.0F).requiresCorrectToolForDrops()));
+    public static final DeferredBlock<MeknucBlockParticleAcceleratorEnergyPort> BLOCK_PARTICLE_ACCELERATOR_ENERGY_PORT = register("particle_accelerator_energy_port",
+            () -> new MeknucBlockParticleAcceleratorEnergyPort(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(5.0F, 5.0F).requiresCorrectToolForDrops()));
+    public static final DeferredBlock<MeknucBlockParticleAcceleratorTargetInputPort> BLOCK_PARTICLE_ACCELERATOR_TARGET_INPUT_PORT = register("particle_accelerator_target_input_port",
+            () -> new MeknucBlockParticleAcceleratorTargetInputPort(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(5.0F, 5.0F).requiresCorrectToolForDrops()));
+    public static final DeferredBlock<MeknucBlockParticleAcceleratorTargetOutputPort> BLOCK_PARTICLE_ACCELERATOR_TARGET_OUTPUT_PORT = register("particle_accelerator_target_output_port",
+            () -> new MeknucBlockParticleAcceleratorTargetOutputPort(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(5.0F, 5.0F).requiresCorrectToolForDrops()));
+    public static final DeferredBlock<MeknucBlockParticleAcceleratorTargetMountingFrame> BLOCK_PARTICLE_ACCELERATOR_TARGET_MOUNTING_FRAME = register("particle_accelerator_target_mounting_frame",
+            () -> new MeknucBlockParticleAcceleratorTargetMountingFrame(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(5.0F, 5.0F).requiresCorrectToolForDrops()));
+    public static final DeferredBlock<MeknucBlockParticleAcceleratorSupportFrame> BLOCK_PARTICLE_ACCELERATOR_SUPPORT_FRAME = register("particle_accelerator_support_frame",
+            () -> new MeknucBlockParticleAcceleratorSupportFrame(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(5.0F, 5.0F).requiresCorrectToolForDrops()));
+    public static final DeferredBlock<MeknucBlockParticleAccelerationCoil> BLOCK_PARTICLE_ACCELERATION_COIL = register("particle_acceleration_coil",
+            () -> new MeknucBlockParticleAccelerationCoil(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(5.0F, 5.0F).requiresCorrectToolForDrops()));
 
     public MeknucBlockBase(Properties properties) {
         super(properties);

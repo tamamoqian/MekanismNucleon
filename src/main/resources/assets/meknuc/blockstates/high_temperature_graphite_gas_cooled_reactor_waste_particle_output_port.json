@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "meknuc:block/high_temperature_graphite_gas_cooled_reactor_waste_particle_output_port"
+    }
+  }
+}
