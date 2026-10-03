@@ -1,12 +1,13 @@
 package meknuc;
 
+import meknuc.blockentities.MeknucTileEntityTypes;
 import meknuc.blocks.MeknucBlockBase;
 import meknuc.chemicals.MeknucChemicals;
 import meknuc.items.MeknucItemBase;
+import meknuc.menu.MeknucMenuTypes;
 import meknuc.reactor.MeknucPwrMultiblock;
 import meknuc.reactor.MeknucPwrBlocks;
 import meknuc.reactor.MeknucPwrContainerTypes;
-import meknuc.reactor.MeknucPwrFuels;
 import meknuc.reactor.MeknucPwrLogicPacket;
 import meknuc.reactor.MeknucPwrOpenGuiPacket;
 import meknuc.reactor.MeknucPwrTileEntityTypes;
@@ -52,15 +53,17 @@ public class meknuc {
     public meknuc(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::registerPayloads);
-        modEventBus.addListener(MeknucPwrFuels::register);
 
         MeknucPwrMultiblock.initialize();
         MeknucBlockBase.BLOCKS.register(modEventBus);
         MeknucItemBase.ITEMS.register(modEventBus);
+        MeknucItemBase.DATA_COMPONENTS.register(modEventBus);
         MeknucPwrBlocks.BLOCKS.register(modEventBus);
         MeknucChemicals.CHEMICALS.register(modEventBus);
         MeknucPwrTileEntityTypes.TILE_ENTITY_TYPES.register(modEventBus);
         MeknucPwrContainerTypes.CONTAINER_TYPES.register(modEventBus);
+        MeknucTileEntityTypes.TILE_ENTITY_TYPES.register(modEventBus);
+        MeknucMenuTypes.CONTAINER_TYPES.register(modEventBus);
         MeknucPwrSounds.SOUND_EVENTS.register(modEventBus);
         CREATIVE_MODE_TABS.register(modEventBus);
 

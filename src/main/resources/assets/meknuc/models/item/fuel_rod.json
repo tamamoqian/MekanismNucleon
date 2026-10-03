@@ -1,0 +1,30 @@
+{
+  "parent": "meknuc:item/test_fuel_rod",
+  "overrides": [
+    {"predicate": {"meknuc:rod_variant": 1}, "model": "meknuc:item/test_fuel_rod_depleted"},
+    {"predicate": {"meknuc:rod_variant": 3}, "model": "meknuc:item/uranium_235_mox_fuel_rod"},
+    {"predicate": {"meknuc:rod_variant": 4}, "model": "meknuc:item/uranium_235_mox_fuel_rod_depleted"},
+    {"predicate": {"meknuc:rod_variant": 5}, "model": "meknuc:item/depleted_hot_uranium_235_mox_fuel_rod"},
+    {"predicate": {"meknuc:rod_variant": 6}, "model": "meknuc:item/uranium_235_thorium_fuel_rod"},
+    {"predicate": {"meknuc:rod_variant": 7}, "model": "meknuc:item/uranium_235_thorium_fuel_rod_depleted"},
+    {"predicate": {"meknuc:rod_variant": 8}, "model": "meknuc:item/depleted_hot_uranium_235_thorium_fuel_rod"},
+    {"predicate": {"meknuc:rod_variant": 9}, "model": "meknuc:item/uranium_235_plutonium_239_fuel_rod"},
+    {"predicate": {"meknuc:rod_variant": 10}, "model": "meknuc:item/uranium_235_plutonium_239_fuel_rod_depleted"},
+    {"predicate": {"meknuc:rod_variant": 11}, "model": "meknuc:item/depleted_hot_uranium_235_plutonium_239_fuel_rod"},
+    {"predicate": {"meknuc:rod_variant": 12}, "model": "meknuc:item/thorium_uranium_plutonium_fuel_rod"},
+    {"predicate": {"meknuc:rod_variant": 13}, "model": "meknuc:item/thorium_uranium_plutonium_fuel_rod_depleted"},
+    {"predicate": {"meknuc:rod_variant": 14}, "model": "meknuc:item/depleted_hot_thorium_uranium_plutonium_fuel_rod"},
+    {"predicate": {"meknuc:rod_variant": 15}, "model": "meknuc:item/uranium_235_plutonium_239_zircaloy_fuel_rod"},
+    {"predicate": {"meknuc:rod_variant": 16}, "model": "meknuc:item/uranium_235_plutonium_239_zircaloy_fuel_rod_depleted"},
+    {"predicate": {"meknuc:rod_variant": 18}, "model": "meknuc:item/uranium_235_plutonium_239_carbide_fuel_rod"},
+    {"predicate": {"meknuc:rod_variant": 19}, "model": "meknuc:item/uranium_235_plutonium_239_carbide_fuel_rod_depleted"},
+    {"predicate": {"meknuc:rod_variant": 21}, "model": "meknuc:item/bred_uranium_235_plutonium_239_zircaloy_fuel_rod"},
+    {"predicate": {"meknuc:rod_variant": 22}, "model": "meknuc:item/bred_uranium_235_plutonium_239_zircaloy_fuel_rod_depleted"},
+    {"predicate": {"meknuc:rod_variant": 24}, "model": "meknuc:item/bred_hot_uranium_235_plutonium_239_zircaloy_fuel_rod"},
+    {"predicate": {"meknuc:rod_variant": 25}, "model": "meknuc:item/bred_hot_uranium_235_plutonium_239_zircaloy_fuel_rod_depleted"},
+    {"predicate": {"meknuc:rod_variant": 27}, "model": "meknuc:item/bred_uranium_235_plutonium_239_carbide_fuel_rod"},
+    {"predicate": {"meknuc:rod_variant": 28}, "model": "meknuc:item/bred_uranium_235_plutonium_239_carbide_fuel_rod_depleted"},
+    {"predicate": {"meknuc:rod_variant": 30}, "model": "meknuc:item/bred_hot_uranium_235_plutonium_239_carbide_fuel_rod"},
+    {"predicate": {"meknuc:rod_variant": 31}, "model": "meknuc:item/bred_hot_uranium_235_plutonium_239_carbide_fuel_rod_depleted"}
+  ]
+}

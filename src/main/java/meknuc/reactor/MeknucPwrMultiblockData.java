@@ -23,6 +23,8 @@ import mekanism.common.inventory.slot.BasicInventorySlot;
 import mekanism.common.lib.multiblock.MultiblockData;
 import mekanism.common.util.NBTUtils;
 import meknuc.chemicals.MeknucChemicals;
+import meknuc.items.MeknucItemFuelRodBase;
+import meknuc.items.MeknucRodType;
 import meknuc.reactor.AttributeStatePwrPortMode.ReactorPortMode;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup.Provider;
@@ -393,19 +395,21 @@ public class MeknucPwrMultiblockData extends MultiblockData {
             return;
         }
         ItemStack fuel = fuelSlot.getStack();
-        MeknucPwrFuels.ReactorFuel spec = MeknucPwrFuels.get(fuel);
-        if (spec == null || fuel.getCount() < rods) {
+        MeknucRodType type = MeknucPwrFuels.get(fuel);
+        if (type == null || fuel.getCount() < rods) {
             return;
         }
-        ItemStack product = MeknucPwrFuels.product(spec, rods);
+        ItemStack product = fuel.copyWithCount(rods);
+        MeknucItemFuelRodBase.setRadiation(product, 0);
+        MeknucItemFuelRodBase.setHot(product, true);
         if (!canStore(product)) {
             return;
         }
         fuelSlot.setStack(fuel.copyWithCount(fuel.getCount() - rods));
         runningProduct = product;
         setInCoreCount(product.getCount());
-        setBatchBurnTime(spec.burnTime());
-        setBurnTime(spec.burnTime());
+        setBatchBurnTime(type.burnTime());
+        setBurnTime(type.burnTime());
         burnPartial = 0.0;
     }
 

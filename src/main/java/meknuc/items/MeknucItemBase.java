@@ -4,10 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
+import com.mojang.serialization.Codec;
 import meknuc.meknuc;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -15,6 +20,14 @@ public class MeknucItemBase extends Item {
 
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(meknuc.MODID);
     private static final List<Supplier<ItemStack>> TAB_ITEMS = new ArrayList<>();
+    public static final DeferredRegister<DataComponentType<?>> DATA_COMPONENTS = DeferredRegister.create(Registries.DATA_COMPONENT_TYPE, meknuc.MODID);
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> RADIATION =
+            DATA_COMPONENTS.register("radiation",     () -> DataComponentType.<Integer>builder().persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT).build());
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> ROD_TYPE =
+            DATA_COMPONENTS.register("rod_type", () -> DataComponentType.<String>builder().persistent(Codec.STRING).networkSynchronized(ByteBufCodecs.STRING_UTF8).build());
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Boolean>> ROD_HOT =
+            DATA_COMPONENTS.register("rod_hot", () -> DataComponentType.<Boolean>builder().persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL).build());
+    public static final DeferredItem<MeknucItemFuelRodBase> FUEL_ROD = registerNoTab("fuel_rod", () -> new MeknucItemFuelRodBase(new Item.Properties().stacksTo(16)));
     public static final DeferredItem<MeknucItemOreZircon> ZIRCON_ORE_ITEM = register("zircon_ore_item", () -> new MeknucItemOreZircon(new Item.Properties()));
     public static final DeferredItem<MeknucItemIngotZircon> ZIRCON_INGOT = register("zircon_ingot", () -> new MeknucItemIngotZircon(new Item.Properties()));
     public static final DeferredItem<MeknucItemOreThorium> THORIUM_ORE_ITEM = register("thorium_ore_item", () -> new MeknucItemOreThorium(new Item.Properties()));
@@ -26,38 +39,14 @@ public class MeknucItemBase extends Item {
     public static final DeferredItem<MeknucItemOreChrome> CHROME_ORE_ITEM = register("chrome_ore_item", () -> new MeknucItemOreChrome(new Item.Properties()));
     public static final DeferredItem<MeknucItemIngotChrome> CHROME_INGOT = register("chrome_ingot", () -> new MeknucItemIngotChrome(new Item.Properties()));
     public static final DeferredItem<MeknucItemEmptyFuelUnit> EMPTY_FUEL_UNIT = register("empty_fuel_unit", () -> new MeknucItemEmptyFuelUnit(new Item.Properties()));
-    public static final DeferredItem<MeknucItemFuelRodUranium235Mox> URANIUM_235_MOX_FUEL_ROD = register("uranium_235_mox_fuel_rod", () -> new MeknucItemFuelRodUranium235Mox(new Item.Properties()));
-    public static final DeferredItem<MeknucItemFuelRodUnsinteredUranium235Mox> UNSINTERED_URANIUM_235_MOX_FUEL_ROD = register("unsintered_uranium_235_mox_fuel_rod", () -> new MeknucItemFuelRodUnsinteredUranium235Mox(new Item.Properties()));
-    public static final DeferredItem<MeknucItemFuelRodDepletedUranium235Mox> DEPLETED_URANIUM_235_MOX_FUEL_ROD = register("depleted_uranium_235_mox_fuel_rod", () -> new MeknucItemFuelRodDepletedUranium235Mox(new Item.Properties()));
-    public static final DeferredItem<MeknucItemFuelRodDepletedHotUranium235Mox> DEPLETED_HOT_URANIUM_235_MOX_FUEL_ROD = register("depleted_hot_uranium_235_mox_fuel_rod", () -> new MeknucItemFuelRodDepletedHotUranium235Mox(new Item.Properties()));
-    public static final DeferredItem<MeknucItemUranium235ParticleFuel> URANIUM_235_PARTICLE_FUEL = register("uranium_235_particle_fuel", () -> new MeknucItemUranium235ParticleFuel(new Item.Properties()));
-    public static final DeferredItem<MeknucItemUnsinteredUranium235ParticleFuel> UNSINTERED_URANIUM_235_PARTICLE_FUEL = register("unsintered_uranium_235_particle_fuel", () -> new MeknucItemUnsinteredUranium235ParticleFuel(new Item.Properties()));
-    public static final DeferredItem<MeknucItemDepletedUranium235ParticleFuel> DEPLETED_URANIUM_235_PARTICLE_FUEL = register("depleted_uranium_235_particle_fuel", () -> new MeknucItemDepletedUranium235ParticleFuel(new Item.Properties()));
-    public static final DeferredItem<MeknucItemDepletedHotUranium235ParticleFuel> DEPLETED_HOT_URANIUM_235_PARTICLE_FUEL = register("depleted_hot_uranium_235_particle_fuel", () -> new MeknucItemDepletedHotUranium235ParticleFuel(new Item.Properties()));
-    public static final DeferredItem<MeknucItemFuelRodUranium235Thorium> URANIUM_235_THORIUM_FUEL_ROD = register("uranium_235_thorium_fuel_rod", () -> new MeknucItemFuelRodUranium235Thorium(new Item.Properties()));
-    public static final DeferredItem<MeknucItemFuelRodUnsinteredUranium235Thorium> UNSINTERED_URANIUM_235_THORIUM_FUEL_ROD = register("unsintered_uranium_235_thorium_fuel_rod", () -> new MeknucItemFuelRodUnsinteredUranium235Thorium(new Item.Properties()));
-    public static final DeferredItem<MeknucItemFuelRodDepletedUranium235Thorium> DEPLETED_URANIUM_235_THORIUM_FUEL_ROD = register("depleted_uranium_235_thorium_fuel_rod", () -> new MeknucItemFuelRodDepletedUranium235Thorium(new Item.Properties()));
-    public static final DeferredItem<MeknucItemFuelRodDepletedHotUranium235Thorium> DEPLETED_HOT_URANIUM_235_THORIUM_FUEL_ROD = register("depleted_hot_uranium_235_thorium_fuel_rod", () -> new MeknucItemFuelRodDepletedHotUranium235Thorium(new Item.Properties()));
-    public static final DeferredItem<MeknucItemFuelRodUranium235Plutonium239> URANIUM_235_PLUTONIUM_239_FUEL_ROD = register("uranium_235_plutonium_239_fuel_rod", () -> new MeknucItemFuelRodUranium235Plutonium239(new Item.Properties()));
-    public static final DeferredItem<MeknucItemFuelRodUnsinteredUranium235Plutonium239> UNSINTERED_URANIUM_235_PLUTONIUM_239_FUEL_ROD = register("unsintered_uranium_235_plutonium_239_fuel_rod", () -> new MeknucItemFuelRodUnsinteredUranium235Plutonium239(new Item.Properties()));
-    public static final DeferredItem<MeknucItemFuelRodDepletedUranium235Plutonium239> DEPLETED_URANIUM_235_PLUTONIUM_239_FUEL_ROD = register("depleted_uranium_235_plutonium_239_fuel_rod", () -> new MeknucItemFuelRodDepletedUranium235Plutonium239(new Item.Properties()));
-    public static final DeferredItem<MeknucItemFuelRodDepletedHotUranium235Plutonium239> DEPLETED_HOT_URANIUM_235_PLUTONIUM_239_FUEL_ROD = register("depleted_hot_uranium_235_plutonium_239_fuel_rod", () -> new MeknucItemFuelRodDepletedHotUranium235Plutonium239(new Item.Properties()));
-    public static final DeferredItem<MeknucItemFuelRodThoriumUraniumPlutonium> THORIUM_URANIUM_PLUTONIUM_FUEL_ROD = register("thorium_uranium_plutonium_fuel_rod", () -> new MeknucItemFuelRodThoriumUraniumPlutonium(new Item.Properties()));
-    public static final DeferredItem<MeknucItemFuelRodUnsinteredThoriumUraniumPlutonium> UNSINTERED_THORIUM_URANIUM_PLUTONIUM_FUEL_ROD = register("unsintered_thorium_uranium_plutonium_fuel_rod", () -> new MeknucItemFuelRodUnsinteredThoriumUraniumPlutonium(new Item.Properties()));
-    public static final DeferredItem<MeknucItemFuelRodDepletedThoriumUraniumPlutonium> DEPLETED_THORIUM_URANIUM_PLUTONIUM_FUEL_ROD = register("depleted_thorium_uranium_plutonium_fuel_rod", () -> new MeknucItemFuelRodDepletedThoriumUraniumPlutonium(new Item.Properties()));
-    public static final DeferredItem<MeknucItemFuelRodDepletedHotThoriumUraniumPlutonium> DEPLETED_HOT_THORIUM_URANIUM_PLUTONIUM_FUEL_ROD = register("depleted_hot_thorium_uranium_plutonium_fuel_rod", () -> new MeknucItemFuelRodDepletedHotThoriumUraniumPlutonium(new Item.Properties()));
-    public static final DeferredItem<MeknucItemThoriumOxideParticleFuel> THORIUM_OXIDE_PARTICLE_FUEL = register("thorium_oxide_particle_fuel", () -> new MeknucItemThoriumOxideParticleFuel(new Item.Properties()));
-    public static final DeferredItem<MeknucItemUnsinteredThoriumOxideParticleFuel> UNSINTERED_THORIUM_OXIDE_PARTICLE_FUEL = register("unsintered_thorium_oxide_particle_fuel", () -> new MeknucItemUnsinteredThoriumOxideParticleFuel(new Item.Properties()));
-    public static final DeferredItem<MeknucItemDepletedThoriumOxideParticleFuel> DEPLETED_THORIUM_OXIDE_PARTICLE_FUEL = register("depleted_thorium_oxide_particle_fuel", () -> new MeknucItemDepletedThoriumOxideParticleFuel(new Item.Properties()));
-    public static final DeferredItem<MeknucItemDepletedHotThoriumOxideParticleFuel> DEPLETED_HOT_THORIUM_OXIDE_PARTICLE_FUEL = register("depleted_hot_thorium_oxide_particle_fuel", () -> new MeknucItemDepletedHotThoriumOxideParticleFuel(new Item.Properties()));
-    public static final DeferredItem<MeknucItemFuelRodUranium235Plutonium239Zircaloy> URANIUM_235_PLUTONIUM_239_ZIRCALOY_FUEL_ROD = register("uranium_235_plutonium_239_zircaloy_fuel_rod", () -> new MeknucItemFuelRodUranium235Plutonium239Zircaloy(new Item.Properties()));
-    public static final DeferredItem<MeknucItemFuelRodUnsinteredUranium235Plutonium239Zircaloy> UNSINTERED_URANIUM_235_PLUTONIUM_239_ZIRCALOY_FUEL_ROD = register("unsintered_uranium_235_plutonium_239_zircaloy_fuel_rod", () -> new MeknucItemFuelRodUnsinteredUranium235Plutonium239Zircaloy(new Item.Properties()));
-    public static final DeferredItem<MeknucItemFuelRodBredUranium235Plutonium239Zircaloy> BRED_URANIUM_235_PLUTONIUM_239_ZIRCALOY_FUEL_ROD = register("bred_uranium_235_plutonium_239_zircaloy_fuel_rod", () -> new MeknucItemFuelRodBredUranium235Plutonium239Zircaloy(new Item.Properties()));
-    public static final DeferredItem<MeknucItemFuelRodBredHotUranium235Plutonium239Zircaloy> BRED_HOT_URANIUM_235_PLUTONIUM_239_ZIRCALOY_FUEL_ROD = register("bred_hot_uranium_235_plutonium_239_zircaloy_fuel_rod", () -> new MeknucItemFuelRodBredHotUranium235Plutonium239Zircaloy(new Item.Properties()));
-    public static final DeferredItem<MeknucItemFuelRodUranium235Plutonium239Carbide> URANIUM_235_PLUTONIUM_239_CARBIDE_FUEL_ROD = register("uranium_235_plutonium_239_carbide_fuel_rod", () -> new MeknucItemFuelRodUranium235Plutonium239Carbide(new Item.Properties()));
-    public static final DeferredItem<MeknucItemFuelRodUnsinteredUranium235Plutonium239Carbide> UNSINTERED_URANIUM_235_PLUTONIUM_239_CARBIDE_FUEL_ROD = register("unsintered_uranium_235_plutonium_239_carbide_fuel_rod", () -> new MeknucItemFuelRodUnsinteredUranium235Plutonium239Carbide(new Item.Properties()));
-    public static final DeferredItem<MeknucItemFuelRodBredUranium235Plutonium239Carbide> BRED_URANIUM_235_PLUTONIUM_239_CARBIDE_FUEL_ROD = register("bred_uranium_235_plutonium_239_carbide_fuel_rod", () -> new MeknucItemFuelRodBredUranium235Plutonium239Carbide(new Item.Properties()));
-    public static final DeferredItem<MeknucItemFuelRodBredHotUranium235Plutonium239Carbide> BRED_HOT_URANIUM_235_PLUTONIUM_239_CARBIDE_FUEL_ROD = register("bred_hot_uranium_235_plutonium_239_carbide_fuel_rod", () -> new MeknucItemFuelRodBredHotUranium235Plutonium239Carbide(new Item.Properties()));
+    public static final DeferredItem<MeknucItemUranium235ParticleFuel> URANIUM_235_PARTICLE_FUEL = register("uranium_235_particle_fuel", () -> new MeknucItemUranium235ParticleFuel(new Item.Properties().stacksTo(16)));
+    public static final DeferredItem<MeknucItemUnsinteredUranium235ParticleFuel> UNSINTERED_URANIUM_235_PARTICLE_FUEL = register("unsintered_uranium_235_particle_fuel", () -> new MeknucItemUnsinteredUranium235ParticleFuel(new Item.Properties().stacksTo(16)));
+    public static final DeferredItem<MeknucItemDepletedUranium235ParticleFuel> DEPLETED_URANIUM_235_PARTICLE_FUEL = register("depleted_uranium_235_particle_fuel", () -> new MeknucItemDepletedUranium235ParticleFuel(new Item.Properties().stacksTo(16)));
+    public static final DeferredItem<MeknucItemDepletedHotUranium235ParticleFuel> DEPLETED_HOT_URANIUM_235_PARTICLE_FUEL = register("depleted_hot_uranium_235_particle_fuel", () -> new MeknucItemDepletedHotUranium235ParticleFuel(new Item.Properties().stacksTo(16)));
+    public static final DeferredItem<MeknucItemThoriumOxideParticleFuel> THORIUM_OXIDE_PARTICLE_FUEL = register("thorium_oxide_particle_fuel", () -> new MeknucItemThoriumOxideParticleFuel(new Item.Properties().stacksTo(16)));
+    public static final DeferredItem<MeknucItemUnsinteredThoriumOxideParticleFuel> UNSINTERED_THORIUM_OXIDE_PARTICLE_FUEL = register("unsintered_thorium_oxide_particle_fuel", () -> new MeknucItemUnsinteredThoriumOxideParticleFuel(new Item.Properties().stacksTo(16)));
+    public static final DeferredItem<MeknucItemDepletedThoriumOxideParticleFuel> DEPLETED_THORIUM_OXIDE_PARTICLE_FUEL = register("depleted_thorium_oxide_particle_fuel", () -> new MeknucItemDepletedThoriumOxideParticleFuel(new Item.Properties().stacksTo(16)));
+    public static final DeferredItem<MeknucItemDepletedHotThoriumOxideParticleFuel> DEPLETED_HOT_THORIUM_OXIDE_PARTICLE_FUEL = register("depleted_hot_thorium_oxide_particle_fuel", () -> new MeknucItemDepletedHotThoriumOxideParticleFuel(new Item.Properties().stacksTo(16)));
     public static final DeferredItem<MeknucItemAmericium241Dust> AMERICIUM_241_DUST = register("americium_241_dust",
             () -> new MeknucItemAmericium241Dust(new Item.Properties()));
     public static final DeferredItem<MeknucItemBerylliumClump> BERYLLIUM_CLUMP = register("beryllium_clump",
@@ -168,12 +157,23 @@ public class MeknucItemBase extends Item {
     }
 
     private static <T extends MeknucItemBase> DeferredItem<T> register(String name, Supplier<T> supplier) {
+        return register(name, supplier, true);
+    }
+
+    private static <T extends MeknucItemBase> DeferredItem<T> registerNoTab(String name, Supplier<T> supplier) {
+        return register(name, supplier, false);
+    }
+
+    private static <T extends MeknucItemBase> DeferredItem<T> register(String name, Supplier<T> supplier, boolean addToTab) {
         DeferredItem<T> deferred = ITEMS.register(name, supplier);
-        TAB_ITEMS.add(() -> deferred.get().getDefaultInstance());
+        if (addToTab) {
+            TAB_ITEMS.add(() -> deferred.get().getDefaultInstance());
+        }
         return deferred;
     }
 
     public static void addTabItems(CreativeModeTab.Output output) {
         TAB_ITEMS.forEach(supplier -> output.accept(supplier.get()));
+        MeknucItemFuelRodBase.appendTabVariants(output);
     }
 }

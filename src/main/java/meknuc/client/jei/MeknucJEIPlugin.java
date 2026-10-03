@@ -1,7 +1,8 @@
 package meknuc.client.jei;
 
 import java.util.List;
-import meknuc.items.MeknucItemBase;
+import meknuc.items.MeknucItemFuelRodBase;
+import meknuc.items.MeknucRodType;
 import meknuc.reactor.MeknucPwrBlocks;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -56,6 +57,6 @@ public class MeknucJEIPlugin implements IModPlugin {
     }
 
     private static ItemStack fuelRodIcon() {
-        return new ItemStack(MeknucItemBase.URANIUM_235_MOX_FUEL_ROD.asItem());
+        return MeknucItemFuelRodBase.freshStack(MeknucRodType.URANIUM_235_MOX, 1);
     }
 }

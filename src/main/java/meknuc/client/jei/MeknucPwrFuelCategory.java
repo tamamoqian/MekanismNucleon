@@ -1,9 +1,10 @@
 package meknuc.client.jei;
 
 import com.mojang.serialization.Codec;
+import java.util.Arrays;
 import java.util.List;
-import meknuc.reactor.MeknucPwrFuels;
-import meknuc.reactor.MeknucPwrFuels.ReactorFuel;
+import meknuc.items.MeknucItemFuelRodBase;
+import meknuc.items.MeknucRodType;
 import meknuc.reactor.MeknucPwrLang;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
@@ -14,10 +15,7 @@ import mezz.jei.api.recipe.IRecipeManager;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.AbstractRecipeCategory;
-import net.minecraft.core.Holder;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
@@ -41,20 +39,18 @@ public class MeknucPwrFuelCategory extends AbstractRecipeCategory<MeknucPwrFuelC
     }
 
     public static List<PwrFuelRecipe> recipes() {
-        return MeknucPwrFuels.fuels().entrySet().stream()
-              .map(entry -> new PwrFuelRecipe(entry.getKey().location(), entry.getValue()))
+        return Arrays.stream(MeknucRodType.VALUES)
+              .filter(type -> type.burnTime() > 0)
+              .map(type -> new PwrFuelRecipe(ResourceLocation.fromNamespaceAndPath(meknuc.meknuc.MODID, type.id()), type))
               .toList();
     }
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, PwrFuelRecipe recipe, IFocusGroup focusGroup) {
-        Holder<Item> fuel = BuiltInRegistries.ITEM.getHolder(recipe.id()).orElse(null);
-        if (fuel != null) {
-            builder.addSlot(RecipeIngredientRole.INPUT, INPUT_X, INPUT_Y)
-                  .addItemStack(new ItemStack(fuel.value()));
-        }
+        builder.addSlot(RecipeIngredientRole.INPUT, INPUT_X, INPUT_Y)
+              .addItemStack(MeknucItemFuelRodBase.freshStack(recipe.type(), 1));
         builder.addSlot(RecipeIngredientRole.OUTPUT, OUTPUT_X, OUTPUT_Y)
-              .addItemStack(MeknucPwrFuels.product(recipe.data(), 1));
+              .addItemStack(MeknucItemFuelRodBase.hotStack(recipe.type(), 1));
     }
 
     @Override
@@ -83,10 +79,10 @@ public class MeknucPwrFuelCategory extends AbstractRecipeCategory<MeknucPwrFuelC
         return String.format("%d:%02d", seconds / 60, seconds % 60);
     }
 
-    public record PwrFuelRecipe(ResourceLocation id, ReactorFuel data) {
+    public record PwrFuelRecipe(ResourceLocation id, MeknucRodType type) {
 
         public int burnTime() {
-            return data.burnTime();
+            return type.burnTime();
         }
     }
 }
