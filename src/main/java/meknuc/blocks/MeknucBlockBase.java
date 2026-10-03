@@ -96,16 +96,6 @@ public class MeknucBlockBase extends Block {
             () -> new MeknucBlockHeavyWaterReactorSignalPort(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(5.0F, 5.0F).requiresCorrectToolForDrops()));
     public static final DeferredBlock<MeknucBlockHeavyWaterReactorWasteOutputPort> BLOCK_HEAVY_WATER_REACTOR_WASTE_OUTPUT_PORT = register("heavy_water_reactor_waste_output_port",
             () -> new MeknucBlockHeavyWaterReactorWasteOutputPort(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(5.0F, 5.0F).requiresCorrectToolForDrops()));
-    public static final DeferredBlock<MeknucBlockPressurizedWaterReactorCoolantInputPort> BLOCK_PRESSURIZED_WATER_REACTOR_COOLANT_INPUT_PORT = register("pressurized_water_reactor_coolant_input_port",
-            () -> new MeknucBlockPressurizedWaterReactorCoolantInputPort(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(5.0F, 5.0F).requiresCorrectToolForDrops()));
-    public static final DeferredBlock<MeknucBlockPressurizedWaterReactorCoolantOutputPort> BLOCK_PRESSURIZED_WATER_REACTOR_COOLANT_OUTPUT_PORT = register("pressurized_water_reactor_coolant_output_port",
-            () -> new MeknucBlockPressurizedWaterReactorCoolantOutputPort(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(5.0F, 5.0F).requiresCorrectToolForDrops()));
-    public static final DeferredBlock<MeknucBlockPressurizedWaterReactorFuelInputPort> BLOCK_PRESSURIZED_WATER_REACTOR_FUEL_INPUT_PORT = register("pressurized_water_reactor_fuel_input_port",
-            () -> new MeknucBlockPressurizedWaterReactorFuelInputPort(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(5.0F, 5.0F).requiresCorrectToolForDrops()));
-    public static final DeferredBlock<MeknucBlockPressurizedWaterReactorSignalPort> BLOCK_PRESSURIZED_WATER_REACTOR_SIGNAL_PORT = register("pressurized_water_reactor_signal_port",
-            () -> new MeknucBlockPressurizedWaterReactorSignalPort(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(5.0F, 5.0F).requiresCorrectToolForDrops()));
-    public static final DeferredBlock<MeknucBlockPressurizedWaterReactorWasteOutputPort> BLOCK_PRESSURIZED_WATER_REACTOR_WASTE_OUTPUT_PORT = register("pressurized_water_reactor_waste_output_port",
-            () -> new MeknucBlockPressurizedWaterReactorWasteOutputPort(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(5.0F, 5.0F).requiresCorrectToolForDrops()));
     public static final DeferredBlock<MeknucBlockRadiationResistantWasteStorageCasing> BLOCK_RADIATION_RESISTANT_WASTE_STORAGE_CASING = register("radiation_resistant_waste_storage_casing",
             () -> new MeknucBlockRadiationResistantWasteStorageCasing(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(5.0F, 5.0F).requiresCorrectToolForDrops()));
     public static final DeferredBlock<MeknucBlockRadioactiveWasteInputPort> BLOCK_RADIOACTIVE_WASTE_INPUT_PORT = register("radioactive_waste_input_port",
