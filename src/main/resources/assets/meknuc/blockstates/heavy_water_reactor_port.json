@@ -1,0 +1,1 @@
+{"variants":{"mode=coolant_input":{"model":"meknuc:block/heavy_water_reactor_coolant_input_port"},"mode=coolant_output":{"model":"meknuc:block/heavy_water_reactor_coolant_output_port"},"mode=fuel_input":{"model":"meknuc:block/heavy_water_reactor_fuel_input_port"},"mode=waste_output":{"model":"meknuc:block/heavy_water_reactor_waste_output_port"}}}

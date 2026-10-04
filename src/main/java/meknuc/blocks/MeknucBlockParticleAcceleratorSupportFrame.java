@@ -1,8 +1,8 @@
 package meknuc.blocks;
 
-public class MeknucBlockParticleAcceleratorSupportFrame extends MeknucBlockBase {
+public class MeknucBlockParticleAcceleratorSupportFrame extends MeknucBlockReactorBase {
 
     public MeknucBlockParticleAcceleratorSupportFrame(Properties properties) {
-        super(properties);
+        super(properties, MeknucBlockReactorLang.PARTICLE_ACCELERATOR_SUPPORT_FRAME);
     }
 }

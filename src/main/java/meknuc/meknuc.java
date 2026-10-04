@@ -2,6 +2,14 @@ package meknuc;
 
 import meknuc.blockentities.MeknucTileEntityTypes;
 import meknuc.blocks.MeknucBlockBase;
+import meknuc.blocks.MeknucBwrBlocks;
+import meknuc.blocks.MeknucFbrBlocks;
+import meknuc.blocks.MeknucHtgrBlocks;
+import meknuc.blocks.MeknucHwrBlocks;
+import meknuc.blocks.MeknucMoltenSaltReactorBlocks;
+import meknuc.blocks.MeknucParticleAcceleratorBlocks;
+import meknuc.blocks.MeknucSpentFuelPoolBlocks;
+import meknuc.blocks.MeknucWasteStorageBlocks;
 import meknuc.chemicals.MeknucChemicals;
 import meknuc.items.MeknucItemBase;
 import meknuc.menu.MeknucMenuTypes;
@@ -48,6 +56,14 @@ public class meknuc {
                 MeknucItemBase.addTabItems(output);
                 MeknucBlockBase.addTabBlocks(output);
                 MeknucPwrBlocks.addTabBlocks(output);
+                MeknucBwrBlocks.addTabBlocks(output);
+                MeknucHwrBlocks.addTabBlocks(output);
+                MeknucSpentFuelPoolBlocks.addTabBlocks(output);
+                MeknucFbrBlocks.addTabBlocks(output);
+                MeknucHtgrBlocks.addTabBlocks(output);
+                MeknucParticleAcceleratorBlocks.addTabBlocks(output);
+                MeknucMoltenSaltReactorBlocks.addTabBlocks(output);
+                MeknucWasteStorageBlocks.addTabBlocks(output);
             }).build());
 
     public meknuc(IEventBus modEventBus, ModContainer modContainer) {
@@ -56,6 +72,14 @@ public class meknuc {
 
         MeknucPwrMultiblock.initialize();
         MeknucBlockBase.BLOCKS.register(modEventBus);
+        MeknucBwrBlocks.BLOCKS.register(modEventBus);
+        MeknucHwrBlocks.BLOCKS.register(modEventBus);
+        MeknucSpentFuelPoolBlocks.BLOCKS.register(modEventBus);
+        MeknucFbrBlocks.BLOCKS.register(modEventBus);
+        MeknucHtgrBlocks.BLOCKS.register(modEventBus);
+        MeknucParticleAcceleratorBlocks.BLOCKS.register(modEventBus);
+        MeknucMoltenSaltReactorBlocks.BLOCKS.register(modEventBus);
+        MeknucWasteStorageBlocks.BLOCKS.register(modEventBus);
         MeknucItemBase.ITEMS.register(modEventBus);
         MeknucItemBase.DATA_COMPONENTS.register(modEventBus);
         MeknucPwrBlocks.BLOCKS.register(modEventBus);

@@ -1,8 +1,8 @@
 package meknuc.blocks;
 
-public class MeknucBlockFastBreederReactorRadiationResistantFuelAssembly extends MeknucBlockBase {
+public class MeknucBlockFastBreederReactorRadiationResistantFuelAssembly extends MeknucBlockReactorBase {
 
     public MeknucBlockFastBreederReactorRadiationResistantFuelAssembly(Properties properties) {
-        super(properties);
+        super(properties, MeknucBlockReactorLang.FAST_BREEDER_REACTOR_RADIATION_RESISTANT_FUEL_ASSEMBLY);
     }
 }

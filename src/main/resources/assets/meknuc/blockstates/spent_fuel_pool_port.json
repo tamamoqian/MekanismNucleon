@@ -1,0 +1,1 @@
+{"variants":{"mode=coolant_input":{"model":"meknuc:block/spent_fuel_pool_coolant_input_port"},"mode=coolant_output":{"model":"meknuc:block/spent_fuel_pool_coolant_output_port"},"mode=waste_input":{"model":"meknuc:block/spent_fuel_pool_waste_input_port"},"mode=waste_output":{"model":"meknuc:block/spent_fuel_pool_waste_output_port"}}}

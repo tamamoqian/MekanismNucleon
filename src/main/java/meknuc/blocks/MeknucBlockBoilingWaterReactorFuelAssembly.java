@@ -1,8 +1,8 @@
 package meknuc.blocks;
 
-public class MeknucBlockBoilingWaterReactorFuelAssembly extends MeknucBlockBase {
+public class MeknucBlockBoilingWaterReactorFuelAssembly extends MeknucBlockReactorBase {
 
     public MeknucBlockBoilingWaterReactorFuelAssembly(Properties properties) {
-        super(properties);
+        super(properties, MeknucBlockReactorLang.BOILING_WATER_REACTOR_FUEL_ASSEMBLY);
     }
 }

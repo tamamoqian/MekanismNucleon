@@ -1,8 +1,8 @@
 package meknuc.blocks;
 
-public class MeknucBlockBoilingWaterReactorCasing extends MeknucBlockBase {
+public class MeknucBlockBoilingWaterReactorCasing extends MeknucBlockReactorBase {
 
     public MeknucBlockBoilingWaterReactorCasing(Properties properties) {
-        super(properties);
+        super(properties, MeknucBlockReactorLang.BOILING_WATER_REACTOR_CASING);
     }
 }

@@ -1,0 +1,1 @@
+{"variants":{"mode=coolant_input":{"model":"meknuc:block/fast_breeder_reactor_coolant_input_port"},"mode=coolant_output":{"model":"meknuc:block/fast_breeder_reactor_coolant_output_port"},"mode=fuel_input":{"model":"meknuc:block/fast_breeder_reactor_fuel_input_port"},"mode=breeder_fuel_output":{"model":"meknuc:block/fast_breeder_reactor_breeder_fuel_output_port"}}}
