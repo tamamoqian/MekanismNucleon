@@ -312,5 +312,6 @@
   "chemical.meknuc.dirty_thorium": "污浊钍浆液",
   "chemical.meknuc.clean_thorium": "纯净钍浆液",
   "chemical.meknuc.dirty_zirconium": "污浊锆浆液",
-  "chemical.meknuc.clean_zirconium": "纯净锆浆液"
+  "chemical.meknuc.clean_zirconium": "纯净锆浆液",
+  "chemical.meknuc.subcritical_heavy_water": "次临界重水"
 }

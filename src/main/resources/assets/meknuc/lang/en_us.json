@@ -312,5 +312,6 @@
   "chemical.meknuc.dirty_thorium": "Dirty Thorium Slurry",
   "chemical.meknuc.clean_thorium": "Clean Thorium Slurry",
   "chemical.meknuc.dirty_zirconium": "Dirty Zirconium Slurry",
-  "chemical.meknuc.clean_zirconium": "Clean Zirconium Slurry"
+  "chemical.meknuc.clean_zirconium": "Clean Zirconium Slurry",
+  "chemical.meknuc.subcritical_heavy_water": "Subcritical Heavy Water"
 }
