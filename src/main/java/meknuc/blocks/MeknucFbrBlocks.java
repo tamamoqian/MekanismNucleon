@@ -3,40 +3,55 @@ package meknuc.blocks;
 import java.util.function.Supplier;
 
 import mekanism.common.block.interfaces.IHasDescription;
+import mekanism.common.block.prefab.BlockBasicMultiblock;
+import mekanism.common.block.prefab.BlockTile.BlockTileModel;
+import mekanism.common.content.blocktype.BlockTypeTile;
 import mekanism.common.item.block.ItemBlockTooltip;
 import mekanism.common.registration.impl.BlockDeferredRegister;
 import mekanism.common.registration.impl.BlockRegistryObject;
+import meknuc.blockentities.MeknucBlockEntityReactorPart;
+import meknuc.blockentities.MeknucBlockEntityReactorPort;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 
 public class MeknucFbrBlocks {
 
     public static final BlockDeferredRegister BLOCKS = new BlockDeferredRegister("meknuc");
 
-    public static final BlockRegistryObject<MeknucBlockFastBreederReactorCasing, ItemBlockTooltip<MeknucBlockFastBreederReactorCasing>> FAST_BREEDER_REACTOR_CASING =
-          register("fast_breeder_reactor_casing", () -> new MeknucBlockFastBreederReactorCasing(properties()));
+    public static final BlockRegistryObject<BlockBasicMultiblock<MeknucBlockEntityReactorPart>,
+          ItemBlockTooltip<BlockBasicMultiblock<MeknucBlockEntityReactorPart>>> FAST_BREEDER_REACTOR_CASING =
+          registerTooltipBlock("fast_breeder_reactor_casing",
+                () -> new BlockBasicMultiblock<>(MeknucFbrBlockTypes.FAST_BREEDER_REACTOR_CASING,
+                      properties -> properties.mapColor(MapColor.COLOR_LIGHT_GRAY)));
 
-    public static final BlockRegistryObject<MeknucBlockFastBreederReactorNeutronReflectorCladding, ItemBlockTooltip<MeknucBlockFastBreederReactorNeutronReflectorCladding>> FAST_BREEDER_REACTOR_NEUTRON_REFLECTOR_CLADDING =
-          register("fast_breeder_reactor_neutron_reflector_cladding", () -> new MeknucBlockFastBreederReactorNeutronReflectorCladding(properties()));
+    public static final BlockRegistryObject<BlockTileModel<MeknucBlockEntityReactorPart, BlockTypeTile<MeknucBlockEntityReactorPart>>,
+          ItemBlockTooltip<BlockTileModel<MeknucBlockEntityReactorPart, BlockTypeTile<MeknucBlockEntityReactorPart>>>> FAST_BREEDER_REACTOR_NEUTRON_REFLECTOR_CLADDING =
+          registerTooltipBlock("fast_breeder_reactor_neutron_reflector_cladding",
+                () -> new BlockTileModel<>(MeknucFbrBlockTypes.FAST_BREEDER_REACTOR_NEUTRON_REFLECTOR_CLADDING,
+                      properties -> properties.mapColor(MapColor.METAL)));
 
-    public static final BlockRegistryObject<MeknucBlockFastBreederReactorRadiationResistantControlAssembly, ItemBlockTooltip<MeknucBlockFastBreederReactorRadiationResistantControlAssembly>> FAST_BREEDER_REACTOR_RADIATION_RESISTANT_CONTROL_ASSEMBLY =
-          register("fast_breeder_reactor_radiation_resistant_control_assembly", () -> new MeknucBlockFastBreederReactorRadiationResistantControlAssembly(properties()));
+    public static final BlockRegistryObject<BlockTileModel<MeknucBlockEntityReactorPart, BlockTypeTile<MeknucBlockEntityReactorPart>>,
+          ItemBlockTooltip<BlockTileModel<MeknucBlockEntityReactorPart, BlockTypeTile<MeknucBlockEntityReactorPart>>>> FAST_BREEDER_REACTOR_RADIATION_RESISTANT_CONTROL_ASSEMBLY =
+          registerTooltipBlock("fast_breeder_reactor_radiation_resistant_control_assembly",
+                () -> new BlockTileModel<>(MeknucFbrBlockTypes.FAST_BREEDER_REACTOR_RADIATION_RESISTANT_CONTROL_ASSEMBLY,
+                      properties -> properties.mapColor(MapColor.METAL)));
 
-    public static final BlockRegistryObject<MeknucBlockFastBreederReactorRadiationResistantFuelAssembly, ItemBlockTooltip<MeknucBlockFastBreederReactorRadiationResistantFuelAssembly>> FAST_BREEDER_REACTOR_RADIATION_RESISTANT_FUEL_ASSEMBLY =
-          register("fast_breeder_reactor_radiation_resistant_fuel_assembly", () -> new MeknucBlockFastBreederReactorRadiationResistantFuelAssembly(properties()));
+    public static final BlockRegistryObject<BlockTileModel<MeknucBlockEntityReactorPart, BlockTypeTile<MeknucBlockEntityReactorPart>>,
+          ItemBlockTooltip<BlockTileModel<MeknucBlockEntityReactorPart, BlockTypeTile<MeknucBlockEntityReactorPart>>>> FAST_BREEDER_REACTOR_RADIATION_RESISTANT_FUEL_ASSEMBLY =
+          registerTooltipBlock("fast_breeder_reactor_radiation_resistant_fuel_assembly",
+                () -> new BlockTileModel<>(MeknucFbrBlockTypes.FAST_BREEDER_REACTOR_RADIATION_RESISTANT_FUEL_ASSEMBLY,
+                      properties -> properties.mapColor(MapColor.DEEPSLATE)));
 
-    public static final BlockRegistryObject<MeknucBlockFastBreederReactorPort, ItemBlockTooltip<MeknucBlockFastBreederReactorPort>> FAST_BREEDER_REACTOR_PORT =
-          register("fast_breeder_reactor_port", () -> new MeknucBlockFastBreederReactorPort(MeknucBlockFastBreederReactorPort.BLOCK_TYPE, properties()));
+    public static final BlockRegistryObject<BlockBasicMultiblock<MeknucBlockEntityReactorPort>,
+          ItemBlockTooltip<BlockBasicMultiblock<MeknucBlockEntityReactorPort>>> FAST_BREEDER_REACTOR_PORT =
+          registerTooltipBlock("fast_breeder_reactor_port",
+                () -> new BlockBasicMultiblock<>(MeknucFbrBlockTypes.FAST_BREEDER_REACTOR_PORT,
+                      properties -> properties.mapColor(MapColor.COLOR_LIGHT_GRAY)));
 
-    private static BlockBehaviour.Properties properties() {
-        return BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(5.0F, 5.0F).requiresCorrectToolForDrops();
-    }
-
-    private static <BLOCK extends Block & IHasDescription> BlockRegistryObject<BLOCK, ItemBlockTooltip<BLOCK>> register(
-          String name, Supplier<BLOCK> supplier) {
-        return BLOCKS.registerDetails(name, supplier);
+    private static <BLOCK extends Block & IHasDescription> BlockRegistryObject<BLOCK, ItemBlockTooltip<BLOCK>> registerTooltipBlock(
+          String name, Supplier<BLOCK> blockCreator) {
+        return BLOCKS.register(name, blockCreator, (block, properties) -> new ItemBlockTooltip<>(block, properties));
     }
 
     public static void addTabBlocks(CreativeModeTab.Output output) {

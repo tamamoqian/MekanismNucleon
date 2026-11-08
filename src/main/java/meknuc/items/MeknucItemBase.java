@@ -6,6 +6,8 @@ import java.util.function.Supplier;
 
 import com.mojang.serialization.Codec;
 import meknuc.meknuc;
+import meknuc.reactor.BwrLogicAdapterMode;
+import meknuc.reactor.tile.TileEntityPwrLogicAdapter;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -27,6 +29,14 @@ public class MeknucItemBase extends Item {
             DATA_COMPONENTS.register("rod_type", () -> DataComponentType.<String>builder().persistent(Codec.STRING).networkSynchronized(ByteBufCodecs.STRING_UTF8).build());
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Boolean>> ROD_HOT =
             DATA_COMPONENTS.register("rod_hot", () -> DataComponentType.<Boolean>builder().persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL).build());
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<TileEntityPwrLogicAdapter.PressurizedWaterReactorLogic>> PWR_LOGIC_TYPE =
+            DATA_COMPONENTS.register("pwr_logic_type", () -> DataComponentType.<TileEntityPwrLogicAdapter.PressurizedWaterReactorLogic>builder()
+                    .persistent(TileEntityPwrLogicAdapter.PressurizedWaterReactorLogic.CODEC)
+                    .networkSynchronized(TileEntityPwrLogicAdapter.PressurizedWaterReactorLogic.STREAM_CODEC).build());
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<BwrLogicAdapterMode>> BWR_LOGIC_TYPE =
+            DATA_COMPONENTS.register("bwr_logic_type", () -> DataComponentType.<BwrLogicAdapterMode>builder()
+                    .persistent(BwrLogicAdapterMode.CODEC)
+                    .networkSynchronized(BwrLogicAdapterMode.STREAM_CODEC).build());
     public static final DeferredItem<MeknucItemFuelRodBase> FUEL_ROD = registerNoTab("fuel_rod", () -> new MeknucItemFuelRodBase(new Item.Properties().stacksTo(16)));
     public static final DeferredItem<MeknucItemOreZircon> ZIRCON_ORE_ITEM = register("zircon_ore_item", () -> new MeknucItemOreZircon(new Item.Properties()));
     public static final DeferredItem<MeknucItemIngotZircon> ZIRCON_INGOT = register("zircon_ingot", () -> new MeknucItemIngotZircon(new Item.Properties()));

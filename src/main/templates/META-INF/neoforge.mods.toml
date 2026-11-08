@@ -10,9 +10,6 @@ license="${mod_license}"
     Mekanism: Nucleon description.
     '''
 
-[[mixins]]
-    config="meknuc.mixins.json"
-
 [[dependencies.${mod_id}]]
     modId="neoforge"
     type="required"

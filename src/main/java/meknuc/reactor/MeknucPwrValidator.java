@@ -164,11 +164,20 @@ public class MeknucPwrValidator extends CuboidStructureValidator<MeknucPwrMultib
     @Override
     public FormationResult postcheck(MeknucPwrMultiblockData structure, Long2ObjectMap<ChunkAccess> chunkMap) {
         Map<Long, Column> byColumn = new HashMap<>();
+        Set<BlockPos> fuelBlocks = new HashSet<>();
+        int surfaceArea = 0;
         for (BlockPos pos : structure.internalLocations) {
             Column column = byColumn.computeIfAbsent(columnKey(pos.getX(), pos.getZ()), key -> new Column());
             BlockEntity tile = WorldUtils.getTileEntity(world, chunkMap, pos);
             if (tile instanceof TileEntityPwrFuelAssembly) {
                 column.fuel.add(pos);
+                surfaceArea += 6;
+                for (Direction side : EnumUtils.DIRECTIONS) {
+                    if (fuelBlocks.contains(pos.relative(side))) {
+                        surfaceArea -= 2;
+                    }
+                }
+                fuelBlocks.add(pos);
             } else if (tile instanceof TileEntityPwrControlAssembly) {
                 if (column.controlRod != null) {
                     return FormationResult.fail(MeknucPwrLang.INVALID_EXTRA_CONTROL_ROD, pos);
@@ -180,7 +189,7 @@ public class MeknucPwrValidator extends CuboidStructureValidator<MeknucPwrMultib
             return FormationResult.fail(MeknucPwrLang.INVALID_MISSING_FUEL);
         }
 
-        List<MeknucPwrMultiblockData.FuelColumn> columns = new ArrayList<>();
+        int assemblies = 0;
         for (Map.Entry<Long, Column> entry : byColumn.entrySet()) {
             Column column = entry.getValue();
             if (column.fuel.isEmpty() && column.controlRod == null) {
@@ -206,10 +215,11 @@ public class MeknucPwrValidator extends CuboidStructureValidator<MeknucPwrMultib
             if (column.controlRod.getY() != top.getY() + 1) {
                 return FormationResult.fail(MeknucPwrLang.INVALID_BAD_CONTROL_ROD, column.controlRod);
             }
-            columns.add(new MeknucPwrMultiblockData.FuelColumn(base, fuel.size(), column.controlRod));
+            assemblies += fuel.size();
         }
 
-        structure.setFuelColumns(columns);
+        structure.setFuelAssemblies(assemblies);
+        structure.setSurfaceArea(surfaceArea);
         return FormationResult.SUCCESS;
     }
 

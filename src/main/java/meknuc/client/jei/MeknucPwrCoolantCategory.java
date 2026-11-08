@@ -6,7 +6,6 @@ import mekanism.api.chemical.ChemicalStack;
 import mekanism.api.text.EnumColor;
 import mekanism.client.gui.element.gauge.GaugeType;
 import mekanism.client.gui.element.gauge.GuiChemicalGauge;
-import mekanism.client.gui.element.gauge.GuiFluidGauge;
 import mekanism.client.gui.element.gauge.GuiGauge;
 import mekanism.client.recipe_viewer.jei.BaseRecipeCategory;
 import mekanism.client.recipe_viewer.jei.MekanismJEI;
@@ -26,8 +25,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.material.Fluids;
-import net.neoforged.neoforge.fluids.FluidStack;
 import org.jetbrains.annotations.Nullable;
 
 public class MeknucPwrCoolantCategory extends BaseRecipeCategory<MeknucPwrCoolantCategory.CoolantLoopRecipe> {
@@ -43,14 +40,14 @@ public class MeknucPwrCoolantCategory extends BaseRecipeCategory<MeknucPwrCoolan
     private static final int ARROW_Y = 35;
     private static final long PROCESSED_AMOUNT = 1L;
 
-    private final GuiGauge<?> waterTank;
-    private final GuiGauge<?> steamTank;
+    private final GuiGauge<?> coolantTank;
+    private final GuiGauge<?> heatedCoolantTank;
 
     public MeknucPwrCoolantCategory(IGuiHelper helper) {
         super(helper, RECIPE_VIEWER_TYPE);
-        this.waterTank = addElement(GuiFluidGauge.getDummy(GaugeType.STANDARD, this, WATER_TANK_X, TANK_Y)
+        this.coolantTank = addElement(GuiChemicalGauge.getDummy(GaugeType.STANDARD, this, WATER_TANK_X, TANK_Y)
               .setLabel(MeknucPwrLang.GUI_COOLANT_TANK.translateColored(EnumColor.INDIGO)));
-        this.steamTank = addElement(GuiChemicalGauge.getDummy(GaugeType.STANDARD, this, STEAM_TANK_X, TANK_Y)
+        this.heatedCoolantTank = addElement(GuiChemicalGauge.getDummy(GaugeType.STANDARD, this, STEAM_TANK_X, TANK_Y)
               .setLabel(MeknucPwrLang.GUI_HEATED_COOLANT_TANK.translateColored(EnumColor.ORANGE)));
     }
 
@@ -60,8 +57,8 @@ public class MeknucPwrCoolantCategory extends BaseRecipeCategory<MeknucPwrCoolan
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, CoolantLoopRecipe recipe, IFocusGroup focusGroup) {
-        initFluid(builder, RecipeIngredientRole.INPUT, waterTank, List.of(water(PROCESSED_AMOUNT)));
-        initChemical(builder, RecipeIngredientRole.OUTPUT, steamTank, List.of(highPressureSteam(PROCESSED_AMOUNT)));
+        initChemical(builder, RecipeIngredientRole.INPUT, coolantTank, List.of(boratedLightWater(PROCESSED_AMOUNT)));
+        initChemical(builder, RecipeIngredientRole.OUTPUT, heatedCoolantTank, List.of(pressurizedBoratedLightWater(PROCESSED_AMOUNT)));
     }
 
     @Override
@@ -81,12 +78,12 @@ public class MeknucPwrCoolantCategory extends BaseRecipeCategory<MeknucPwrCoolan
         return null;
     }
 
-    private static ChemicalStack highPressureSteam(long amount) {
-        return MeknucChemicals.HIGH_PRESSURE_STEAM.asStack(amount);
+    private static ChemicalStack boratedLightWater(long amount) {
+        return MeknucChemicals.BORATED_LIGHT_WATER.asStack(amount);
     }
 
-    private static FluidStack water(long amount) {
-        return new FluidStack(Fluids.WATER, (int) amount);
+    private static ChemicalStack pressurizedBoratedLightWater(long amount) {
+        return MeknucChemicals.PRESSURIZED_BORATED_LIGHT_WATER.asStack(amount);
     }
 
     public record CoolantLoopRecipe(ResourceLocation id) {

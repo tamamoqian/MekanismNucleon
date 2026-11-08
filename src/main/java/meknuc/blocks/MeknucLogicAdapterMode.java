@@ -6,6 +6,7 @@ import mekanism.api.text.IHasTextComponent.IHasEnumNameTextComponent;
 import meknuc.reactor.MeknucPwrLang;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 
 public enum MeknucLogicAdapterMode implements StringRepresentable, IHasEnumNameTextComponent {
     DISABLED("disabled", MeknucPwrLang.LOGIC_DISABLED, EnumColor.DARK_GRAY),
@@ -15,6 +16,8 @@ public enum MeknucLogicAdapterMode implements StringRepresentable, IHasEnumNameT
     CRITICAL_WASTE_LEVEL("critical_waste_level", MeknucPwrLang.LOGIC_CRITICAL_WASTE_LEVEL, EnumColor.RED),
     DAMAGED("damaged", MeknucPwrLang.LOGIC_DAMAGED, EnumColor.RED),
     ;
+
+    public static final EnumProperty<MeknucLogicAdapterMode> MODE = EnumProperty.create("mode", MeknucLogicAdapterMode.class);
 
     private final String name;
     private final ILangEntry langEntry;

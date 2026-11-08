@@ -1,0 +1,16 @@
+{
+  "type": "mekanism:dissolution",
+  "chemical_input": {
+    "amount": 10000,
+    "chemical": "mekanism:water_vapor"
+  },
+  "item_input": {
+    "count": 1,
+    "item": "meknuc:boron_dust"
+  },
+  "output": {
+    "amount": 10000,
+    "id": "meknuc:borated_light_water"
+  },
+  "per_tick_usage": false
+}

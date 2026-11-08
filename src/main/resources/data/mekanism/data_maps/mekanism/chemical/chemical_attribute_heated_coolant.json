@@ -1,0 +1,8 @@
+{
+  "values": {
+    "meknuc:pressurized_borated_light_water": {
+      "cool_variant": "meknuc:borated_light_water",
+      "thermal_enthalpy": 50.0
+    }
+  }
+}

@@ -92,6 +92,7 @@ public enum MeknucPwrLang implements ILangEntry {
 
     GUI_LOGIC_TITLE("reactor", "logic.title"),
     GUI_LOGIC_MODE("reactor", "logic.redstone_mode"),
+    REACTOR_LOGIC_REDSTONE_MODE("reactor", "logic.redstone_mode.tooltip"),
 
     JEI_REACTOR_FUEL("jei", "reactor_fuel"),
     JEI_REACTOR_FUEL_BURN_TIME("jei", "reactor_fuel.burn_time"),

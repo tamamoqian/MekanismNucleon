@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import meknuc.items.MeknucItemFuelRodBase;
 import meknuc.items.MeknucRodType;
+import meknuc.items.MeknucRodType.ReactorKind;
 import meknuc.reactor.MeknucPwrLang;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
@@ -40,7 +41,7 @@ public class MeknucPwrFuelCategory extends AbstractRecipeCategory<MeknucPwrFuelC
 
     public static List<PwrFuelRecipe> recipes() {
         return Arrays.stream(MeknucRodType.VALUES)
-              .filter(type -> type.burnTime() > 0)
+              .filter(type -> type.burnTime() > 0 && type.supports(ReactorKind.PWR))
               .map(type -> new PwrFuelRecipe(ResourceLocation.fromNamespaceAndPath(meknuc.meknuc.MODID, type.id()), type))
               .toList();
     }

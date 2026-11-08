@@ -35,6 +35,10 @@ public class MeknucItemFuelRodBase extends MeknucItemBase {
         return getRadiation(stack) <= 0;
     }
 
+    public static boolean isFull(ItemStack stack) {
+        return getRadiation(stack) >= MAX_RADIATION;
+    }
+
     public static boolean isHot(ItemStack stack) {
         return Boolean.TRUE.equals(stack.get(MeknucItemBase.ROD_HOT.get()));
     }

@@ -1,0 +1,1 @@
+{"ctm":{"ctm_version":1,"type":"CTM","layer":"SOLID","textures":["meknuc:ctm/spent_fuel_pool_coolant_output_port_ctm"],"extra":{"connect_to":[{"block":"meknuc:spent_fuel_pool_radiation_resistant_casing"},{"block":"meknuc:spent_fuel_pool_port"},{"block":"meknuc:spent_fuel_pool_logic_adapter"}]}}}

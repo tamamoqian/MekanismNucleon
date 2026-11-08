@@ -3,6 +3,7 @@ package meknuc.reactor;
 import mekanism.common.lib.multiblock.MultiblockCache;
 import mekanism.common.lib.multiblock.MultiblockCache.RejectContents;
 import mekanism.common.util.NBTUtils;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
@@ -37,6 +38,9 @@ public class MeknucPwrCache extends MultiblockCache<MeknucPwrMultiblockData> {
 
     @Override
     public void apply(Provider provider, MeknucPwrMultiblockData data) {
+        if (getChemicalTanks(null).size() != data.getChemicalTanks((Direction) null).size()) {
+            getChemicalTanks(null).clear();
+        }
         super.apply(provider, data);
         data.setActive(active);
         data.restoreAutoStopOnFuelExhausted(autoStopOnFuelExhausted);
@@ -59,6 +63,9 @@ public class MeknucPwrCache extends MultiblockCache<MeknucPwrMultiblockData> {
 
     @Override
     public void sync(MeknucPwrMultiblockData data) {
+        if (getChemicalTanks(null).size() != data.getChemicalTanks((Direction) null).size()) {
+            getChemicalTanks(null).clear();
+        }
         super.sync(data);
         active = data.isActive();
         autoStopOnFuelExhausted = data.isAutoStopOnFuelExhausted();

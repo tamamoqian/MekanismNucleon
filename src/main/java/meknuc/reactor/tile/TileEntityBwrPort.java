@@ -1,0 +1,75 @@
+package meknuc.reactor.tile;
+
+import java.util.List;
+import mekanism.api.IContentsListener;
+import mekanism.api.text.EnumColor;
+import mekanism.common.MekanismLang;
+import mekanism.common.attachments.containers.ContainerType;
+import mekanism.common.capabilities.Capabilities;
+import mekanism.common.capabilities.holder.chemical.IChemicalTankHolder;
+import mekanism.common.capabilities.holder.fluid.IFluidTankHolder;
+import mekanism.common.capabilities.holder.slot.IInventorySlotHolder;
+import meknuc.reactor.AttributeStateBwrPortMode;
+import meknuc.reactor.AttributeStateBwrPortMode.BwrPortMode;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.capabilities.BlockCapability;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+public class TileEntityBwrPort extends TileEntityBwrPart {
+
+    private final List<BlockCapability<?, @Nullable Direction>> portCapabilities = List.of(Capabilities.ITEM.block(),
+          Capabilities.FLUID.block(), Capabilities.CHEMICAL.block());
+
+    public TileEntityBwrPort(BlockPos pos, BlockState state) {
+        super(pos, state);
+    }
+
+    public BwrPortMode getMode() {
+        return getBlockState().getValue(AttributeStateBwrPortMode.modeProperty);
+    }
+
+    public void setMode(BwrPortMode mode) {
+        if (mode != getMode()) {
+            level.setBlockAndUpdate(worldPosition, getBlockState().setValue(AttributeStateBwrPortMode.modeProperty, mode));
+            invalidateCapabilitiesAll(portCapabilities);
+        }
+    }
+
+    @NotNull
+    @Override
+    protected IInventorySlotHolder getInitialInventory(IContentsListener listener) {
+        return side -> getMultiblock().getInventorySlots(getMode());
+    }
+
+    @NotNull
+    @Override
+    protected IFluidTankHolder getInitialFluidTanks(IContentsListener listener) {
+        return side -> getMultiblock().getFluidTanks(getMode());
+    }
+
+    @NotNull
+    @Override
+    public IChemicalTankHolder getInitialChemicalTanks(IContentsListener listener) {
+        return side -> getMultiblock().getChemicalTanks(getMode());
+    }
+
+    @Override
+    public boolean persists(ContainerType<?, ?, ?> type) {
+        return type != ContainerType.HEAT && type != ContainerType.CHEMICAL && type != ContainerType.FLUID && super.persists(type);
+    }
+
+    @Override
+    public InteractionResult onSneakRightClick(Player player) {
+        if (!isRemote()) {
+            BwrPortMode mode = getMode().getNext();
+            setMode(mode);
+            player.displayClientMessage(MekanismLang.BOILER_VALVE_MODE_CHANGE.translateColored(EnumColor.GRAY, mode), true);
+        }
+        return InteractionResult.SUCCESS;
+    }
+}

@@ -2,6 +2,7 @@ package meknuc.reactor;
 
 import meknuc.items.MeknucItemFuelRodBase;
 import meknuc.items.MeknucRodType;
+import meknuc.items.MeknucRodType.ReactorKind;
 import net.minecraft.world.item.ItemStack;
 
 public class MeknucPwrFuels {
@@ -11,7 +12,8 @@ public class MeknucPwrFuels {
             return null;
         }
         MeknucRodType type = MeknucItemFuelRodBase.getRodType(stack);
-        return type.burnTime() > 0 && !MeknucItemFuelRodBase.isDepleted(stack) ? type : null;
+        return type.burnTime() > 0 && type.supports(ReactorKind.PWR) && MeknucItemFuelRodBase.isFull(stack)
+              ? type : null;
     }
 
     public static boolean isFuel(ItemStack stack) {

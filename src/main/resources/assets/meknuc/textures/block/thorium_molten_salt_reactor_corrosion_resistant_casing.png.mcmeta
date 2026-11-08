@@ -1,0 +1,1 @@
+{"ctm":{"ctm_version":1,"type":"CTM","layer":"SOLID","textures":["meknuc:ctm/thorium_molten_salt_reactor_corrosion_resistant_casing_ctm"],"extra":{"connect_to":[{"block":"meknuc:thorium_molten_salt_reactor_corrosion_resistant_casing"},{"block":"meknuc:thorium_molten_salt_reactor_port"}]}}}

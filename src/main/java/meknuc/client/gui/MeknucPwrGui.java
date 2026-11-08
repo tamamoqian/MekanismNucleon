@@ -13,7 +13,6 @@ import mekanism.client.gui.element.bar.GuiDynamicHorizontalRateBar;
 import mekanism.client.gui.element.button.TranslationButton;
 import mekanism.client.gui.element.gauge.GaugeType;
 import mekanism.client.gui.element.gauge.GuiChemicalGauge;
-import mekanism.client.gui.element.gauge.GuiFluidGauge;
 import mekanism.client.gui.element.graph.GuiDoubleGraph;
 import mekanism.client.gui.element.tab.GuiHeatTab;
 import mekanism.common.MekanismLang;
@@ -29,13 +28,11 @@ import meknuc.reactor.MeknucPwrMultiblockData;
 import meknuc.reactor.tile.TileEntityPwrPart;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 public class MeknucPwrGui extends GuiMekanismTile<TileEntityPwrPart, MeknucPwrContainer> {
@@ -87,11 +84,11 @@ public class MeknucPwrGui extends GuiMekanismTile<TileEntityPwrPart, MeknucPwrCo
     @Override
     protected void addGuiElements() {
         super.addGuiElements();
-        addRenderableWidget(new GuiFluidGauge(() -> multiblock().waterTank,
-              () -> List.of(multiblock().waterTank), GaugeType.STANDARD, this, COOLANT_GAUGE_X, GAUGE_Y)
+        addRenderableWidget(new GuiChemicalGauge(() -> multiblock().coolantTank,
+              () -> List.of(multiblock().coolantTank), GaugeType.STANDARD, this, COOLANT_GAUGE_X, GAUGE_Y)
               .setLabel(MeknucPwrLang.GUI_COOLANT_TANK.translate()));
-        addRenderableWidget(new GuiChemicalGauge(() -> multiblock().steamTank,
-              () -> List.of(multiblock().steamTank), GaugeType.STANDARD, this, HOT_COOLANT_GAUGE_X, GAUGE_Y)
+        addRenderableWidget(new GuiChemicalGauge(() -> multiblock().heatedCoolantTank,
+              () -> List.of(multiblock().heatedCoolantTank), GaugeType.STANDARD, this, HOT_COOLANT_GAUGE_X, GAUGE_Y)
               .setLabel(MeknucPwrLang.GUI_HEATED_COOLANT_TANK.translate()));
         addRenderableWidget(new GuiInnerScreen(this, PANEL_X, PANEL_Y, PANEL_WIDTH, PANEL_HEIGHT, this::infoLines).spacing(0));
         addRenderableWidget(new MeknucPwrTab(this, tile, PwrTab.STAT));
@@ -173,14 +170,26 @@ public class MeknucPwrGui extends GuiMekanismTile<TileEntityPwrPart, MeknucPwrCo
               MeknucPwrLang.GUI_BURN_TIME.translate(EnumColor.WHITE, multiblock.isBurnPaused()
                     ? MeknucPwrLang.GUI_BURN_STOPPED.translate()
                     : Component.literal(formatBurnTime(multiblock.getDisplayedBurnTime()))),
-              MeknucPwrLang.GUI_TEMPERATURE.translate(EnumColor.RED,
+              MeknucPwrLang.GUI_TEMPERATURE.translate(temperatureColor(multiblock.getTemperature()),
                     MekanismUtils.getTemperatureDisplay(multiblock.getTemperature(), TemperatureUnit.KELVIN, true)),
-              damage,
-              MeknucPwrLang.GUI_COOLANT_USAGE.translate(EnumColor.WHITE,
-                    Component.literal(TextUtils.format(multiblock.getLastFlow()))),
-              MeknucPwrLang.GUI_STEAM_PRODUCTION.translate(EnumColor.WHITE,
-                    Component.literal(TextUtils.format(multiblock.getLastFlow())))
+              damage
         );
+    }
+
+    private static EnumColor temperatureColor(double temperature) {
+        if (temperature < 600.0) {
+            return EnumColor.BRIGHT_GREEN;
+        }
+        if (temperature < 1000.0) {
+            return EnumColor.YELLOW;
+        }
+        if (temperature < 1200.0) {
+            return EnumColor.ORANGE;
+        }
+        if (temperature < 1600.0) {
+            return EnumColor.RED;
+        }
+        return EnumColor.DARK_RED;
     }
 
     private static String fuelCountText(int count) {
@@ -199,16 +208,16 @@ public class MeknucPwrGui extends GuiMekanismTile<TileEntityPwrPart, MeknucPwrCo
         MeknucPwrMultiblockData multiblock = multiblock();
         activateButton.active = !multiblock.isActive() && !multiblock.isMeltedDown();
         drawCacheBar(guiGraphics, FUEL_BAR_X, multiblock.getFuelCount(), multiblock.getInCoreCount(),
-              multiblock.getFuelItemId(), CACHE_FUEL_COLOR, MeknucPwrLang.GUI_FUEL, MeknucPwrLang.GUI_FUEL_HINT,
+              multiblock.getFuelStack(), CACHE_FUEL_COLOR, MeknucPwrLang.GUI_FUEL, MeknucPwrLang.GUI_FUEL_HINT,
               mouseX, mouseY);
-        drawCacheBar(guiGraphics, WASTE_BAR_X, multiblock.getWasteCount(), 0, multiblock.getWasteItemId(),
+        drawCacheBar(guiGraphics, WASTE_BAR_X, multiblock.getWasteCount(), 0, multiblock.getWasteStack(),
               CACHE_WASTE_COLOR, MeknucPwrLang.GUI_WASTE, null, mouseX, mouseY);
         drawControlRodBar(guiGraphics);
         drawLabels(guiGraphics, multiblock);
         super.drawForegroundText(guiGraphics, mouseX, mouseY);
     }
 
-    private void drawCacheBar(GuiGraphics guiGraphics, int x, int count, int inCore, int itemId, int color,
+    private void drawCacheBar(GuiGraphics guiGraphics, int x, int count, int inCore, ItemStack stack, int color,
           MeknucPwrLang label, MeknucPwrLang hint, int mouseX, int mouseY) {
         drawBarFrame(guiGraphics, x, GAUGE_Y, BAR_WIDTH, GAUGE_HEIGHT);
         int stored = Math.min(MeknucPwrMultiblockData.CACHE_CAPACITY, count + inCore);
@@ -219,9 +228,8 @@ public class MeknucPwrGui extends GuiMekanismTile<TileEntityPwrPart, MeknucPwrCo
         if (isHovering(mouseX - leftPos, mouseY - topPos, x, GAUGE_Y, BAR_WIDTH, GAUGE_HEIGHT)) {
             List<Component> lines = new ArrayList<>();
             lines.add(label.translate(EnumColor.WHITE, Component.literal(fuelCountText(count))));
-            Component name = itemName(itemId);
-            if (name != null) {
-                lines.add(name);
+            if (!stack.isEmpty()) {
+                lines.add(stack.getHoverName());
             }
             if (inCore > 0) {
                 lines.add(MeknucPwrLang.GUI_IN_CORE.translate(EnumColor.AQUA, Component.literal(Integer.toString(inCore))));
@@ -231,14 +239,6 @@ public class MeknucPwrGui extends GuiMekanismTile<TileEntityPwrPart, MeknucPwrCo
             }
             drawTooltip(guiGraphics, mouseX, mouseY, lines);
         }
-    }
-
-    private static Component itemName(int itemId) {
-        if (itemId <= 0) {
-            return null;
-        }
-        Item item = BuiltInRegistries.ITEM.byId(itemId);
-        return item == null || item == Items.AIR ? null : item.getDefaultInstance().getHoverName();
     }
 
     private void drawControlRodBar(GuiGraphics guiGraphics) {

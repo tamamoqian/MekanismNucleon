@@ -1,6 +1,9 @@
 package meknuc.reactor.tile;
 
+import com.mojang.serialization.Codec;
+import io.netty.buffer.ByteBuf;
 import java.util.EnumSet;
+import java.util.Locale;
 import java.util.function.IntFunction;
 import mekanism.api.text.EnumColor;
 import mekanism.api.text.ILangEntry;
@@ -10,18 +13,24 @@ import mekanism.common.inventory.container.MekanismContainer;
 import mekanism.common.inventory.container.sync.SyncableEnum;
 import mekanism.common.tile.interfaces.IRedstoneControl.RedstoneControl;
 import mekanism.common.util.NBTUtils;
+import meknuc.items.MeknucItemBase;
 import meknuc.reactor.MeknucPwrLang;
 import meknuc.reactor.MeknucPwrMultiblockData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup.Provider;
+import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.ByIdMap;
 import net.minecraft.util.ByIdMap.OutOfBoundsStrategy;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.event.EventHooks;
 import org.jetbrains.annotations.NotNull;
@@ -158,6 +167,18 @@ public class TileEntityPwrLogicAdapter extends TileEntityPwrPart {
     }
 
     @Override
+    protected void collectImplicitComponents(DataComponentMap.Builder builder) {
+        super.collectImplicitComponents(builder);
+        builder.set(MeknucItemBase.PWR_LOGIC_TYPE, logicType);
+    }
+
+    @Override
+    protected void applyImplicitComponents(BlockEntity.DataComponentInput input) {
+        super.applyImplicitComponents(input);
+        logicType = input.getOrDefault(MeknucItemBase.PWR_LOGIC_TYPE, logicType);
+    }
+
+    @Override
     public void addContainerTrackers(MekanismContainer container) {
         super.addContainerTrackers(container);
         container.track(SyncableEnum.create(PressurizedWaterReactorLogic.BY_ID, PressurizedWaterReactorLogic.DISABLED,
@@ -171,7 +192,7 @@ public class TileEntityPwrLogicAdapter extends TileEntityPwrPart {
         return false;
     }
 
-    public enum PressurizedWaterReactorLogic implements IHasEnumNameTranslationKey {
+    public enum PressurizedWaterReactorLogic implements IHasEnumNameTranslationKey, StringRepresentable {
         DISABLED(MeknucPwrLang.LOGIC_DISABLED, MeknucPwrLang.DESCRIPTION_LOGIC_DISABLED,
               new ItemStack(Items.GUNPOWDER), EnumColor.DARK_GRAY),
         ACTIVATION(MeknucPwrLang.LOGIC_ACTIVATION, MeknucPwrLang.DESCRIPTION_LOGIC_ACTIVATION,
@@ -185,19 +206,30 @@ public class TileEntityPwrLogicAdapter extends TileEntityPwrPart {
         DAMAGED(MeknucPwrLang.LOGIC_DAMAGED, MeknucPwrLang.DESCRIPTION_LOGIC_DAMAGED,
               new ItemStack(Items.REDSTONE), EnumColor.RED);
 
+        public static final Codec<PressurizedWaterReactorLogic> CODEC =
+              StringRepresentable.fromEnum(PressurizedWaterReactorLogic::values);
         public static final IntFunction<PressurizedWaterReactorLogic> BY_ID =
               ByIdMap.continuous(Enum::ordinal, values(), OutOfBoundsStrategy.WRAP);
+        public static final StreamCodec<ByteBuf, PressurizedWaterReactorLogic> STREAM_CODEC =
+              ByteBufCodecs.idMapper(BY_ID, Enum::ordinal);
 
         private final ILangEntry name;
         private final ILangEntry description;
         private final ItemStack renderStack;
         private final EnumColor color;
+        private final String serializedName;
 
         PressurizedWaterReactorLogic(ILangEntry name, ILangEntry description, ItemStack renderStack, EnumColor color) {
             this.name = name;
             this.description = description;
             this.renderStack = renderStack;
             this.color = color;
+            this.serializedName = name().toLowerCase(Locale.ROOT);
+        }
+
+        @Override
+        public String getSerializedName() {
+            return serializedName;
         }
 
         public ItemStack getRenderStack() {

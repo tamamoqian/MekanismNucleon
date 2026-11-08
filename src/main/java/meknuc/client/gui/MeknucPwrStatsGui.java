@@ -55,12 +55,12 @@ public class MeknucPwrStatsGui
     protected void drawForegroundText(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY) {
         renderTitleText(guiGraphics);
         MeknucPwrMultiblockData multiblock = multiblock();
-        int rods = multiblock.getFuelRodCount();
+        int rods = multiblock.getFuelAssemblies();
         drawRow(guiGraphics, MeknucPwrLang.GUI_HEAT_STATISTICS.translate(), 26, headingTextColor());
         drawRow(guiGraphics, MeknucPwrLang.GUI_HEAT_CAPACITY.translate(
               TextUtils.format(rods * MeknucPwrMultiblockData.HEAT_CAPACITY_PER_ROD)), 38, titleTextColor());
         drawRow(guiGraphics, MeknucPwrLang.GUI_MAX_EXCHANGE.translate(
-              TextUtils.format(rods * MeknucPwrMultiblockData.EXCHANGE_PER_ROD)), 48, titleTextColor());
+              TextUtils.format(rods * MeknucPwrMultiblockData.EXCHANGE_PER_ROD * multiblock.getBoilEfficiency())), 48, titleTextColor());
         drawRow(guiGraphics, MeknucPwrLang.GUI_COOLANT_CAPACITY.translate(
               TextUtils.format(multiblock.waterCapacity())), 58, titleTextColor());
         drawRow(guiGraphics, MeknucPwrLang.GUI_TEMPERATURE.translate(
@@ -89,9 +89,6 @@ public class MeknucPwrStatsGui
 
         drawRow(guiGraphics, MeknucPwrLang.GUI_OPERATING_STATISTICS.translate(), 168, headingTextColor());
         drawRow(guiGraphics, coreDamageText(multiblock), 180, coreDamageColor(multiblock));
-        String flow = TextUtils.format(multiblock.getLastFlow());
-        drawRow(guiGraphics, MeknucPwrLang.GUI_COOLANT_USAGE.translate(flow), 190, titleTextColor());
-        drawRow(guiGraphics, MeknucPwrLang.GUI_STEAM_PRODUCTION.translate(flow), 200, titleTextColor());
         super.drawForegroundText(guiGraphics, mouseX, mouseY);
     }
 

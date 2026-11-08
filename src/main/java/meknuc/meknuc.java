@@ -2,7 +2,6 @@ package meknuc;
 
 import meknuc.blockentities.MeknucTileEntityTypes;
 import meknuc.blocks.MeknucBlockBase;
-import meknuc.blocks.MeknucBwrBlocks;
 import meknuc.blocks.MeknucFbrBlocks;
 import meknuc.blocks.MeknucHtgrBlocks;
 import meknuc.blocks.MeknucHwrBlocks;
@@ -20,6 +19,12 @@ import meknuc.reactor.MeknucPwrLogicPacket;
 import meknuc.reactor.MeknucPwrOpenGuiPacket;
 import meknuc.reactor.MeknucPwrTileEntityTypes;
 import meknuc.reactor.MeknucPwrSounds;
+import meknuc.reactor.MeknucBwrBlocks;
+import meknuc.reactor.MeknucBwrContainerTypes;
+import meknuc.reactor.MeknucBwrLogicPacket;
+import meknuc.reactor.MeknucBwrMultiblock;
+import meknuc.reactor.MeknucBwrOpenGuiPacket;
+import meknuc.reactor.MeknucBwrTileEntityTypes;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -71,8 +76,8 @@ public class meknuc {
         modEventBus.addListener(this::registerPayloads);
 
         MeknucPwrMultiblock.initialize();
+        MeknucBwrMultiblock.initialize();
         MeknucBlockBase.BLOCKS.register(modEventBus);
-        MeknucBwrBlocks.BLOCKS.register(modEventBus);
         MeknucHwrBlocks.BLOCKS.register(modEventBus);
         MeknucSpentFuelPoolBlocks.BLOCKS.register(modEventBus);
         MeknucFbrBlocks.BLOCKS.register(modEventBus);
@@ -83,9 +88,12 @@ public class meknuc {
         MeknucItemBase.ITEMS.register(modEventBus);
         MeknucItemBase.DATA_COMPONENTS.register(modEventBus);
         MeknucPwrBlocks.BLOCKS.register(modEventBus);
+        MeknucBwrBlocks.BLOCKS.register(modEventBus);
         MeknucChemicals.CHEMICALS.register(modEventBus);
         MeknucPwrTileEntityTypes.TILE_ENTITY_TYPES.register(modEventBus);
         MeknucPwrContainerTypes.CONTAINER_TYPES.register(modEventBus);
+        MeknucBwrTileEntityTypes.TILE_ENTITY_TYPES.register(modEventBus);
+        MeknucBwrContainerTypes.CONTAINER_TYPES.register(modEventBus);
         MeknucTileEntityTypes.TILE_ENTITY_TYPES.register(modEventBus);
         MeknucMenuTypes.CONTAINER_TYPES.register(modEventBus);
         MeknucPwrSounds.SOUND_EVENTS.register(modEventBus);
@@ -106,6 +114,10 @@ public class meknuc {
               MeknucPwrLogicPacket::handle);
         registrar.playToServer(MeknucPwrOpenGuiPacket.TYPE, MeknucPwrOpenGuiPacket.STREAM_CODEC,
               MeknucPwrOpenGuiPacket::handle);
+        registrar.playToServer(MeknucBwrLogicPacket.TYPE, MeknucBwrLogicPacket.STREAM_CODEC,
+              MeknucBwrLogicPacket::handle);
+        registrar.playToServer(MeknucBwrOpenGuiPacket.TYPE, MeknucBwrOpenGuiPacket.STREAM_CODEC,
+              MeknucBwrOpenGuiPacket::handle);
     }
 
     @SubscribeEvent
