@@ -9,6 +9,7 @@ import mekanism.common.content.blocktype.BlockTypeTile;
 import mekanism.common.content.blocktype.BlockTypeTile.BlockTileBuilder;
 import mekanism.common.registration.impl.TileEntityTypeRegistryObject;
 import mekanism.common.tile.base.TileEntityMekanism;
+import meknuc.blockentities.MeknucBlockEntityLogicAdapter;
 import meknuc.blockentities.MeknucBlockEntityReactorPart;
 import meknuc.blockentities.MeknucBlockEntityReactorPort;
 import meknuc.blockentities.MeknucTileEntityTypes;
@@ -41,6 +42,10 @@ public class MeknucFbrBlockTypes {
     public static final BlockTypeTile<MeknucBlockEntityReactorPort> FAST_BREEDER_REACTOR_PORT =
           createPort(MeknucBlockReactorLang.FAST_BREEDER_REACTOR_PORT, () -> MeknucTileEntityTypes.FAST_BREEDER_REACTOR_PORT, MODE_ATTRIBUTE);
 
+    public static final BlockTypeTile<MeknucBlockEntityLogicAdapter> FAST_BREEDER_REACTOR_LOGIC_ADAPTER =
+          createLogicAdapter(MeknucBlockReactorLang.FAST_BREEDER_REACTOR_LOGIC_ADAPTER,
+                () -> MeknucTileEntityTypes.FAST_BREEDER_REACTOR_LOGIC_ADAPTER);
+
     @SuppressWarnings({"unchecked", "rawtypes"})
     private static <TILE extends TileEntityMekanism> BlockTypeTile<TILE> createExternal(
           MeknucBlockReactorLang description, Supplier<TileEntityTypeRegistryObject<TILE>> tileType) {
@@ -56,6 +61,15 @@ public class MeknucFbrBlockTypes {
         BlockTileBuilder builder = (BlockTileBuilder) BlockTileBuilder.createBlock(tileType, description);
         builder.with(new Attribute[]{mode});
         return (BlockTypeTile<MeknucBlockEntityReactorPort>) ((BlockTileBuilder) builder.externalMultiblock()).build();
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    private static BlockTypeTile<MeknucBlockEntityLogicAdapter> createLogicAdapter(
+          MeknucBlockReactorLang description,
+          Supplier<TileEntityTypeRegistryObject<MeknucBlockEntityLogicAdapter>> tileType) {
+        BlockTileBuilder builder = (BlockTileBuilder) BlockTileBuilder.createBlock(tileType, description);
+        builder.with(new Attribute[]{new AttributeStateLogicAdapterMode<>(MeknucLogicAdapterMode.MODE, MeknucLogicAdapterMode.DISABLED)});
+        return (BlockTypeTile<MeknucBlockEntityLogicAdapter>) ((BlockTileBuilder) builder.externalMultiblock()).build();
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})

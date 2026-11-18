@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    " O ",
+    "RCR",
+    " O "
+  ],
+  "key": {
+    "O": {
+      "item": "mekanism:ingot_refined_obsidian"
+    },
+    "R": {
+      "item": "meknuc:radiation_resistant_high_strength_alloy_ingot"
+    },
+    "C": {
+      "item": "mekanism:steel_casing"
+    }
+  },
+  "result": {
+    "id": "meknuc:high_temperature_graphite_gas_cooled_reactor_casing",
+    "count": 4
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "ANA",
+    "NMN",
+    "ANA"
+  ],
+  "key": {
+    "A": {
+      "item": "mekanism:pellet_antimatter"
+    },
+    "N": {
+      "item": "meknuc:neutronium_ingot"
+    },
+    "M": {
+      "item": "mekanism:module_base"
+    }
+  },
+  "result": {
+    "id": "meknuc:module_neutron_armor_unit",
+    "count": 1
+  }
+}

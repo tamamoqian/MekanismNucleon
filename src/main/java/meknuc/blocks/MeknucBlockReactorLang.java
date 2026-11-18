@@ -15,6 +15,7 @@ public enum MeknucBlockReactorLang implements ILangEntry {
     FAST_BREEDER_REACTOR_RADIATION_RESISTANT_CONTROL_ASSEMBLY("description", "fast_breeder_reactor_radiation_resistant_control_assembly"),
     FAST_BREEDER_REACTOR_RADIATION_RESISTANT_FUEL_ASSEMBLY("description", "fast_breeder_reactor_radiation_resistant_fuel_assembly"),
     FAST_BREEDER_REACTOR_PORT("description", "fast_breeder_reactor_port"),
+    FAST_BREEDER_REACTOR_LOGIC_ADAPTER("description", "fast_breeder_reactor_logic_adapter"),
     HEAVY_WATER_REACTOR_CASING("description", "heavy_water_reactor_casing"),
     HEAVY_WATER_REACTOR_CONTROL_ASSEMBLY("description", "heavy_water_reactor_control_assembly"),
     HEAVY_WATER_REACTOR_FUEL_ASSEMBLY("description", "heavy_water_reactor_fuel_assembly"),

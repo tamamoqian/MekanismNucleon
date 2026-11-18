@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " A ",
+    "ACA",
+    " A "
+  ],
+  "key": {
+    "A": {
+      "item": "meknuc:radiation_resistant_waste_storage_casing"
+    },
+    "C": {
+      "item": "mekanism:advanced_control_circuit"
+    }
+  },
+  "result": {
+    "id": "meknuc:radiation_resistant_waste_storage_port",
+    "count": 2
+  }
+}

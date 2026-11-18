@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " A ",
+    "ACA",
+    " A "
+  ],
+  "key": {
+    "A": {
+      "item": "meknuc:fast_breeder_reactor_casing"
+    },
+    "C": {
+      "item": "meknuc:radiation_control_circuit"
+    }
+  },
+  "result": {
+    "id": "meknuc:fast_breeder_reactor_port",
+    "count": 2
+  }
+}

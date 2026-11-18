@@ -80,6 +80,11 @@ public class MeknucTileEntityTypes {
                 .withSimple(Capabilities.CONFIGURABLE)
                 .build();
 
+    public static final TileEntityTypeRegistryObject<MeknucBlockEntityLogicAdapter> FAST_BREEDER_REACTOR_LOGIC_ADAPTER =
+          TILE_ENTITY_TYPES.mekBuilder(MeknucFbrBlocks.FAST_BREEDER_REACTOR_LOGIC_ADAPTER, MeknucBlockEntityLogicAdapter::new)
+                .withSimple(Capabilities.CONFIGURABLE)
+                .build();
+
     public static final TileEntityTypeRegistryObject<MeknucBlockEntityReactorPart> HIGH_TEMPERATURE_GRAPHITE_GAS_COOLED_REACTOR_CASING =
           TILE_ENTITY_TYPES.mekBuilder(MeknucHtgrBlocks.HIGH_TEMPERATURE_GRAPHITE_GAS_COOLED_REACTOR_CASING, MeknucBlockEntityReactorPart::new)
                 .build();

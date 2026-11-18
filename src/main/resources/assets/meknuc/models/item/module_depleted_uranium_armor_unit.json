@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "meknuc:item/module_depleted_uranium_armor_unit"
+  }
+}

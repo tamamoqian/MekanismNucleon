@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "RLR",
+    "LML",
+    "RLR"
+  ],
+  "key": {
+    "R": {
+      "item": "meknuc:radiation_resistant_high_strength_alloy_ingot"
+    },
+    "L": {
+      "item": "meknuc:lead_based_alloy_ingot"
+    },
+    "M": {
+      "item": "mekanism:module_base"
+    }
+  },
+  "result": {
+    "id": "meknuc:module_radiation_isolation_unit",
+    "count": 1
+  }
+}

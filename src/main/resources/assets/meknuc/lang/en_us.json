@@ -279,6 +279,7 @@
   "block.meknuc.spent_fuel_pool_port": "Spent Fuel Pool Port",
   "block.meknuc.spent_fuel_pool_logic_adapter": "Spent Fuel Pool Logic Adapter",
   "block.meknuc.fast_breeder_reactor_port": "Fast Breeder Reactor Port",
+  "block.meknuc.fast_breeder_reactor_logic_adapter": "Fast Breeder Reactor Logic Adapter",
   "block.meknuc.high_temperature_graphite_gas_cooled_reactor_port": "High Temperature Graphite Gas Cooled Reactor Port",
   "block.meknuc.high_temperature_graphite_gas_cooled_reactor_logic_adapter": "High Temperature Graphite Gas Cooled Reactor Logic Adapter",
   "block.meknuc.particle_accelerator_port": "Particle Accelerator Port",
@@ -336,6 +337,7 @@
   "description.meknuc.fast_breeder_reactor_radiation_resistant_control_assembly": "Adjusts the reaction rate of the fast breeder reactor.",
   "description.meknuc.fast_breeder_reactor_radiation_resistant_fuel_assembly": "Holds nuclear fuel. Placed inside a formed fast breeder reactor.",
   "description.meknuc.fast_breeder_reactor_port": "Functional port for the fast breeder reactor. Sneak-right-click with a Configurator to change mode.",
+  "description.meknuc.fast_breeder_reactor_logic_adapter": "Controls the fast breeder reactor with redstone. Sneak-right-click with a Configurator to change mode.",
   "description.meknuc.heavy_water_reactor_casing": "Structural casing for the heavy water reactor.",
   "description.meknuc.heavy_water_reactor_control_assembly": "Adjusts the reaction rate of the heavy water reactor.",
   "description.meknuc.heavy_water_reactor_fuel_assembly": "Holds nuclear fuel. Placed inside a formed heavy water reactor.",
@@ -360,5 +362,15 @@
   "description.meknuc.spent_fuel_pool_logic_adapter": "Controls the spent fuel pool with redstone. Sneak-right-click with a Configurator to change mode.",
   "description.meknuc.radiation_resistant_waste_storage_casing": "Radiation resistant structural casing for the waste storage.",
   "description.meknuc.radiation_resistant_waste_storage_port": "Functional port for the radiation resistant waste storage. Sneak-right-click with a Configurator to change mode.",
-  "item.meknuc.unsintered_test_fuel_rod": "Unsintered Test Fuel Rod"
+  "item.meknuc.unsintered_test_fuel_rod": "Unsintered Test Fuel Rod",
+  "module.meknuc.radiation_isolation_unit": "Radiation Isolation Unit",
+  "module.meknuc.depleted_uranium_armor_unit": "Depleted Uranium Armor Unit",
+  "module.meknuc.radiation_counterattack_unit": "Radiation Counterattack Unit",
+  "module.meknuc.neutron_armor_unit": "Neutron Armor Unit",
+  "module.meknuc.radioisotope_energy_generation_unit": "Radioisotope Energy Generation Unit",
+  "description.meknuc.radiation_isolation_unit": "While wearing a full MekaSuit, grants immunity to radiation damage from carried radioactive items.",
+  "description.meknuc.depleted_uranium_armor_unit": "While wearing a full MekaSuit, each unit provides 10 points of damage reduction (up to 4 stacks); reduced damage does not consume suit energy.",
+  "description.meknuc.radiation_counterattack_unit": "While wearing a full MekaSuit, each unit reflects 50% of damage taken back to the attacker, ignoring armor and armor toughness; 1 FE per point reflected.",
+  "description.meknuc.neutron_armor_unit": "While wearing a full MekaSuit, cancels all damage taken.",
+  "description.meknuc.radioisotope_energy_generation_unit": "When installed on the leggings and wearing a full MekaSuit, each unit generates 100,000 FE per tick for the suit."
 }

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " A ",
+    "ACA",
+    " A "
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:redstone"
+    },
+    "C": {
+      "item": "meknuc:spent_fuel_pool_radiation_resistant_casing"
+    }
+  },
+  "result": {
+    "id": "meknuc:spent_fuel_pool_logic_adapter",
+    "count": 1
+  }
+}

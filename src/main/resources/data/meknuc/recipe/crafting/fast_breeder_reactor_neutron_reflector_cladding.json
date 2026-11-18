@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "BRB",
+    "B B",
+    "BRB"
+  ],
+  "key": {
+    "B": {
+      "item": "meknuc:beryllium_ingot"
+    },
+    "R": {
+      "item": "meknuc:radiation_resistant_high_strength_alloy_ingot"
+    }
+  },
+  "result": {
+    "id": "meknuc:fast_breeder_reactor_neutron_reflector_cladding",
+    "count": 1
+  }
+}

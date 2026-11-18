@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " A ",
+    "ACA",
+    " A "
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:redstone"
+    },
+    "C": {
+      "item": "meknuc:fast_breeder_reactor_casing"
+    }
+  },
+  "result": {
+    "id": "meknuc:fast_breeder_reactor_logic_adapter",
+    "count": 1
+  }
+}

@@ -12,6 +12,8 @@ import meknuc.blocks.MeknucWasteStorageBlocks;
 import meknuc.chemicals.MeknucChemicals;
 import meknuc.items.MeknucItemBase;
 import meknuc.menu.MeknucMenuTypes;
+import meknuc.modules.MeknucModules;
+import meknuc.modules.MeknucSuitModuleEvents;
 import meknuc.reactor.MeknucPwrMultiblock;
 import meknuc.reactor.MeknucPwrBlocks;
 import meknuc.reactor.MeknucPwrContainerTypes;
@@ -59,6 +61,7 @@ public class meknuc {
             .icon(() -> MeknucItemBase.BERYLLIUM_INGOT.get().getDefaultInstance())
             .displayItems((parameters, output) -> {
                 MeknucItemBase.addTabItems(output);
+                MeknucModules.addTabItems(output);
                 MeknucBlockBase.addTabBlocks(output);
                 MeknucPwrBlocks.addTabBlocks(output);
                 MeknucBwrBlocks.addTabBlocks(output);
@@ -87,6 +90,7 @@ public class meknuc {
         MeknucWasteStorageBlocks.BLOCKS.register(modEventBus);
         MeknucItemBase.ITEMS.register(modEventBus);
         MeknucItemBase.DATA_COMPONENTS.register(modEventBus);
+        MeknucModules.MODULES.register(modEventBus);
         MeknucPwrBlocks.BLOCKS.register(modEventBus);
         MeknucBwrBlocks.BLOCKS.register(modEventBus);
         MeknucChemicals.CHEMICALS.register(modEventBus);
@@ -100,6 +104,8 @@ public class meknuc {
         CREATIVE_MODE_TABS.register(modEventBus);
 
         NeoForge.EVENT_BUS.register(this);
+        NeoForge.EVENT_BUS.register(new MeknucSuitModuleEvents());
+        MeknucModules.sendIMC();
 
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }

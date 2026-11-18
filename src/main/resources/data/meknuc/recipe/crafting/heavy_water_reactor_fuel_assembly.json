@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "HLH",
+    "HBH",
+    "HLH"
+  ],
+  "key": {
+    "H": {
+      "item": "meknuc:high_strength_alloy_ingot"
+    },
+    "L": {
+      "item": "meknuc:lead_based_alloy_ingot"
+    },
+    "B": {
+      "item": "mekanism:advanced_bin"
+    }
+  },
+  "result": {
+    "id": "meknuc:heavy_water_reactor_fuel_assembly",
+    "count": 1
+  }
+}

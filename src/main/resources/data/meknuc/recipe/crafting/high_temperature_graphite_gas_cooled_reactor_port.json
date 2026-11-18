@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " A ",
+    "ACA",
+    " A "
+  ],
+  "key": {
+    "A": {
+      "item": "meknuc:high_temperature_graphite_gas_cooled_reactor_casing"
+    },
+    "C": {
+      "item": "mekanism:elite_control_circuit"
+    }
+  },
+  "result": {
+    "id": "meknuc:high_temperature_graphite_gas_cooled_reactor_port",
+    "count": 2
+  }
+}

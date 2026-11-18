@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "RLR",
+    "LML",
+    "RLR"
+  ],
+  "key": {
+    "R": {
+      "item": "meknuc:radiation_resistant_high_strength_alloy_ingot"
+    },
+    "L": {
+      "item": "meknuc:depleted_uranium_alloy_ingot"
+    },
+    "M": {
+      "item": "mekanism:module_base"
+    }
+  },
+  "result": {
+    "id": "meknuc:module_depleted_uranium_armor_unit",
+    "count": 1
+  }
+}

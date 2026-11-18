@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " A ",
+    "ACA",
+    " A "
+  ],
+  "key": {
+    "A": {
+      "item": "meknuc:thorium_molten_salt_reactor_corrosion_resistant_casing"
+    },
+    "C": {
+      "item": "mekanism:elite_control_circuit"
+    }
+  },
+  "result": {
+    "id": "meknuc:thorium_molten_salt_reactor_port",
+    "count": 2
+  }
+}

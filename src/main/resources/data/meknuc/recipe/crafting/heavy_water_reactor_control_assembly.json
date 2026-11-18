@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "HCH",
+    "HGH",
+    "HLH"
+  ],
+  "key": {
+    "H": {
+      "item": "meknuc:high_strength_alloy_ingot"
+    },
+    "C": {
+      "item": "mekanism:elite_control_circuit"
+    },
+    "G": {
+      "item": "meknuc:graphite_ingot"
+    },
+    "L": {
+      "item": "meknuc:lead_based_alloy_ingot"
+    }
+  },
+  "result": {
+    "id": "meknuc:heavy_water_reactor_control_assembly",
+    "count": 2
+  }
+}

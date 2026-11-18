@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "RHR",
+    "HLH",
+    "RHR"
+  ],
+  "key": {
+    "R": {
+      "item": "meknuc:radiation_resistant_high_strength_alloy_ingot"
+    },
+    "H": {
+      "item": "meknuc:high_strength_alloy_ingot"
+    },
+    "L": {
+      "item": "meknuc:lead_based_alloy_ingot"
+    }
+  },
+  "result": {
+    "id": "meknuc:particle_accelerator_support_frame",
+    "count": 2
+  }
+}

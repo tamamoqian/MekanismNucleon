@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "RRR",
+    "BCB",
+    "OBO"
+  ],
+  "key": {
+    "R": {
+      "item": "meknuc:radiation_resistant_high_strength_alloy_ingot"
+    },
+    "B": {
+      "item": "meknuc:beryllium_ingot"
+    },
+    "C": {
+      "item": "meknuc:high_temperature_graphite_gas_cooled_reactor_casing"
+    },
+    "O": {
+      "item": "mekanism:ingot_refined_obsidian"
+    }
+  },
+  "result": {
+    "id": "meknuc:high_temperature_graphite_gas_cooled_reactor_fuel_pebble_bed",
+    "count": 2
+  }
+}

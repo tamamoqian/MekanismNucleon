@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    " A ",
+    "ACA",
+    " A "
+  ],
+  "key": {
+    "A": {
+      "item": "mekanism:ingot_steel"
+    },
+    "C": {
+      "item": "mekanism:hdpe_sheet"
+    }
+  },
+  "result": {
+    "id": "meknuc:spent_fuel_pool_radiation_resistant_casing",
+    "count": 4
+  }
+}
