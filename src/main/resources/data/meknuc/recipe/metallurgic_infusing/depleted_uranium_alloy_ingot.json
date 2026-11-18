@@ -1,0 +1,16 @@
+{
+  "type": "mekanism:metallurgic_infusing",
+  "item_input": {
+    "count": 1,
+    "item": "mekanism:alloy_atomic"
+  },
+  "chemical_input": {
+    "amount": 800,
+    "chemical": "meknuc:uranium_238"
+  },
+  "output": {
+    "count": 1,
+    "id": "meknuc:depleted_uranium_alloy_ingot"
+  },
+  "per_tick_usage": false
+}

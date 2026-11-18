@@ -117,6 +117,8 @@ public class MeknucChemicals {
 
     public static final DeferredChemical<Chemical> URANIUM = CHEMICALS.registerInfuse("uranium", 0xFF97C597);
 
+    public static final DeferredChemical<Chemical> URANIUM_238 = CHEMICALS.registerInfuse("uranium_238", 0xFF25AE57);
+
 
     public static final DeferredChemical<Chemical> DIRTY_BERYLLIUM = CHEMICALS.register("dirty_beryllium",
           () -> ChemicalUtil.chemical(ChemicalBuilder.builder(MeknucChemicals.WATER_TEXTURE)

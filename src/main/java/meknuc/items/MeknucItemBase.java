@@ -113,6 +113,8 @@ public class MeknucItemBase extends Item {
 
     public static final DeferredItem<MeknucItemEnrichedUranium> ENRICHED_URANIUM = register("enriched_uranium",
             () -> new MeknucItemEnrichedUranium(new Item.Properties()));
+    public static final DeferredItem<MeknucItemEnrichedUranium238> ENRICHED_URANIUM_238 = register("enriched_uranium_238",
+            () -> new MeknucItemEnrichedUranium238(new Item.Properties()));
     public static final DeferredItem<MeknucItemFuelRodAssemblyMachine> FUEL_ROD_ASSEMBLY_MACHINE = register("fuel_rod_assembly_machine",
             () -> new MeknucItemFuelRodAssemblyMachine(new Item.Properties()));
     public static final DeferredItem<MeknucItemFuelRodBakingMachine> FUEL_ROD_BAKING_MACHINE = register("fuel_rod_baking_machine",
