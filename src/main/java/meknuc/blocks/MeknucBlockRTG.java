@@ -19,14 +19,13 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 
-public class MeknucBlockRadioisotopeThermoelectricGenerator extends MeknucBlockBase
+public class MeknucBlockRTG extends MeknucBlockBase
       implements IHasTileEntity<MeknucBlockEntityRTG>, ITypeBlock {
 
     private static final BlockType TYPE = BlockType.BlockTypeBuilder
@@ -35,7 +34,7 @@ public class MeknucBlockRadioisotopeThermoelectricGenerator extends MeknucBlockB
           .with(AttributeUpgradeSupport.MUFFLING_ONLY)
           .build();
 
-    public MeknucBlockRadioisotopeThermoelectricGenerator(Properties properties) {
+    public MeknucBlockRTG(Properties properties) {
         super(properties);
     }
 

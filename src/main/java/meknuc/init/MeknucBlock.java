@@ -23,7 +23,7 @@ import meknuc.blocks.MeknucBlockOreItemThorium;
 import meknuc.blocks.MeknucBlockOreItemZircon;
 import meknuc.blocks.MeknucBlockOreThorium;
 import meknuc.blocks.MeknucBlockOreZircon;
-import meknuc.blocks.MeknucBlockRadioisotopeThermoelectricGenerator;
+import meknuc.blocks.MeknucBlockRTG;
 import meknuc.blocks.MeknucBlockThorium;
 import meknuc.blocks.MeknucBlockZircon;
 import meknuc.meknuc;
@@ -80,8 +80,8 @@ public class MeknucBlock {
             () -> new MeknucBlockOreDeepslateBoron(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(5.0F, 5.0F).requiresCorrectToolForDrops()));
     public static final DeferredBlock<MeknucBlockOreDeepslateBeryllium> BERYLLIUM_DEEPSLATE_ORE_BLOCK = register("beryllium_deepslate_ore_block",
             () -> new MeknucBlockOreDeepslateBeryllium(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(5.0F, 5.0F).requiresCorrectToolForDrops()));
-    public static final DeferredBlock<MeknucBlockRadioisotopeThermoelectricGenerator> RADIOISOTOPE_THERMOELECTRIC_GENERATOR = register("radioisotope_thermoelectric_generator",
-            () -> new MeknucBlockRadioisotopeThermoelectricGenerator(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(5.0F, 5.0F).requiresCorrectToolForDrops()));
+    public static final DeferredBlock<MeknucBlockRTG> RADIOISOTOPE_THERMOELECTRIC_GENERATOR = register("radioisotope_thermoelectric_generator",
+            () -> new MeknucBlockRTG(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(5.0F, 5.0F).requiresCorrectToolForDrops()));
 
     private static <T extends MeknucBlockBase> DeferredBlock<T> register(String name, Supplier<T> supplier) {
         DeferredBlock<T> block = BLOCKS.register(name, supplier);
