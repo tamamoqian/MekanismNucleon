@@ -7,8 +7,8 @@ import mekanism.common.block.prefab.BlockBasicMultiblock;
 import mekanism.common.item.block.ItemBlockTooltip;
 import mekanism.common.registration.impl.BlockDeferredRegister;
 import mekanism.common.registration.impl.BlockRegistryObject;
-import meknuc.blockentities.MeknucBlockEntityReactorPart;
-import meknuc.blockentities.MeknucBlockEntityReactorPort;
+import meknuc.wastestorage.tile.TileEntityWasteStorageCasing;
+import meknuc.wastestorage.tile.TileEntityWasteStoragePort;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.MapColor;
@@ -17,14 +17,14 @@ public class MeknucWasteStorageBlocks {
 
     public static final BlockDeferredRegister BLOCKS = new BlockDeferredRegister("meknuc");
 
-    public static final BlockRegistryObject<BlockBasicMultiblock<MeknucBlockEntityReactorPart>,
-          ItemBlockTooltip<BlockBasicMultiblock<MeknucBlockEntityReactorPart>>> RADIATION_RESISTANT_WASTE_STORAGE_CASING =
+    public static final BlockRegistryObject<BlockBasicMultiblock<TileEntityWasteStorageCasing>,
+          ItemBlockTooltip<BlockBasicMultiblock<TileEntityWasteStorageCasing>>> RADIATION_RESISTANT_WASTE_STORAGE_CASING =
           registerTooltipBlock("radiation_resistant_waste_storage_casing",
                 () -> new BlockBasicMultiblock<>(MeknucWasteStorageBlockTypes.RADIATION_RESISTANT_WASTE_STORAGE_CASING,
                       properties -> properties.mapColor(MapColor.COLOR_LIGHT_GRAY)));
 
-    public static final BlockRegistryObject<BlockBasicMultiblock<MeknucBlockEntityReactorPort>,
-          ItemBlockTooltip<BlockBasicMultiblock<MeknucBlockEntityReactorPort>>> RADIATION_RESISTANT_WASTE_STORAGE_PORT =
+    public static final BlockRegistryObject<BlockBasicMultiblock<TileEntityWasteStoragePort>,
+          ItemBlockTooltip<BlockBasicMultiblock<TileEntityWasteStoragePort>>> RADIATION_RESISTANT_WASTE_STORAGE_PORT =
           registerTooltipBlock("radiation_resistant_waste_storage_port",
                 () -> new BlockBasicMultiblock<>(MeknucWasteStorageBlockTypes.RADIATION_RESISTANT_WASTE_STORAGE_PORT,
                       properties -> properties.mapColor(MapColor.COLOR_LIGHT_GRAY)));

@@ -2,5 +2,9 @@
   "type": "neoforge:add_features",
   "biomes": "#minecraft:is_overworld",
   "step": "underground_ores",
-  "features": "meknuc:boron_ore"
+  "features": [
+    "meknuc:boron_ore",
+    "meknuc:boron_ore_upper",
+    "meknuc:boron_ore_small"
+  ]
 }

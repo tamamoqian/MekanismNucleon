@@ -14,6 +14,7 @@ import meknuc.init.MeknucItems;
 import meknuc.menu.MeknucMenuTypes;
 import meknuc.modules.MeknucModules;
 import meknuc.modules.MeknucSuitModuleEvents;
+import meknuc.radiation.MeknucRadiationEvents;
 import meknuc.particle.MeknucParticleAcceleratorContainerTypes;
 import meknuc.particle.MeknucParticleAcceleratorMultiblock;
 import meknuc.particle.MeknucParticleAcceleratorSounds;
@@ -33,6 +34,8 @@ import meknuc.reactor.MeknucBwrTileEntityTypes;
 import meknuc.reactor.spentpool.MeknucSpentFuelPoolContainerTypes;
 import meknuc.reactor.spentpool.MeknucSpentFuelPoolMultiblock;
 import meknuc.reactor.spentpool.MeknucSpentFuelPoolSounds;
+import meknuc.wastestorage.MeknucWasteStorageContainerTypes;
+import meknuc.wastestorage.MeknucWasteStorageMultiblock;
 import meknuc.turbine.MeknucTurbineBlocks;
 import meknuc.turbine.MeknucTurbineMultiblock;
 import meknuc.turbine.MeknucTurbineTileEntityTypes;
@@ -91,6 +94,7 @@ public class Meknuc {
         MeknucPwrMultiblock.initialize();
         MeknucBwrMultiblock.initialize();
         MeknucSpentFuelPoolMultiblock.initialize();
+        MeknucWasteStorageMultiblock.initialize();
         MeknucParticleAcceleratorMultiblock.initialize();
         MeknucTurbineMultiblock.initialize();
         MeknucBlock.BLOCKS.register(modEventBus);
@@ -116,6 +120,7 @@ public class Meknuc {
         MeknucTurbineTileEntityTypes.TILE_ENTITY_TYPES.register(modEventBus);
         MeknucMenuTypes.CONTAINER_TYPES.register(modEventBus);
         MeknucSpentFuelPoolContainerTypes.CONTAINER_TYPES.register(modEventBus);
+        MeknucWasteStorageContainerTypes.CONTAINER_TYPES.register(modEventBus);
         MeknucSpentFuelPoolSounds.SOUND_EVENTS.register(modEventBus);
         MeknucPwrSounds.SOUND_EVENTS.register(modEventBus);
         MeknucParticleAcceleratorSounds.SOUND_EVENTS.register(modEventBus);
@@ -124,6 +129,7 @@ public class Meknuc {
 
         NeoForge.EVENT_BUS.register(this);
         NeoForge.EVENT_BUS.register(new MeknucSuitModuleEvents());
+        NeoForge.EVENT_BUS.register(new MeknucRadiationEvents());
         MeknucModules.sendIMC();
 
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);

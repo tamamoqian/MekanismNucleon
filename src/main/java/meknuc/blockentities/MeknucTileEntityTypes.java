@@ -19,6 +19,8 @@ import meknuc.particle.tile.TileEntityParticleAcceleratorPort;
 import meknuc.reactor.spentpool.tile.TileEntitySpentFuelPoolCasing;
 import meknuc.reactor.spentpool.tile.TileEntitySpentFuelPoolLogicAdapter;
 import meknuc.reactor.spentpool.tile.TileEntitySpentFuelPoolPort;
+import meknuc.wastestorage.tile.TileEntityWasteStorageCasing;
+import meknuc.wastestorage.tile.TileEntityWasteStoragePort;
 
 public class MeknucTileEntityTypes {
 
@@ -173,13 +175,17 @@ public class MeknucTileEntityTypes {
                 .withSimple(Capabilities.CONFIGURABLE)
                 .build();
 
-    public static final TileEntityTypeRegistryObject<MeknucBlockEntityReactorPart> RADIATION_RESISTANT_WASTE_STORAGE_CASING =
-          TILE_ENTITY_TYPES.mekBuilder(MeknucWasteStorageBlocks.RADIATION_RESISTANT_WASTE_STORAGE_CASING, MeknucBlockEntityReactorPart::new)
+    public static final TileEntityTypeRegistryObject<TileEntityWasteStorageCasing> RADIATION_RESISTANT_WASTE_STORAGE_CASING =
+          TILE_ENTITY_TYPES.mekBuilder(MeknucWasteStorageBlocks.RADIATION_RESISTANT_WASTE_STORAGE_CASING, TileEntityWasteStorageCasing::new)
+                .clientTicker(TileEntityMekanism::tickClient)
+                .serverTicker(TileEntityMekanism::tickServer)
                 .build();
 
-    public static final TileEntityTypeRegistryObject<MeknucBlockEntityReactorPort> RADIATION_RESISTANT_WASTE_STORAGE_PORT =
-          TILE_ENTITY_TYPES.mekBuilder(MeknucWasteStorageBlocks.RADIATION_RESISTANT_WASTE_STORAGE_PORT, MeknucBlockEntityReactorPort::new)
+    public static final TileEntityTypeRegistryObject<TileEntityWasteStoragePort> RADIATION_RESISTANT_WASTE_STORAGE_PORT =
+          TILE_ENTITY_TYPES.mekBuilder(MeknucWasteStorageBlocks.RADIATION_RESISTANT_WASTE_STORAGE_PORT, TileEntityWasteStoragePort::new)
                 .withSimple(Capabilities.CONFIGURABLE)
+                .clientTicker(TileEntityMekanism::tickClient)
+                .serverTicker(TileEntityMekanism::tickServer)
                 .build();
 
     private MeknucTileEntityTypes() {

@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "#c:crystals/beryllium",
+    "#c:crystals/boron",
+    "#c:crystals/chromium",
+    "#c:crystals/thorium",
+    "#c:crystals/zirconium"
+  ]
+}

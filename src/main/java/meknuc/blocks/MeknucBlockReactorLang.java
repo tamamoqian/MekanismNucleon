@@ -41,6 +41,7 @@ public enum MeknucBlockReactorLang implements ILangEntry {
     SPENT_FUEL_POOL_PORT("description", "spent_fuel_pool_port"),
     SPENT_FUEL_POOL_LOGIC_ADAPTER("description", "spent_fuel_pool_logic_adapter"),
     RADIATION_RESISTANT_WASTE_STORAGE_CASING("description", "radiation_resistant_waste_storage_casing"),
+    WASTE_STORAGE_GUI_TITLE("gui", "waste_storage.title"),
     PORT_MODE_BOILING_WATER_REACTOR_COOLANT_INPUT("port_mode", "boiling_water_reactor_coolant_input"),
     PORT_MODE_BOILING_WATER_REACTOR_COOLANT_OUTPUT("port_mode", "boiling_water_reactor_coolant_output"),
     PORT_MODE_BOILING_WATER_REACTOR_FUEL_INPUT("port_mode", "boiling_water_reactor_fuel_input"),

@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "#c:clumps/beryllium",
+    "#c:clumps/boron",
+    "#c:clumps/chromium",
+    "#c:clumps/thorium",
+    "#c:clumps/zirconium"
+  ]
+}

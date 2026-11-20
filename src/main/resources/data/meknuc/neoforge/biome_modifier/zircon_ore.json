@@ -2,5 +2,9 @@
   "type": "neoforge:add_features",
   "biomes": "#minecraft:is_overworld",
   "step": "underground_ores",
-  "features": "meknuc:zircon_ore"
+  "features": [
+    "meknuc:zircon_ore",
+    "meknuc:zircon_ore_buried",
+    "meknuc:zircon_ore_large"
+  ]
 }

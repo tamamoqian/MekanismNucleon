@@ -433,5 +433,22 @@
   "config.meknuc.unstable_explosion_chance": "Unstable Explosion Chance",
   "config.meknuc.unstable_explosion_chance.tooltip": "Chance per second for the RTG to explode when storage is full and there is no fuel (0-1). Default: 0.1",
   "meknuc.configuration.title": "Mekanism: Nucleon Configuration",
-  "meknuc.configuration.section.meknuc.common.toml.title": "Mekanism: Nucleon Configuration"
+  "meknuc.configuration.section.meknuc.common.toml.title": "Mekanism: Nucleon Configuration",
+  "gui.meknuc.waste_storage.title": "Radioactive Waste Storage Tank",
+  "gui.meknuc.waste_storage.waste_header": "Waste Stored",
+  "gui.meknuc.waste_storage.waste_empty": "Empty",
+  "gui.meknuc.waste_storage.waste_amount": "%1$s: %2$s",
+  "gui.meknuc.waste_storage.fuel_rods": "Fuel Rods: %s",
+  "gui.meknuc.waste_storage.product_header": "Decayed Product Buffer",
+  "gui.meknuc.waste_storage.product_full": "Buffer full, decay paused",
+  "gui.meknuc.waste_storage.recipes_header": "Decay Recipes",
+  "gui.meknuc.waste_storage.recipe_running": "Running %s",
+  "gui.meknuc.waste_storage.recipe_running_threads": "Running %1$s (x%2$s)",
+  "gui.meknuc.waste_storage.threads": "Threads: %1$s / %2$s",
+  "gui.meknuc.waste_storage.thread_count": "Active threads: %s",
+  "gui.meknuc.waste_storage.recipe_paused": "Paused %s",
+  "gui.meknuc.waste_storage.recipe_idle": "Idle",
+  "gui.meknuc.waste_storage.recipe_tooltip": "Decay time: %s s",
+  "gui.meknuc.waste_storage.progress": "Progress: %s",
+  "gui.meknuc.waste_storage.no_room": "Waste storage is full"
 }

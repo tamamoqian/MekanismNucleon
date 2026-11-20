@@ -9,9 +9,10 @@ import mekanism.common.content.blocktype.BlockTypeTile;
 import mekanism.common.content.blocktype.BlockTypeTile.BlockTileBuilder;
 import mekanism.common.registration.impl.TileEntityTypeRegistryObject;
 import mekanism.common.tile.base.TileEntityMekanism;
-import meknuc.blockentities.MeknucBlockEntityReactorPart;
-import meknuc.blockentities.MeknucBlockEntityReactorPort;
 import meknuc.blockentities.MeknucTileEntityTypes;
+import meknuc.wastestorage.MeknucWasteStorageContainerTypes;
+import meknuc.wastestorage.tile.TileEntityWasteStorageCasing;
+import meknuc.wastestorage.tile.TileEntityWasteStoragePort;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
@@ -23,11 +24,11 @@ public class MeknucWasteStorageBlockTypes {
     public static final AttributeStateReactorPortMode<Mode> MODE_ATTRIBUTE =
           new AttributeStateReactorPortMode<>(MODE, Mode.RADIOACTIVE_WASTE_INPUT);
 
-    public static final BlockTypeTile<MeknucBlockEntityReactorPart> RADIATION_RESISTANT_WASTE_STORAGE_CASING =
+    public static final BlockTypeTile<TileEntityWasteStorageCasing> RADIATION_RESISTANT_WASTE_STORAGE_CASING =
           createExternal(MeknucBlockReactorLang.RADIATION_RESISTANT_WASTE_STORAGE_CASING,
                 () -> MeknucTileEntityTypes.RADIATION_RESISTANT_WASTE_STORAGE_CASING);
 
-    public static final BlockTypeTile<MeknucBlockEntityReactorPort> RADIATION_RESISTANT_WASTE_STORAGE_PORT =
+    public static final BlockTypeTile<TileEntityWasteStoragePort> RADIATION_RESISTANT_WASTE_STORAGE_PORT =
           createPort(MeknucBlockReactorLang.RADIATION_RESISTANT_WASTE_STORAGE_PORT,
                 () -> MeknucTileEntityTypes.RADIATION_RESISTANT_WASTE_STORAGE_PORT, MODE_ATTRIBUTE);
 
@@ -35,17 +36,22 @@ public class MeknucWasteStorageBlockTypes {
     private static <TILE extends TileEntityMekanism> BlockTypeTile<TILE> createExternal(
           MeknucBlockReactorLang description, Supplier<TileEntityTypeRegistryObject<TILE>> tileType) {
         BlockTileBuilder builder = (BlockTileBuilder) BlockTileBuilder.createBlock(tileType, description);
+        builder.withGui(() -> MeknucWasteStorageContainerTypes.WASTE_STORAGE,
+              MeknucBlockReactorLang.WASTE_STORAGE_GUI_TITLE);
         return (BlockTypeTile<TILE>) ((BlockTileBuilder) builder.externalMultiblock()).build();
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    private static BlockTypeTile<MeknucBlockEntityReactorPort> createPort(
+    private static BlockTypeTile<TileEntityWasteStoragePort> createPort(
           MeknucBlockReactorLang description,
-          Supplier<TileEntityTypeRegistryObject<MeknucBlockEntityReactorPort>> tileType,
+          Supplier<TileEntityTypeRegistryObject<TileEntityWasteStoragePort>> tileType,
           AttributeStateReactorPortMode<?> mode) {
         BlockTileBuilder builder = (BlockTileBuilder) BlockTileBuilder.createBlock(tileType, description);
         builder.with(new Attribute[]{mode});
-        return (BlockTypeTile<MeknucBlockEntityReactorPort>) ((BlockTileBuilder) builder.externalMultiblock()).build();
+        // 端口也能打开 GUI：玩家更习惯直接右键端口看存量
+        builder.withGui(() -> MeknucWasteStorageContainerTypes.WASTE_STORAGE,
+              MeknucBlockReactorLang.WASTE_STORAGE_GUI_TITLE);
+        return (BlockTypeTile<TileEntityWasteStoragePort>) ((BlockTileBuilder) builder.externalMultiblock()).build();
     }
 
     public enum Mode implements StringRepresentable, IHasEnumNameTextComponent {
