@@ -32,6 +32,7 @@
   "block.meknuc.beryllium_deepslate_ore_block": "Deepslate Beryllium Ore",
   "item.meknuc.empty_fuel_unit": "Empty Fuel Unit",
   "item.meknuc.test_fuel_rod": "Tamamo Heavy Industries Type-79 Test Fuel Rod",
+  "item.meknuc.test_fuel_rod.infinite": "Infinite Radiation",
   "item.meknuc.test_fuel_rod.depleted": "Depleted Test Fuel Rod",
   "item.meknuc.uranium_235_mox_fuel_rod": "Uranium-235 Mixed Oxide Fuel Rod",
   "item.meknuc.uranium_235_mox_fuel_rod.depleted": "Depleted Uranium-235 Mixed Oxide Fuel Rod",

@@ -10,7 +10,6 @@ import mekanism.api.Action;
 import mekanism.api.AutomationType;
 import mekanism.api.IContentsListener;
 import mekanism.api.Upgrade;
-import mekanism.api.math.MathUtils;
 import mekanism.common.capabilities.energy.BasicEnergyContainer;
 import mekanism.common.capabilities.holder.energy.EnergyContainerHelper;
 import mekanism.common.capabilities.holder.energy.IEnergyContainerHolder;
@@ -19,6 +18,7 @@ import mekanism.common.capabilities.holder.slot.InventorySlotHelper;
 import mekanism.common.config.MekanismConfig;
 import mekanism.common.integration.energy.BlockEnergyCapabilityCache;
 import mekanism.common.inventory.slot.EnergyInventorySlot;
+import mekanism.common.inventory.container.sync.dynamic.ContainerSync;
 import mekanism.common.inventory.slot.InputInventorySlot;
 import mekanism.common.inventory.slot.OutputInventorySlot;
 import mekanism.common.tile.base.TileEntityMekanism;
@@ -34,17 +34,25 @@ import org.jetbrains.annotations.Nullable;
 
 public class MeknucBlockEntityRTG extends TileEntityMekanism {
 
-    public static final long CAPACITY = 10240L;
-    public static final long MAX_GENERATION = 350L;
-    public static final long MAX_OUTPUT = MAX_GENERATION * 2;
+    public static final long CAPACITY = 102400L;
+    public static final long MIN_RATE_PER_SECOND = 1L;
+    public static final long MAX_RATE_PER_SECOND = 24000L;
+    public static final long HOT_RATE_PER_SECOND = 36000L;
+    public static final long DEPLETED_RATE_PER_SECOND = 320L;
+    public static final long MAX_OUTPUT = MAX_RATE_PER_SECOND / 20;
+    private static final double RAMP_FACTOR = 1.05D;
 
     public InputInventorySlot fuelSlot;
     public OutputInventorySlot outputSlot;
     public EnergyInventorySlot energySlot;
     public BasicEnergyContainer energyContainer;
 
+    @ContainerSync(getter = "getProducingRate", setter = "setProducingRate")
+    private double producingRate;
+
     @Nullable
     private List<BlockEnergyCapabilityCache> outputCaches;
+    private double currentRate = MIN_RATE_PER_SECOND;
     private double fractionalEnergy;
     private double fractionalOps;
 
@@ -74,6 +82,7 @@ public class MeknucBlockEntityRTG extends TileEntityMekanism {
     protected boolean onUpdateServer() {
         boolean sendUpdatePacket = super.onUpdateServer();
         energySlot.drainContainer();
+        producingRate = currentRate / 20.0D;
         if (canFunction()) {
             generatePower();
             if (outputCaches == null) {
@@ -88,22 +97,41 @@ public class MeknucBlockEntityRTG extends TileEntityMekanism {
     }
 
     private void generatePower() {
-        fractionalOps += getSpeedMultiplier();
-        int operations = (int) fractionalOps;
-        fractionalOps -= operations;
-        for (int i = 0; i < operations; i++) {
-            double rate = getRatePerOperation();
-            if (rate <= 0) {
-                break;
+        ItemStack rod = fuelSlot.getStack();
+        boolean isRod = rod.getItem() instanceof MeknucItemFuelRodBase;
+        boolean hasFuel = isRod && (MeknucItemFuelRodBase.isInfinite(rod) || MeknucItemFuelRodBase.getRadiation(rod) > 0);
+        double target = 0D;
+        if (isRod) {
+            if (!hasFuel) {
+                target = DEPLETED_RATE_PER_SECOND;
+            } else if (MeknucItemFuelRodBase.isHot(rod)) {
+                target = HOT_RATE_PER_SECOND;
+            } else {
+                target = MAX_RATE_PER_SECOND;
             }
-            fractionalEnergy += rate;
-            long output = (long) fractionalEnergy;
-            fractionalEnergy -= output;
-            if (output > 0) {
-                energyContainer.insert(output, Action.EXECUTE, AutomationType.INTERNAL);
+        }
+        target *= getEnergyMultiplier();
+        double growth = Math.pow(RAMP_FACTOR, getSpeedMultiplier());
+        if (currentRate < target) {
+            // 0.1 FE/t -> MAX
+            currentRate = currentRate <= 0 ? MIN_RATE_PER_SECOND : Math.min(target, currentRate * growth);
+        } else if (currentRate > target) {
+            currentRate = Math.max(target, currentRate / growth);
+            if (currentRate < MIN_RATE_PER_SECOND) {
+                currentRate = target > 0 ? MIN_RATE_PER_SECOND : 0D;
             }
-            ItemStack rod = fuelSlot.getStack();
-            if (rod.getItem() instanceof MeknucItemFuelRodBase) {
+        }
+        fractionalEnergy += currentRate / 20.0D;
+        long output = (long) fractionalEnergy;
+        fractionalEnergy -= output;
+        if (output > 0) {
+            energyContainer.insert(output, Action.EXECUTE, AutomationType.INTERNAL);
+        }
+        if (hasFuel && !MeknucItemFuelRodBase.isInfinite(rod)) {
+            fractionalOps += getSpeedMultiplier();
+            int operations = (int) fractionalOps;
+            fractionalOps -= operations;
+            for (int i = 0; i < operations; i++) {
                 int radiation = MeknucItemFuelRodBase.getRadiation(rod) - 1;
                 if (radiation <= 0) {
                     ItemStack depleted = rod.copyWithCount(1);
@@ -116,6 +144,7 @@ public class MeknucBlockEntityRTG extends TileEntityMekanism {
                             remaining.remove(MeknucItems.RADIATION.get());
                             fuelSlot.setStackUnchecked(remaining);
                         }
+                        break;
                     }
                 } else {
                     MeknucItemFuelRodBase.setRadiation(rod, radiation);
@@ -125,23 +154,11 @@ public class MeknucBlockEntityRTG extends TileEntityMekanism {
     }
 
     public double getProducingRate() {
-        return getRatePerOperation() * getSpeedMultiplier();
+        return producingRate;
     }
 
-    private double getRatePerOperation() {
-        ItemStack rod = fuelSlot.getStack();
-        double rate = 0D;
-        if (rod.getItem() instanceof MeknucItemFuelRodBase) {
-            rate = Math.min(MeknucItemFuelRodBase.getPowerPerTick(rod), MAX_GENERATION);
-        }
-        if (rate <= 0) {
-            return 0D;
-        }
-        rate *= getEnergyMultiplier();
-        if (energyContainer.insert(MathUtils.ceilToLong(rate), Action.SIMULATE, AutomationType.INTERNAL) != 0L) {
-            return 0D;
-        }
-        return rate;
+    public void setProducingRate(double rate) {
+        producingRate = rate;
     }
 
     private double getSpeedMultiplier() {

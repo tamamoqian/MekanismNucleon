@@ -5,7 +5,7 @@ import org.jetbrains.annotations.Nullable;
 
 public enum MeknucRodType {
 
-    TEST("test_fuel_rod", 0),
+    TEST("test_fuel_rod", 0, true, ReactorKind.PWR, ReactorKind.BWR),
     URANIUM_235_MOX("uranium_235_mox_fuel_rod", 20000, ReactorKind.PWR, ReactorKind.BWR),
     URANIUM_235_THORIUM("uranium_235_thorium_fuel_rod", 16000, ReactorKind.PWR, ReactorKind.BWR),
     URANIUM_235_PLUTONIUM_239("uranium_235_plutonium_239_fuel_rod", 30000, ReactorKind.PWR, ReactorKind.BWR),
@@ -21,11 +21,17 @@ public enum MeknucRodType {
 
     private final String id;
     private final int burnTime;
+    private final boolean infinite;
     private final Set<ReactorKind> reactors;
 
     MeknucRodType(String id, int burnTime, ReactorKind... reactors) {
+        this(id, burnTime, false, reactors);
+    }
+
+    MeknucRodType(String id, int burnTime, boolean infinite, ReactorKind... reactors) {
         this.id = id;
         this.burnTime = burnTime;
+        this.infinite = infinite;
         this.reactors = reactors.length == 0 ? Set.of() : Set.of(reactors);
     }
 
@@ -35,6 +41,10 @@ public enum MeknucRodType {
 
     public int burnTime() {
         return burnTime;
+    }
+
+    public boolean isInfinite() {
+        return infinite;
     }
 
     public boolean supports(ReactorKind reactor) {

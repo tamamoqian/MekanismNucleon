@@ -1,7 +1,7 @@
 package meknuc.client;
 
 import meknuc.Meknuc;
-import meknuc.client.gui.MeknucRtgGui;
+import meknuc.client.gui.MeknucGuiRTG;
 import meknuc.init.MeknucItems;
 import meknuc.items.MeknucItemFuelRodBase;
 import meknuc.menu.MeknucMenuTypes;
@@ -19,7 +19,7 @@ public class MeknucClient {
 
     @SubscribeEvent
     public static void registerScreens(RegisterMenuScreensEvent event) {
-        event.register(MeknucMenuTypes.RTG.get(), MeknucRtgGui::new);
+        event.register(MeknucMenuTypes.RTG.get(), MeknucGuiRTG::new);
     }
 
     @SubscribeEvent

@@ -1,10 +1,19 @@
 package meknuc.items;
 
+import java.util.List;
+
+import meknuc.client.color.MeknucColorLerp;
+import meknuc.client.color.MeknucColorRainbowName;
 import meknuc.init.MeknucItems;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TextColor;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 
 public class MeknucItemFuelRodBase extends MeknucItemBase {
 
@@ -44,6 +53,10 @@ public class MeknucItemFuelRodBase extends MeknucItemBase {
         return Boolean.TRUE.equals(stack.get(MeknucItems.ROD_HOT.get()));
     }
 
+    public static boolean isInfinite(ItemStack stack) {
+        return getRodType(stack).isInfinite();
+    }
+
     public static void setHot(ItemStack stack, boolean hot) {
         stack.set(MeknucItems.ROD_HOT.get(), hot);
     }
@@ -81,9 +94,15 @@ public class MeknucItemFuelRodBase extends MeknucItemBase {
         }
     }
 
+    private static final int GRADIENT_FROM = 0x5555FF;
+    private static final int GRADIENT_TO = 0xFFFF00;
+
     @Override
     public Component getName(ItemStack stack) {
         MeknucRodType type = getRodType(stack);
+        if (type.isInfinite()) {
+            return gradientName(Component.translatable("item.meknuc." + type.id()));
+        }
         if (isHot(stack)) {
             return Component.translatable("item.meknuc.depleted_hot_" + type.id());
         }
@@ -91,6 +110,32 @@ public class MeknucItemFuelRodBase extends MeknucItemBase {
             return Component.translatable("item.meknuc." + type.id() + ".depleted");
         }
         return Component.translatable("item.meknuc." + type.id());
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+        super.appendHoverText(stack, context, tooltip, flag);
+        if (getRodType(stack).isInfinite()) {
+            Level level = context.level();
+            long tick = level == null ? System.currentTimeMillis() / 50L : level.getGameTime();
+            tooltip.add(MeknucColorRainbowName.rainbowName(Component.translatable("item.meknuc." + getRodType(stack).id() + ".infinite"), tick));
+        }
+    }
+
+    public static Component gradientName(Component source) {
+        String text = source.getString();
+        if (text.isBlank() || text.startsWith("item.meknuc.")) {
+            return source;
+        }
+        MutableComponent result = Component.empty();
+        int chars = text.length();
+        for (int i = 0; i < chars; i++) {
+            float t = chars <= 1 ? 0F : i / (float) (chars - 1);
+            result.append(Component.literal(String.valueOf(text.charAt(i)))
+                  .withStyle(style -> style.withColor(TextColor.fromRgb(MeknucColorLerp.lerpColor(GRADIENT_FROM, GRADIENT_TO, t)))
+                        .withBold(true)));
+        }
+        return result;
     }
 
     @Override
