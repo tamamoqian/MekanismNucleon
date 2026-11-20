@@ -1,11 +1,9 @@
 package meknuc.particle;
 
-import mekanism.api.inventory.IInventorySlot;
 import mekanism.common.inventory.container.tile.MekanismTileContainer;
 import meknuc.particle.tile.TileEntityParticleAcceleratorController;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.Slot;
 
 /**
  * 粒子加速器的容器。
@@ -25,15 +23,8 @@ public class MeknucParticleAcceleratorContainer extends MekanismTileContainer<Ti
 
     @Override
     protected void addSlots() {
-        addSlotAt(tile.getMultiblock().getTargetInputSlot());
-        addSlotAt(tile.getMultiblock().getTargetOutputSlot());
-    }
-
-    private void addSlotAt(IInventorySlot inventorySlot) {
-        Slot slot = inventorySlot.createContainerSlot();
-        if (slot != null) {
-            addSlot(slot);
-        }
+        // 基类会先注册升级槽（升级窗口需要它们），再按方块实体暴露的槽位注册靶材输入 / 输出槽
+        super.addSlots();
     }
 
     @Override

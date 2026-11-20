@@ -34,7 +34,7 @@ import org.jetbrains.annotations.NotNull;
  * <p>
  * 使用 Mekanism 的标准机器底图、内嵌屏幕、能量条、进度条、槽位与按钮：
  * <ul>
- *   <li>左侧：Mekanism 竖向能量条（16 GFE）；</li>
+ *   <li>左侧：Mekanism 竖向能量条（16 GFE 起，随能量升级提升）；</li>
  *   <li>中上：内嵌屏幕显示运行状态；</li>
  *   <li>中间：内嵌屏幕显示自动检测到的配方与实时能耗，下面是 Mekanism 进度条；</li>
  *   <li>右侧：粒子束缓存（氢气 / 热质子等离子体 / 热中子等离子体）；</li>
@@ -143,13 +143,13 @@ public class MeknucParticleAcceleratorGui extends GuiMekanismTile<TileEntityPart
                 double stored = multiblock().getStoredEnergyDisplay();
                 return Component.literal(MeknucParticleAcceleratorLang.GUI_ENERGY.translate().getString()
                       + ": " + formatEnergy(stored) + " / "
-                      + formatEnergy(MeknucParticleAcceleratorMultiblockData.ENERGY_CAPACITY));
+                      + formatEnergy(multiblock().getEnergyCapacity()));
             }
 
             @Override
             public double getLevel() {
                 return Math.min(1.0D, multiblock().getStoredEnergyDisplay()
-                      / MeknucParticleAcceleratorMultiblockData.ENERGY_CAPACITY);
+                      / Math.max(1.0D, multiblock().getEnergyCapacity()));
             }
         };
     }
@@ -186,12 +186,8 @@ public class MeknucParticleAcceleratorGui extends GuiMekanismTile<TileEntityPart
         String recipeLine = recipe == null
               ? MeknucParticleAcceleratorLang.GUI_STATE_NO_RECIPE.translate().getString()
               : recipe.inputShort() + " → " + recipe.outputShort();
-        double rate = 0.0D;
-        if (multiblock.getStatus() == MeknucParticleAcceleratorMultiblockData.STATUS_RUNNING) {
-            rate = multiblock.getActiveEnergyPerTick();
-        } else if (!multiblock.isRunning() && recipe != null) {
-            rate = recipe.energyPerTick();
-        }
+        // 服务端写入的实时功率已经包含速度 / 能量升级的缩放
+        double rate = multiblock.getActiveEnergyPerTick();
         return List.of(
               Component.literal(recipeLine),
               MeknucParticleAcceleratorLang.GUI_ENERGY_RATE.translate(EnumColor.AQUA,
@@ -220,7 +216,7 @@ public class MeknucParticleAcceleratorGui extends GuiMekanismTile<TileEntityPart
             case MeknucParticleAcceleratorMultiblockData.STATUS_NO_ENERGY -> recipe == null
                   ? MeknucParticleAcceleratorLang.GUI_STATE_NO_RECIPE.translate(EnumColor.GRAY)
                   : MeknucParticleAcceleratorLang.GUI_STATE_NO_ENERGY.translate(EnumColor.RED,
-                        formatEnergy(recipe.energyPerTick()));
+                        formatEnergy(multiblock.getActiveEnergyPerTick()));
             case MeknucParticleAcceleratorMultiblockData.STATUS_NO_RECIPE ->
                   MeknucParticleAcceleratorLang.GUI_STATE_NO_RECIPE.translate(EnumColor.GRAY);
             default -> MeknucParticleAcceleratorLang.GUI_STATE_IDLE.translate(EnumColor.GRAY);

@@ -1,11 +1,13 @@
 package meknuc.blocks;
 
 import java.util.function.Supplier;
+import mekanism.api.Upgrade;
 import mekanism.api.text.EnumColor;
 import mekanism.api.text.ILangEntry;
 import mekanism.api.text.IHasTextComponent.IHasEnumNameTextComponent;
 import mekanism.common.block.attribute.Attribute;
 import mekanism.common.block.attribute.AttributeGui;
+import mekanism.common.block.attribute.AttributeUpgradeSupport;
 import mekanism.common.content.blocktype.BlockTypeTile;
 import mekanism.common.content.blocktype.BlockTypeTile.BlockTileBuilder;
 import mekanism.common.registration.impl.TileEntityTypeRegistryObject;
@@ -30,7 +32,8 @@ public class MeknucParticleAcceleratorBlockTypes {
 
     public static final BlockTypeTile<TileEntityParticleAcceleratorController> PARTICLE_ACCELERATOR_CONTROLLER =
           createExternal(MeknucBlockReactorLang.PARTICLE_ACCELERATOR_CONTROLLER,
-                () -> MeknucTileEntityTypes.PARTICLE_ACCELERATOR_CONTROLLER, true);
+                () -> MeknucTileEntityTypes.PARTICLE_ACCELERATOR_CONTROLLER, true,
+                Upgrade.SPEED, Upgrade.ENERGY);
 
     public static final BlockTypeTile<TileEntityParticleAcceleratorPart> PARTICLE_ACCELERATOR_RADIATION_RESISTANT_CASING =
           createExternal(MeknucBlockReactorLang.PARTICLE_ACCELERATOR_RADIATION_RESISTANT_CASING,
@@ -54,12 +57,17 @@ public class MeknucParticleAcceleratorBlockTypes {
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     private static <TILE extends TileEntityMekanism> BlockTypeTile<TILE> createExternal(
-          MeknucBlockReactorLang description, Supplier<TileEntityTypeRegistryObject<TILE>> tileType, boolean gui) {
+          MeknucBlockReactorLang description, Supplier<TileEntityTypeRegistryObject<TILE>> tileType, boolean gui,
+          Upgrade... upgrades) {
         BlockTileBuilder builder = (BlockTileBuilder) BlockTileBuilder.createBlock(tileType, description);
         if (gui) {
             builder.with(new Attribute[]{new AttributeGui(
                   () -> MeknucParticleAcceleratorContainerTypes.PARTICLE_ACCELERATOR,
                   MeknucParticleAcceleratorLang.GUI_TITLE)});
+        }
+        if (upgrades.length > 0) {
+            // 只有控制器接受速度 / 能量升级；TileEntityMekanism 会据此自动创建升级组件
+            builder = (BlockTileBuilder) builder.with(new Attribute[]{AttributeUpgradeSupport.create(upgrades)});
         }
         builder = (BlockTileBuilder) builder.withSound(MeknucParticleAcceleratorSounds.PARTICLE_ACCELERATOR_RUNNING);
         return (BlockTypeTile<TILE>) ((BlockTileBuilder) builder.externalMultiblock()).build();

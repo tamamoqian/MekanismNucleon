@@ -79,6 +79,10 @@ public class TileEntityParticleAcceleratorPart extends TileEntityMultiblock<Mekn
     @Override
     protected void structureChanged(MeknucParticleAcceleratorMultiblockData multiblock) {
         super.structureChanged(multiblock);
+        if (!isRemote() && isMaster()) {
+            // 主方块（控制器）登记自己，多方块里的速度 / 能量升级都从它身上读取
+            multiblock.setUpgradeTile(this);
+        }
         if (!isRemote() && !multiblock.isFormed()) {
             UUID id = getCacheID();
             if (id != null) {

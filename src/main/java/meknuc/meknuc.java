@@ -33,6 +33,9 @@ import meknuc.reactor.MeknucBwrTileEntityTypes;
 import meknuc.reactor.spentpool.MeknucSpentFuelPoolContainerTypes;
 import meknuc.reactor.spentpool.MeknucSpentFuelPoolMultiblock;
 import meknuc.reactor.spentpool.MeknucSpentFuelPoolSounds;
+import meknuc.turbine.MeknucTurbineBlocks;
+import meknuc.turbine.MeknucTurbineMultiblock;
+import meknuc.turbine.MeknucTurbineTileEntityTypes;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -78,6 +81,7 @@ public class meknuc {
                 MeknucParticleAcceleratorBlocks.addTabBlocks(output);
                 MeknucMoltenSaltReactorBlocks.addTabBlocks(output);
                 MeknucWasteStorageBlocks.addTabBlocks(output);
+                MeknucTurbineBlocks.addTabBlocks(output);
             }).build());
 
     public meknuc(IEventBus modEventBus, ModContainer modContainer) {
@@ -88,6 +92,7 @@ public class meknuc {
         MeknucBwrMultiblock.initialize();
         MeknucSpentFuelPoolMultiblock.initialize();
         MeknucParticleAcceleratorMultiblock.initialize();
+        MeknucTurbineMultiblock.initialize();
         MeknucBlockBase.BLOCKS.register(modEventBus);
         MeknucHwrBlocks.BLOCKS.register(modEventBus);
         MeknucSpentFuelPoolBlocks.BLOCKS.register(modEventBus);
@@ -96,6 +101,7 @@ public class meknuc {
         MeknucParticleAcceleratorBlocks.BLOCKS.register(modEventBus);
         MeknucMoltenSaltReactorBlocks.BLOCKS.register(modEventBus);
         MeknucWasteStorageBlocks.BLOCKS.register(modEventBus);
+        MeknucTurbineBlocks.BLOCKS.register(modEventBus);
         MeknucItemBase.ITEMS.register(modEventBus);
         MeknucItemBase.DATA_COMPONENTS.register(modEventBus);
         MeknucModules.MODULES.register(modEventBus);
@@ -107,6 +113,7 @@ public class meknuc {
         MeknucBwrTileEntityTypes.TILE_ENTITY_TYPES.register(modEventBus);
         MeknucBwrContainerTypes.CONTAINER_TYPES.register(modEventBus);
         MeknucTileEntityTypes.TILE_ENTITY_TYPES.register(modEventBus);
+        MeknucTurbineTileEntityTypes.TILE_ENTITY_TYPES.register(modEventBus);
         MeknucMenuTypes.CONTAINER_TYPES.register(modEventBus);
         MeknucSpentFuelPoolContainerTypes.CONTAINER_TYPES.register(modEventBus);
         MeknucSpentFuelPoolSounds.SOUND_EVENTS.register(modEventBus);
