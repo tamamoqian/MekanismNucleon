@@ -4,7 +4,7 @@ import mekanism.common.capabilities.Capabilities;
 import mekanism.common.registration.impl.TileEntityTypeDeferredRegister;
 import mekanism.common.registration.impl.TileEntityTypeRegistryObject;
 import mekanism.common.tile.base.TileEntityMekanism;
-import meknuc.meknuc;
+import meknuc.Meknuc;
 import meknuc.turbine.tile.TileEntityHighPressureTurbineCasing;
 import meknuc.turbine.tile.TileEntityHighPressureTurbineCondenser;
 import meknuc.turbine.tile.TileEntityHighPressureTurbinePort;
@@ -15,7 +15,7 @@ import meknuc.turbine.tile.TileEntityHighPressureTurbineVent;
  */
 public class MeknucTurbineTileEntityTypes {
 
-    public static final TileEntityTypeDeferredRegister TILE_ENTITY_TYPES = new TileEntityTypeDeferredRegister(meknuc.MODID);
+    public static final TileEntityTypeDeferredRegister TILE_ENTITY_TYPES = new TileEntityTypeDeferredRegister(Meknuc.MOD_ID);
 
     public static final TileEntityTypeRegistryObject<TileEntityHighPressureTurbineCasing> HIGH_PRESSURE_STEAM_TURBINE_CASING =
           TILE_ENTITY_TYPES.mekBuilder(MeknucTurbineBlocks.HIGH_PRESSURE_STEAM_TURBINE_CASING, TileEntityHighPressureTurbineCasing::new)

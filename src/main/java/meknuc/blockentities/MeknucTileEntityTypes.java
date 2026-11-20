@@ -12,7 +12,7 @@ import meknuc.blocks.MeknucParticleAcceleratorBlocks;
 import meknuc.blocks.MeknucSpentFuelPoolBlocks;
 import meknuc.blocks.MeknucWasteStorageBlocks;
 import meknuc.init.MeknucBlock;
-import meknuc.meknuc;
+import meknuc.Meknuc;
 import meknuc.particle.tile.TileEntityParticleAcceleratorController;
 import meknuc.particle.tile.TileEntityParticleAcceleratorPart;
 import meknuc.particle.tile.TileEntityParticleAcceleratorPort;
@@ -22,7 +22,7 @@ import meknuc.reactor.spentpool.tile.TileEntitySpentFuelPoolPort;
 
 public class MeknucTileEntityTypes {
 
-    public static final TileEntityTypeDeferredRegister TILE_ENTITY_TYPES = new TileEntityTypeDeferredRegister(meknuc.MODID);
+    public static final TileEntityTypeDeferredRegister TILE_ENTITY_TYPES = new TileEntityTypeDeferredRegister(Meknuc.MOD_ID);
 
     public static final TileEntityTypeRegistryObject<MeknucBlockEntityRTG> RADIOISOTOPE_THERMOELECTRIC_GENERATOR =
           TILE_ENTITY_TYPES.mekBuilder(MeknucBlock.RADIOISOTOPE_THERMOELECTRIC_GENERATOR, MeknucBlockEntityRTG::new)

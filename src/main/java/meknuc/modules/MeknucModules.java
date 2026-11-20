@@ -5,8 +5,8 @@ import mekanism.api.gear.ModuleData;
 import mekanism.common.item.ItemModule;
 import mekanism.common.registration.impl.ModuleDeferredRegister;
 import mekanism.common.registration.impl.ModuleRegistryObject;
+import meknuc.Meknuc;
 import meknuc.init.MeknucItems;
-import meknuc.meknuc;
 import net.minecraft.core.Holder;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -17,7 +17,7 @@ import net.neoforged.neoforge.registries.DeferredItem;
  */
 public class MeknucModules {
 
-    public static final ModuleDeferredRegister MODULES = new ModuleDeferredRegister(meknuc.MODID);
+    public static final ModuleDeferredRegister MODULES = new ModuleDeferredRegister(Meknuc.MOD_ID);
 
     // ---------------------------------------------------------------- items
 

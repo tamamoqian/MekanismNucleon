@@ -26,7 +26,7 @@ import meknuc.blocks.MeknucBlockOreZircon;
 import meknuc.blocks.MeknucBlockRTG;
 import meknuc.blocks.MeknucBlockThorium;
 import meknuc.blocks.MeknucBlockZircon;
-import meknuc.meknuc;
+import meknuc.Meknuc;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
@@ -38,7 +38,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class MeknucBlock {
 
-    public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(meknuc.MODID);
+    public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Meknuc.MOD_ID);
     private static final List<Supplier<ItemStack>> TAB_BLOCKS = new ArrayList<>();
     public static final DeferredBlock<MeknucBlockOreZircon> ZIRCON_BLOCK_ORE_BLOCK = register("zircon_ore_block",
             () -> new MeknucBlockOreZircon(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(5.0F, 5.0F).requiresCorrectToolForDrops()));

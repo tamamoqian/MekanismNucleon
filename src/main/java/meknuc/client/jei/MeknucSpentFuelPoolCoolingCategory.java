@@ -2,6 +2,8 @@ package meknuc.client.jei;
 
 import java.util.Arrays;
 import java.util.List;
+
+import meknuc.Meknuc;
 import meknuc.items.MeknucItemFuelRodBase;
 import meknuc.items.MeknucRodType;
 import meknuc.reactor.MeknucPwrLang;
@@ -25,7 +27,7 @@ import org.jetbrains.annotations.Nullable;
 public class MeknucSpentFuelPoolCoolingCategory extends AbstractRecipeCategory<MeknucSpentFuelPoolCoolingCategory.CoolingRecipe> {
 
     public static final RecipeType<CoolingRecipe> RECIPE_TYPE = RecipeType.create(
-          meknuc.meknuc.MODID, "spent_fuel_pool_cooling", CoolingRecipe.class);
+          Meknuc.MOD_ID, "spent_fuel_pool_cooling", CoolingRecipe.class);
 
     private static final int INPUT_X = 10;
     private static final int INPUT_Y = 12;
@@ -45,7 +47,7 @@ public class MeknucSpentFuelPoolCoolingCategory extends AbstractRecipeCategory<M
         return Arrays.stream(MeknucRodType.VALUES)
               .filter(type -> type.burnTime() > 0)
               .map(type -> new CoolingRecipe(
-                    ResourceLocation.fromNamespaceAndPath(meknuc.meknuc.MODID, "spent_fuel_pool_cooling/" + type.id()), type))
+                    ResourceLocation.fromNamespaceAndPath(Meknuc.MOD_ID, "spent_fuel_pool_cooling/" + type.id()), type))
               .toList();
     }
 
@@ -72,7 +74,7 @@ public class MeknucSpentFuelPoolCoolingCategory extends AbstractRecipeCategory<M
     @Nullable
     @Override
     public ResourceLocation getRegistryName(CoolingRecipe recipe) {
-        return ResourceLocation.fromNamespaceAndPath(meknuc.meknuc.MODID, "spent_fuel_pool_cooling/" + recipe.type().id());
+        return ResourceLocation.fromNamespaceAndPath(Meknuc.MOD_ID, "spent_fuel_pool_cooling/" + recipe.type().id());
     }
 
     @Override

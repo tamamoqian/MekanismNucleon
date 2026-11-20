@@ -1,6 +1,7 @@
 package meknuc.client;
 
 import mekanism.client.ClientRegistrationUtil;
+import meknuc.Meknuc;
 import meknuc.client.gui.MeknucBwrGui;
 import meknuc.client.gui.MeknucBwrLogicAdapterGui;
 import meknuc.client.gui.MeknucBwrStatsGui;
@@ -18,7 +19,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 
-@EventBusSubscriber(modid = meknuc.meknuc.MODID, value = Dist.CLIENT)
+@EventBusSubscriber(modid = Meknuc.MOD_ID, value = Dist.CLIENT)
 public class MeknucClientRegistration {
 
     @SubscribeEvent

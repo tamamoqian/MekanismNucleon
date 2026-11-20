@@ -5,12 +5,12 @@ import mekanism.api.chemical.ChemicalBuilder;
 import mekanism.common.registration.impl.ChemicalDeferredRegister;
 import mekanism.common.registration.impl.DeferredChemical;
 import mekanism.common.util.ChemicalUtil;
-import meknuc.meknuc;
+import meknuc.Meknuc;
 import net.minecraft.resources.ResourceLocation;
 
 public class MeknucChemicals {
 
-    public static final ChemicalDeferredRegister CHEMICALS = new ChemicalDeferredRegister(meknuc.MODID);
+    public static final ChemicalDeferredRegister CHEMICALS = new ChemicalDeferredRegister(Meknuc.MOD_ID);
 
     private static final ResourceLocation WATER_TEXTURE = ResourceLocation.fromNamespaceAndPath("mekanism", "liquid/liquid");
     private static final ResourceLocation STEAM_TEXTURE = ResourceLocation.fromNamespaceAndPath("mekanism", "liquid/steam");

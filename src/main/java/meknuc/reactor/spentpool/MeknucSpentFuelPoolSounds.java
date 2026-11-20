@@ -2,6 +2,7 @@ package meknuc.reactor.spentpool;
 
 import mekanism.common.registration.impl.SoundEventDeferredRegister;
 import mekanism.common.registration.impl.SoundEventRegistryObject;
+import meknuc.Meknuc;
 import net.minecraft.sounds.SoundEvent;
 
 /**
@@ -12,7 +13,7 @@ import net.minecraft.sounds.SoundEvent;
  */
 public class MeknucSpentFuelPoolSounds {
 
-    public static final SoundEventDeferredRegister SOUND_EVENTS = new SoundEventDeferredRegister(meknuc.meknuc.MODID);
+    public static final SoundEventDeferredRegister SOUND_EVENTS = new SoundEventDeferredRegister(Meknuc.MOD_ID);
 
     public static final SoundEventRegistryObject<SoundEvent> SPENT_FUEL_POOL_GEIGER =
           SOUND_EVENTS.register("tile.machine.spent_fuel_pool_geiger");

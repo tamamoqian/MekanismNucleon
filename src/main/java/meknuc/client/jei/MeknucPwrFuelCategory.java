@@ -3,6 +3,8 @@ package meknuc.client.jei;
 import com.mojang.serialization.Codec;
 import java.util.Arrays;
 import java.util.List;
+
+import meknuc.Meknuc;
 import meknuc.items.MeknucItemFuelRodBase;
 import meknuc.items.MeknucRodType;
 import meknuc.items.MeknucRodType.ReactorKind;
@@ -23,7 +25,7 @@ import org.jetbrains.annotations.Nullable;
 public class MeknucPwrFuelCategory extends AbstractRecipeCategory<MeknucPwrFuelCategory.PwrFuelRecipe> {
 
     public static final RecipeType<PwrFuelRecipe> RECIPE_TYPE = RecipeType.create(
-          meknuc.meknuc.MODID, "reactor_fuel", PwrFuelRecipe.class);
+          Meknuc.MOD_ID, "reactor_fuel", PwrFuelRecipe.class);
 
     private static final int INPUT_X = 10;
     private static final int INPUT_Y = 12;
@@ -42,7 +44,7 @@ public class MeknucPwrFuelCategory extends AbstractRecipeCategory<MeknucPwrFuelC
     public static List<PwrFuelRecipe> recipes() {
         return Arrays.stream(MeknucRodType.VALUES)
               .filter(type -> type.burnTime() > 0 && type.supports(ReactorKind.PWR))
-              .map(type -> new PwrFuelRecipe(ResourceLocation.fromNamespaceAndPath(meknuc.meknuc.MODID, type.id()), type))
+              .map(type -> new PwrFuelRecipe(ResourceLocation.fromNamespaceAndPath(Meknuc.MOD_ID, type.id()), type))
               .toList();
     }
 

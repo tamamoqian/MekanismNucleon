@@ -1,6 +1,8 @@
 package meknuc.client.jei;
 
 import java.util.List;
+
+import meknuc.Meknuc;
 import meknuc.blocks.MeknucParticleAcceleratorBlocks;
 import meknuc.items.MeknucItemFuelRodBase;
 import meknuc.items.MeknucRodType;
@@ -20,7 +22,7 @@ public class MeknucJEIPlugin implements IModPlugin {
 
     @Override
     public ResourceLocation getPluginUid() {
-        return ResourceLocation.fromNamespaceAndPath(meknuc.meknuc.MODID, "jei_plugin");
+        return ResourceLocation.fromNamespaceAndPath(Meknuc.MOD_ID, "jei_plugin");
     }
 
     @Override
@@ -31,7 +33,7 @@ public class MeknucJEIPlugin implements IModPlugin {
         registration.addRecipeCategories(new MeknucSpentFuelPoolCoolingCategory(helper,
               MeknucItemFuelRodBase.hotStack(MeknucRodType.URANIUM_235_MOX, 1)));
         registration.addRecipeCategories(new MeknucParticleAcceleratorJEICategory(helper,
-              helper.createDrawable(ResourceLocation.fromNamespaceAndPath(meknuc.meknuc.MODID,
+              helper.createDrawable(ResourceLocation.fromNamespaceAndPath(Meknuc.MOD_ID,
                     "textures/jei/particle_accelerator.png"), 0, 0, 16, 16)));
     }
 
@@ -39,9 +41,9 @@ public class MeknucJEIPlugin implements IModPlugin {
     public void registerRecipes(IRecipeRegistration registration) {
         List<MeknucPwrFuelCategory.PwrFuelRecipe> recipes = MeknucPwrFuelCategory.recipes();
         if (recipes.isEmpty()) {
-            meknuc.meknuc.LOGGER.warn("No meknuc:reactor_fuel data map entries were found, JEI will not show any reactor fuel recipes");
+            Meknuc.LOGGER.warn("No meknuc:reactor_fuel data map entries were found, JEI will not show any reactor fuel recipes");
         } else {
-            meknuc.meknuc.LOGGER.info("Registering {} pressurized water reactor fuel recipes with JEI", recipes.size());
+            Meknuc.LOGGER.info("Registering {} pressurized water reactor fuel recipes with JEI", recipes.size());
             registration.addRecipes(MeknucPwrFuelCategory.RECIPE_TYPE, recipes);
         }
         registration.addRecipes(MeknucPwrCoolantCategory.RECIPE_TYPE, MeknucPwrCoolantCategory.recipes());

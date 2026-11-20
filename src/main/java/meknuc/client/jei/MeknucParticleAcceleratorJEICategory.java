@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import java.util.ArrayList;
 import java.util.List;
 import mekanism.client.recipe_viewer.jei.MekanismJEI;
+import meknuc.Meknuc;
 import meknuc.particle.MeknucParticleAcceleratorLang;
 import meknuc.particle.MeknucParticleAcceleratorRecipes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -29,7 +30,7 @@ import org.jetbrains.annotations.Nullable;
 public class MeknucParticleAcceleratorJEICategory extends AbstractRecipeCategory<MeknucParticleAcceleratorRecipes.Recipe> {
 
     public static final RecipeType<MeknucParticleAcceleratorRecipes.Recipe> RECIPE_TYPE = RecipeType.create(
-          meknuc.meknuc.MODID, "particle_accelerator", MeknucParticleAcceleratorRecipes.Recipe.class);
+          Meknuc.MOD_ID, "particle_accelerator", MeknucParticleAcceleratorRecipes.Recipe.class);
 
     private static final int ITEM_INPUT_X = 8;
     private static final int ITEM_INPUT_Y = 8;

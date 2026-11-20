@@ -57,12 +57,12 @@ import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-@Mod(meknuc.MODID)
-public class meknuc {
-    public static final String MODID = "meknuc";
+@Mod(Meknuc.MOD_ID)
+public class Meknuc {
+    public static final String MOD_ID = "meknuc";
     public static final Logger LOGGER = LogUtils.getLogger();
 
-    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
+    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MOD_ID);
 
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MEKNUC_TAB = CREATIVE_MODE_TABS.register("meknuc_tab", () -> CreativeModeTab.builder()
             .title(Component.translatable("itemGroup.meknuc"))
@@ -84,7 +84,7 @@ public class meknuc {
                 MeknucTurbineBlocks.addTabBlocks(output);
             }).build());
 
-    public meknuc(IEventBus modEventBus, ModContainer modContainer) {
+    public Meknuc(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::registerPayloads);
 

@@ -81,7 +81,7 @@ import meknuc.items.MeknucItemZirconiumCrystal;
 import meknuc.items.MeknucItemZirconiumDust;
 import meknuc.items.MeknucItemZirconiumIngot;
 import meknuc.items.MeknucItemZirconiumShard;
-import meknuc.meknuc;
+import meknuc.Meknuc;
 import meknuc.reactor.BwrLogicAdapterMode;
 import meknuc.reactor.tile.TileEntityPwrLogicAdapter;
 import net.minecraft.core.component.DataComponentType;
@@ -96,10 +96,10 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class MeknucItems {
 
-    public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(meknuc.MODID);
+    public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Meknuc.MOD_ID);
     private static final List<Supplier<ItemStack>> TAB_ITEMS = new ArrayList<>();
 
-    public static final DeferredRegister<DataComponentType<?>> DATA_COMPONENTS = DeferredRegister.create(Registries.DATA_COMPONENT_TYPE, meknuc.MODID);
+    public static final DeferredRegister<DataComponentType<?>> DATA_COMPONENTS = DeferredRegister.create(Registries.DATA_COMPONENT_TYPE, Meknuc.MOD_ID);
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> RADIATION =
             DATA_COMPONENTS.register("radiation",     () -> DataComponentType.<Integer>builder().persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT).build());
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> ROD_TYPE =

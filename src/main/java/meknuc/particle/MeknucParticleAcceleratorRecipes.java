@@ -6,6 +6,7 @@ import mekanism.api.chemical.ChemicalStack;
 import mekanism.common.registries.MekanismChemicals;
 import mekanism.common.registries.MekanismItems;
 import mekanism.common.registration.impl.DeferredChemical;
+import meknuc.Meknuc;
 import meknuc.chemicals.MeknucChemicals;
 import meknuc.init.MeknucItems;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -137,7 +138,7 @@ public final class MeknucParticleAcceleratorRecipes {
     }
 
     private static ResourceLocation id(String path) {
-        return ResourceLocation.fromNamespaceAndPath(meknuc.meknuc.MODID, "particle_accelerator/" + path);
+        return ResourceLocation.fromNamespaceAndPath(Meknuc.MOD_ID, "particle_accelerator/" + path);
     }
 
     private static Item item(String namespace, String path) {
