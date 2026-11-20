@@ -427,5 +427,11 @@
   "jei.meknuc.particle_accelerator.chemical": "粒子束：%s %s mB",
   "jei.meknuc.particle_accelerator.chemical_output": "产物：%s %s mB",
   "jei.meknuc.particle_accelerator.mode": "模式：%s",
-  "subtitles.meknuc.particle_accelerator_running": "粒子加速器运行"
+  "subtitles.meknuc.particle_accelerator_running": "粒子加速器运行",
+  "config.meknuc.unstable_explosion": "不稳定爆炸",
+  "config.meknuc.unstable_explosion.tooltip": "开启后，RTG发电机在储电满且无燃料时每秒有概率爆炸（两倍TNT的威力），概率见“不稳定爆炸概率”。默认：false",
+  "config.meknuc.unstable_explosion_chance": "不稳定爆炸概率",
+  "config.meknuc.unstable_explosion_chance.tooltip": "储电满且无燃料时，RTG发电机每秒触发爆炸的概率（0~1）。默认：0.1",
+  "meknuc.configuration.title": "通用机械：核子拓展 配置",
+  "meknuc.configuration.section.meknuc.common.toml.title": "通用机械：核子拓展 配置"
 }

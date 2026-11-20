@@ -427,5 +427,11 @@
   "jei.meknuc.particle_accelerator.chemical": "Beam: %s %s mB",
   "jei.meknuc.particle_accelerator.chemical_output": "Output: %s %s mB",
   "jei.meknuc.particle_accelerator.mode": "Mode: %s",
-  "subtitles.meknuc.particle_accelerator_running": "Particle accelerator runs"
+  "subtitles.meknuc.particle_accelerator_running": "Particle accelerator runs",
+  "config.meknuc.unstable_explosion": "Unstable Explosion",
+  "config.meknuc.unstable_explosion.tooltip": "If enabled, an RTG with full storage and no fuel has a chance to explode each second (twice the power of TNT). Chance is set by Unstable Explosion Chance below. Default: false",
+  "config.meknuc.unstable_explosion_chance": "Unstable Explosion Chance",
+  "config.meknuc.unstable_explosion_chance.tooltip": "Chance per second for the RTG to explode when storage is full and there is no fuel (0-1). Default: 0.1",
+  "meknuc.configuration.title": "Mekanism: Nucleon Configuration",
+  "meknuc.configuration.section.meknuc.common.toml.title": "Mekanism: Nucleon Configuration"
 }

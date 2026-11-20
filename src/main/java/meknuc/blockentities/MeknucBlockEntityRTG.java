@@ -6,6 +6,7 @@ import java.util.List;
 import meknuc.init.MeknucBlock;
 import meknuc.init.MeknucItems;
 import meknuc.items.MeknucItemFuelRodBase;
+import meknuc.Config;
 import mekanism.api.Action;
 import mekanism.api.AutomationType;
 import mekanism.api.IContentsListener;
@@ -26,15 +27,18 @@ import mekanism.common.util.CableUtils;
 import mekanism.common.util.MekanismUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class MeknucBlockEntityRTG extends TileEntityMekanism {
 
-    public static final long CAPACITY = 102400L;
+    public static final long CAPACITY = 120_000L;
     public static final long MIN_RATE_PER_SECOND = 1L;
     public static final long MAX_RATE_PER_SECOND = 24000L;
     public static final long HOT_RATE_PER_SECOND = 36000L;
@@ -55,6 +59,7 @@ public class MeknucBlockEntityRTG extends TileEntityMekanism {
     private double currentRate = MIN_RATE_PER_SECOND;
     private double fractionalEnergy;
     private double fractionalOps;
+    private int ventTimer;
 
     public MeknucBlockEntityRTG(BlockPos pos, BlockState state) {
         super(MeknucBlock.RADIOISOTOPE_THERMOELECTRIC_GENERATOR, pos, state);
@@ -100,6 +105,12 @@ public class MeknucBlockEntityRTG extends TileEntityMekanism {
         ItemStack rod = fuelSlot.getStack();
         boolean isRod = rod.getItem() instanceof MeknucItemFuelRodBase;
         boolean hasFuel = isRod && (MeknucItemFuelRodBase.isInfinite(rod) || MeknucItemFuelRodBase.getRadiation(rod) > 0);
+        boolean energyFull = energyContainer.getNeeded() == 0L;
+        // 储电满且无燃料：每秒有概率不稳定爆炸
+        if (!hasFuel && energyFull && Config.UNSTABLE_EXPLOSION.get()) {
+            handleOverload();
+            return;
+        }
         double target = 0D;
         if (isRod) {
             if (!hasFuel) {
@@ -127,7 +138,7 @@ public class MeknucBlockEntityRTG extends TileEntityMekanism {
         if (output > 0) {
             energyContainer.insert(output, Action.EXECUTE, AutomationType.INTERNAL);
         }
-        if (hasFuel && !MeknucItemFuelRodBase.isInfinite(rod)) {
+        if (hasFuel && !MeknucItemFuelRodBase.isInfinite(rod) && !energyFull) {
             fractionalOps += getSpeedMultiplier();
             int operations = (int) fractionalOps;
             fractionalOps -= operations;
@@ -149,6 +160,21 @@ public class MeknucBlockEntityRTG extends TileEntityMekanism {
                 } else {
                     MeknucItemFuelRodBase.setRadiation(rod, radiation);
                 }
+            }
+        }
+    }
+
+    private void handleOverload() {
+        currentRate = Math.max(0D, currentRate / Math.pow(RAMP_FACTOR, getSpeedMultiplier()));
+        if (currentRate < MIN_RATE_PER_SECOND) {
+            currentRate = 0D;
+        }
+        ventTimer++;
+        if (ventTimer >= 20) {
+            ventTimer = 0;
+            if (level != null && level.random.nextFloat() < (float) Config.UNSTABLE_EXPLOSION_CHANCE.get().doubleValue()) {
+                level.explode(null, worldPosition.getX() + 0.5D, worldPosition.getY() + 0.5D, worldPosition.getZ() + 0.5D,
+                      8.0F, Level.ExplosionInteraction.TNT);
             }
         }
     }
