@@ -5,7 +5,7 @@ import mekanism.api.gear.ModuleData;
 import mekanism.common.item.ItemModule;
 import mekanism.common.registration.impl.ModuleDeferredRegister;
 import mekanism.common.registration.impl.ModuleRegistryObject;
-import meknuc.items.MeknucItemBase;
+import meknuc.init.MeknucItems;
 import meknuc.meknuc;
 import net.minecraft.core.Holder;
 import net.minecraft.world.item.CreativeModeTab;
@@ -21,23 +21,23 @@ public class MeknucModules {
 
     // ---------------------------------------------------------------- items
 
-    public static final DeferredItem<ItemModule> MODULE_RADIATION_ISOLATION = MeknucItemBase.ITEMS.register(
+    public static final DeferredItem<ItemModule> MODULE_RADIATION_ISOLATION = MeknucItems.ITEMS.register(
           "module_radiation_isolation_unit",
           () -> new ItemModule(() -> holder(MeknucModules.RADIATION_ISOLATION), new Item.Properties()));
 
-    public static final DeferredItem<ItemModule> MODULE_DEPLETED_URANIUM_ARMOR = MeknucItemBase.ITEMS.register(
+    public static final DeferredItem<ItemModule> MODULE_DEPLETED_URANIUM_ARMOR = MeknucItems.ITEMS.register(
           "module_depleted_uranium_armor_unit",
           () -> new ItemModule(() -> holder(MeknucModules.DEPLETED_URANIUM_ARMOR), new Item.Properties()));
 
-    public static final DeferredItem<ItemModule> MODULE_RADIATION_COUNTERATTACK = MeknucItemBase.ITEMS.register(
+    public static final DeferredItem<ItemModule> MODULE_RADIATION_COUNTERATTACK = MeknucItems.ITEMS.register(
           "module_radiation_counterattack_unit",
           () -> new ItemModule(() -> holder(MeknucModules.RADIATION_COUNTERATTACK), new Item.Properties()));
 
-    public static final DeferredItem<ItemModule> MODULE_NEUTRON_ARMOR = MeknucItemBase.ITEMS.register(
+    public static final DeferredItem<ItemModule> MODULE_NEUTRON_ARMOR = MeknucItems.ITEMS.register(
           "module_neutron_armor_unit",
           () -> new ItemModule(() -> holder(MeknucModules.NEUTRON_ARMOR), new Item.Properties()));
 
-    public static final DeferredItem<ItemModule> MODULE_RADIOISOTOPE_ENERGY_GENERATION = MeknucItemBase.ITEMS.register(
+    public static final DeferredItem<ItemModule> MODULE_RADIOISOTOPE_ENERGY_GENERATION = MeknucItems.ITEMS.register(
           "module_radioisotope_energy_generation_unit",
           () -> new ItemModule(() -> holder(MeknucModules.RADIOISOTOPE_ENERGY_GENERATION), new Item.Properties()));
 

@@ -3,8 +3,8 @@ package meknuc.blockentities;
 import java.util.ArrayList;
 import java.util.List;
 
-import meknuc.blocks.MeknucBlockBase;
-import meknuc.items.MeknucItemBase;
+import meknuc.init.MeknucBlock;
+import meknuc.init.MeknucItems;
 import meknuc.items.MeknucItemFuelRodBase;
 import mekanism.api.Action;
 import mekanism.api.AutomationType;
@@ -49,7 +49,7 @@ public class MeknucBlockEntityRTG extends TileEntityMekanism {
     private double fractionalOps;
 
     public MeknucBlockEntityRTG(BlockPos pos, BlockState state) {
-        super(MeknucBlockBase.RADIOISOTOPE_THERMOELECTRIC_GENERATOR, pos, state);
+        super(MeknucBlock.RADIOISOTOPE_THERMOELECTRIC_GENERATOR, pos, state);
     }
 
     @NotNull
@@ -113,7 +113,7 @@ public class MeknucBlockEntityRTG extends TileEntityMekanism {
                         fuelSlot.growStack(-1, Action.EXECUTE);
                         ItemStack remaining = fuelSlot.getStack();
                         if (!remaining.isEmpty()) {
-                            remaining.remove(MeknucItemBase.RADIATION.get());
+                            remaining.remove(MeknucItems.RADIATION.get());
                             fuelSlot.setStackUnchecked(remaining);
                         }
                     }

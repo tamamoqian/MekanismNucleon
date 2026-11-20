@@ -4,7 +4,6 @@ import mekanism.common.capabilities.Capabilities;
 import mekanism.common.registration.impl.TileEntityTypeDeferredRegister;
 import mekanism.common.registration.impl.TileEntityTypeRegistryObject;
 import mekanism.common.tile.base.TileEntityMekanism;
-import meknuc.blocks.MeknucBlockBase;
 import meknuc.blocks.MeknucFbrBlocks;
 import meknuc.blocks.MeknucHtgrBlocks;
 import meknuc.blocks.MeknucHwrBlocks;
@@ -12,6 +11,7 @@ import meknuc.blocks.MeknucMoltenSaltReactorBlocks;
 import meknuc.blocks.MeknucParticleAcceleratorBlocks;
 import meknuc.blocks.MeknucSpentFuelPoolBlocks;
 import meknuc.blocks.MeknucWasteStorageBlocks;
+import meknuc.init.MeknucBlock;
 import meknuc.meknuc;
 import meknuc.particle.tile.TileEntityParticleAcceleratorController;
 import meknuc.particle.tile.TileEntityParticleAcceleratorPart;
@@ -25,7 +25,7 @@ public class MeknucTileEntityTypes {
     public static final TileEntityTypeDeferredRegister TILE_ENTITY_TYPES = new TileEntityTypeDeferredRegister(meknuc.MODID);
 
     public static final TileEntityTypeRegistryObject<MeknucBlockEntityRTG> RADIOISOTOPE_THERMOELECTRIC_GENERATOR =
-          TILE_ENTITY_TYPES.mekBuilder(MeknucBlockBase.RADIOISOTOPE_THERMOELECTRIC_GENERATOR, MeknucBlockEntityRTG::new)
+          TILE_ENTITY_TYPES.mekBuilder(MeknucBlock.RADIOISOTOPE_THERMOELECTRIC_GENERATOR, MeknucBlockEntityRTG::new)
                 .serverTicker((level, pos, state, be) -> TileEntityMekanism.tickServer(level, pos, state, be))
                 .build();
 

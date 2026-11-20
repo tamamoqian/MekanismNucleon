@@ -1,5 +1,6 @@
 package meknuc.items;
 
+import meknuc.init.MeknucItems;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.CreativeModeTab;
@@ -14,21 +15,21 @@ public class MeknucItemFuelRodBase extends MeknucItemBase {
     }
 
     public static MeknucRodType getRodType(ItemStack stack) {
-        String id = stack.get(MeknucItemBase.ROD_TYPE.get());
+        String id = stack.get(MeknucItems.ROD_TYPE.get());
         MeknucRodType type = id == null ? null : MeknucRodType.byId(id);
         return type == null ? MeknucRodType.VALUES[0] : type;
     }
 
     public static void setRodType(ItemStack stack, MeknucRodType type) {
-        stack.set(MeknucItemBase.ROD_TYPE.get(), type.id());
+        stack.set(MeknucItems.ROD_TYPE.get(), type.id());
     }
 
     public static int getRadiation(ItemStack stack) {
-        return stack.getOrDefault(MeknucItemBase.RADIATION.get(), MAX_RADIATION);
+        return stack.getOrDefault(MeknucItems.RADIATION.get(), MAX_RADIATION);
     }
 
     public static void setRadiation(ItemStack stack, int value) {
-        stack.set(MeknucItemBase.RADIATION.get(), value);
+        stack.set(MeknucItems.RADIATION.get(), value);
     }
 
     public static boolean isDepleted(ItemStack stack) {
@@ -40,15 +41,15 @@ public class MeknucItemFuelRodBase extends MeknucItemBase {
     }
 
     public static boolean isHot(ItemStack stack) {
-        return Boolean.TRUE.equals(stack.get(MeknucItemBase.ROD_HOT.get()));
+        return Boolean.TRUE.equals(stack.get(MeknucItems.ROD_HOT.get()));
     }
 
     public static void setHot(ItemStack stack, boolean hot) {
-        stack.set(MeknucItemBase.ROD_HOT.get(), hot);
+        stack.set(MeknucItems.ROD_HOT.get(), hot);
     }
 
     public static ItemStack freshStack(MeknucRodType type, int count) {
-        ItemStack stack = new ItemStack(MeknucItemBase.FUEL_ROD.get(), count);
+        ItemStack stack = new ItemStack(MeknucItems.FUEL_ROD.get(), count);
         setRodType(stack, type);
         return stack;
     }
@@ -112,6 +113,6 @@ public class MeknucItemFuelRodBase extends MeknucItemBase {
     }
 
     public static double getPowerPerTick(ItemStack stack) {
-        return isDepleted(stack) ? 1.5D : 6.0D;
+        return isDepleted(stack) ? 60.0D : 9600.0D;
     }
 }

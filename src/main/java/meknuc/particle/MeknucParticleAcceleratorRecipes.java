@@ -7,7 +7,7 @@ import mekanism.common.registries.MekanismChemicals;
 import mekanism.common.registries.MekanismItems;
 import mekanism.common.registration.impl.DeferredChemical;
 import meknuc.chemicals.MeknucChemicals;
-import meknuc.items.MeknucItemBase;
+import meknuc.init.MeknucItems;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -84,34 +84,34 @@ public final class MeknucParticleAcceleratorRecipes {
         return List.of(
               // ---- 粒子加速模式 ----
               new Recipe(id("uranium_233_to_uranium_235"), MODE_ACCELERATION,
-                    stack(MeknucItemBase.URANIUM_233_DUST.get(), 1),
+                    stack(MeknucItems.URANIUM_233_DUST.get(), 1),
                     List.of(chemical(MeknucChemicals.HOT_NEUTRON_PLASMA, 1_000L)),
-                    stack(MeknucItemBase.URANIUM_235_DUST.get(), 1), null, 0L,
+                    stack(MeknucItems.URANIUM_235_DUST.get(), 1), null, 0L,
                     100, 25L * MFE),
               new Recipe(id("uranium_238_to_plutonium_239"), MODE_ACCELERATION,
-                    stack(MeknucItemBase.URANIUM_238_DUST.get(), 1),
+                    stack(MeknucItems.URANIUM_238_DUST.get(), 1),
                     List.of(chemical(MeknucChemicals.HOT_PROTON_PLASMA, 1_000L)),
-                    stack(MeknucItemBase.PLUTONIUM_239_DUST.get(), 1), null, 0L,
+                    stack(MeknucItems.PLUTONIUM_239_DUST.get(), 1), null, 0L,
                     400, 50L * MFE),
               new Recipe(id("enriched_carbon_to_diamond"), MODE_ACCELERATION,
                     stack(MekanismItems.ENRICHED_CARBON.asItem(), 1), List.of(),
                     stack(MekanismItems.DIAMOND_DUST.asItem(), 1), null, 0L,
                     20, 10L * MFE),
               new Recipe(id("plutonium_239_to_americium_241"), MODE_ACCELERATION,
-                    stack(MeknucItemBase.PLUTONIUM_239_DUST.get(), 1),
+                    stack(MeknucItems.PLUTONIUM_239_DUST.get(), 1),
                     List.of(chemical(MeknucChemicals.HOT_PROTON_PLASMA, 1_000L)),
-                    stack(MeknucItemBase.AMERICIUM_241_DUST.get(), 1), null, 0L,
+                    stack(MeknucItems.AMERICIUM_241_DUST.get(), 1), null, 0L,
                     100, 65L * MFE),
               new Recipe(id("lead_to_polonium_210"), MODE_ACCELERATION,
                     stack(item("mekanism", "dust_lead"), 1),
                     List.of(chemical(MeknucChemicals.HOT_PROTON_PLASMA, 10_000L),
                           chemical(MeknucChemicals.HOT_NEUTRON_PLASMA, 10_000L)),
-                    stack(MeknucItemBase.POLONIUM_210_DUST.get(), 1), null, 0L,
+                    stack(MeknucItems.POLONIUM_210_DUST.get(), 1), null, 0L,
                     1_200, 100L * MFE),
               new Recipe(id("thorium_to_ruthenium"), MODE_ACCELERATION,
-                    stack(MeknucItemBase.THORIUM_DUST.get(), 1),
+                    stack(MeknucItems.THORIUM_DUST.get(), 1),
                     List.of(chemical(MeknucChemicals.HOT_PROTON_PLASMA, 1_000L)),
-                    stack(MeknucItemBase.RUTHENIUM_DUST.get(), 1), null, 0L,
+                    stack(MeknucItems.RUTHENIUM_DUST.get(), 1), null, 0L,
                     200, 45L * MFE),
               new Recipe(id("tin_to_iron"), MODE_ACCELERATION,
                     stack(item("mekanism", "dust_tin"), 1),
@@ -119,7 +119,7 @@ public final class MeknucParticleAcceleratorRecipes {
                     stack(item("mekanism", "dust_iron"), 2), null, 0L,
                     1, 10L * MFE),
               new Recipe(id("polonium_to_antimatter_pellet"), MODE_ACCELERATION,
-                    stack(MeknucItemBase.POLONIUM_210_DUST.get(), 100),
+                    stack(MeknucItems.POLONIUM_210_DUST.get(), 100),
                     List.of(chemical(MeknucChemicals.HOT_PROTON_PLASMA, 10_000L),
                           chemical(MeknucChemicals.HOT_NEUTRON_PLASMA, 10_000L)),
                     stack(MekanismItems.ANTIMATTER_PELLET.asItem(), 1), null, 0L,
@@ -130,7 +130,7 @@ public final class MeknucParticleAcceleratorRecipes {
                     ItemStack.EMPTY, MeknucChemicals.HOT_PROTON_PLASMA, 1_000L,
                     200, 10L * MFE),
               new Recipe(id("uranium_238_to_hot_neutron_plasma"), MODE_COLLECTION,
-                    stack(MeknucItemBase.URANIUM_238_DUST.get(), 1), List.of(),
+                    stack(MeknucItems.URANIUM_238_DUST.get(), 1), List.of(),
                     ItemStack.EMPTY, MeknucChemicals.HOT_NEUTRON_PLASMA, 1_000L,
                     200, 15L * MFE)
         );

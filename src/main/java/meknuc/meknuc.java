@@ -1,7 +1,6 @@
 package meknuc;
 
 import meknuc.blockentities.MeknucTileEntityTypes;
-import meknuc.blocks.MeknucBlockBase;
 import meknuc.blocks.MeknucFbrBlocks;
 import meknuc.blocks.MeknucHtgrBlocks;
 import meknuc.blocks.MeknucHwrBlocks;
@@ -10,7 +9,8 @@ import meknuc.blocks.MeknucParticleAcceleratorBlocks;
 import meknuc.blocks.MeknucSpentFuelPoolBlocks;
 import meknuc.blocks.MeknucWasteStorageBlocks;
 import meknuc.chemicals.MeknucChemicals;
-import meknuc.items.MeknucItemBase;
+import meknuc.init.MeknucBlock;
+import meknuc.init.MeknucItems;
 import meknuc.menu.MeknucMenuTypes;
 import meknuc.modules.MeknucModules;
 import meknuc.modules.MeknucSuitModuleEvents;
@@ -67,11 +67,11 @@ public class meknuc {
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MEKNUC_TAB = CREATIVE_MODE_TABS.register("meknuc_tab", () -> CreativeModeTab.builder()
             .title(Component.translatable("itemGroup.meknuc"))
             .withTabsBefore(CreativeModeTabs.COMBAT)
-            .icon(() -> MeknucItemBase.BERYLLIUM_INGOT.get().getDefaultInstance())
+            .icon(() -> MeknucItems.BERYLLIUM_INGOT.get().getDefaultInstance())
             .displayItems((parameters, output) -> {
-                MeknucItemBase.addTabItems(output);
+                MeknucItems.addTabItems(output);
                 MeknucModules.addTabItems(output);
-                MeknucBlockBase.addTabBlocks(output);
+                MeknucBlock.addTabBlocks(output);
                 MeknucPwrBlocks.addTabBlocks(output);
                 MeknucBwrBlocks.addTabBlocks(output);
                 MeknucHwrBlocks.addTabBlocks(output);
@@ -93,7 +93,7 @@ public class meknuc {
         MeknucSpentFuelPoolMultiblock.initialize();
         MeknucParticleAcceleratorMultiblock.initialize();
         MeknucTurbineMultiblock.initialize();
-        MeknucBlockBase.BLOCKS.register(modEventBus);
+        MeknucBlock.BLOCKS.register(modEventBus);
         MeknucHwrBlocks.BLOCKS.register(modEventBus);
         MeknucSpentFuelPoolBlocks.BLOCKS.register(modEventBus);
         MeknucFbrBlocks.BLOCKS.register(modEventBus);
@@ -102,8 +102,8 @@ public class meknuc {
         MeknucMoltenSaltReactorBlocks.BLOCKS.register(modEventBus);
         MeknucWasteStorageBlocks.BLOCKS.register(modEventBus);
         MeknucTurbineBlocks.BLOCKS.register(modEventBus);
-        MeknucItemBase.ITEMS.register(modEventBus);
-        MeknucItemBase.DATA_COMPONENTS.register(modEventBus);
+        MeknucItems.ITEMS.register(modEventBus);
+        MeknucItems.DATA_COMPONENTS.register(modEventBus);
         MeknucModules.MODULES.register(modEventBus);
         MeknucPwrBlocks.BLOCKS.register(modEventBus);
         MeknucBwrBlocks.BLOCKS.register(modEventBus);
