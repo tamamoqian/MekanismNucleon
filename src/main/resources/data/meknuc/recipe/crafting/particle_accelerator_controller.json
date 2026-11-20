@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "ACA",
+    "CEC",
+    "ACA"
+  ],
+  "key": {
+    "A": {
+      "item": "meknuc:particle_accelerator_radiation_resistant_casing"
+    },
+    "C": {
+      "item": "meknuc:particle_acceleration_coil"
+    },
+    "E": {
+      "item": "mekanism:elite_control_circuit"
+    }
+  },
+  "result": {
+    "id": "meknuc:particle_accelerator_controller",
+    "count": 1
+  }
+}

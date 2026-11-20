@@ -7,8 +7,8 @@ import mekanism.common.block.prefab.BlockBasicMultiblock;
 import mekanism.common.item.block.ItemBlockTooltip;
 import mekanism.common.registration.impl.BlockDeferredRegister;
 import mekanism.common.registration.impl.BlockRegistryObject;
-import meknuc.blockentities.MeknucBlockEntityReactorPart;
-import meknuc.blockentities.MeknucBlockEntityReactorPort;
+import meknuc.particle.tile.TileEntityParticleAcceleratorPart;
+import meknuc.particle.tile.TileEntityParticleAcceleratorPort;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.MapColor;
@@ -17,32 +17,38 @@ public class MeknucParticleAcceleratorBlocks {
 
     public static final BlockDeferredRegister BLOCKS = new BlockDeferredRegister("meknuc");
 
-    public static final BlockRegistryObject<BlockBasicMultiblock<MeknucBlockEntityReactorPart>,
-          ItemBlockTooltip<BlockBasicMultiblock<MeknucBlockEntityReactorPart>>> PARTICLE_ACCELERATOR_RADIATION_RESISTANT_CASING =
+    public static final BlockRegistryObject<BlockParticleAcceleratorController,
+          ItemBlockTooltip<BlockParticleAcceleratorController>> PARTICLE_ACCELERATOR_CONTROLLER =
+          registerTooltipBlock("particle_accelerator_controller",
+                () -> new BlockParticleAcceleratorController(MeknucParticleAcceleratorBlockTypes.PARTICLE_ACCELERATOR_CONTROLLER,
+                      properties -> properties.mapColor(MapColor.COLOR_LIGHT_GRAY)));
+
+    public static final BlockRegistryObject<BlockBasicMultiblock<TileEntityParticleAcceleratorPart>,
+          ItemBlockTooltip<BlockBasicMultiblock<TileEntityParticleAcceleratorPart>>> PARTICLE_ACCELERATOR_RADIATION_RESISTANT_CASING =
           registerTooltipBlock("particle_accelerator_radiation_resistant_casing",
                 () -> new BlockBasicMultiblock<>(MeknucParticleAcceleratorBlockTypes.PARTICLE_ACCELERATOR_RADIATION_RESISTANT_CASING,
                       properties -> properties.mapColor(MapColor.COLOR_LIGHT_GRAY)));
 
-    public static final BlockRegistryObject<BlockBasicMultiblock<MeknucBlockEntityReactorPart>,
-          ItemBlockTooltip<BlockBasicMultiblock<MeknucBlockEntityReactorPart>>> PARTICLE_ACCELERATOR_SUPPORT_FRAME =
+    public static final BlockRegistryObject<BlockBasicMultiblock<TileEntityParticleAcceleratorPart>,
+          ItemBlockTooltip<BlockBasicMultiblock<TileEntityParticleAcceleratorPart>>> PARTICLE_ACCELERATOR_SUPPORT_FRAME =
           registerTooltipBlock("particle_accelerator_support_frame",
                 () -> new BlockBasicMultiblock<>(MeknucParticleAcceleratorBlockTypes.PARTICLE_ACCELERATOR_SUPPORT_FRAME,
                       properties -> properties.mapColor(MapColor.METAL)));
 
-    public static final BlockRegistryObject<BlockBasicMultiblock<MeknucBlockEntityReactorPart>,
-          ItemBlockTooltip<BlockBasicMultiblock<MeknucBlockEntityReactorPart>>> PARTICLE_ACCELERATOR_TARGET_MOUNTING_FRAME =
+    public static final BlockRegistryObject<BlockBasicMultiblock<TileEntityParticleAcceleratorPart>,
+          ItemBlockTooltip<BlockBasicMultiblock<TileEntityParticleAcceleratorPart>>> PARTICLE_ACCELERATOR_TARGET_MOUNTING_FRAME =
           registerTooltipBlock("particle_accelerator_target_mounting_frame",
                 () -> new BlockBasicMultiblock<>(MeknucParticleAcceleratorBlockTypes.PARTICLE_ACCELERATOR_TARGET_MOUNTING_FRAME,
                       properties -> properties.mapColor(MapColor.METAL)));
 
-    public static final BlockRegistryObject<BlockBasicMultiblock<MeknucBlockEntityReactorPart>,
-          ItemBlockTooltip<BlockBasicMultiblock<MeknucBlockEntityReactorPart>>> PARTICLE_ACCELERATION_COIL =
+    public static final BlockRegistryObject<BlockBasicMultiblock<TileEntityParticleAcceleratorPart>,
+          ItemBlockTooltip<BlockBasicMultiblock<TileEntityParticleAcceleratorPart>>> PARTICLE_ACCELERATION_COIL =
           registerTooltipBlock("particle_acceleration_coil",
                 () -> new BlockBasicMultiblock<>(MeknucParticleAcceleratorBlockTypes.PARTICLE_ACCELERATION_COIL,
                       properties -> properties.mapColor(MapColor.METAL)));
 
-    public static final BlockRegistryObject<BlockBasicMultiblock<MeknucBlockEntityReactorPort>,
-          ItemBlockTooltip<BlockBasicMultiblock<MeknucBlockEntityReactorPort>>> PARTICLE_ACCELERATOR_PORT =
+    public static final BlockRegistryObject<BlockBasicMultiblock<TileEntityParticleAcceleratorPort>,
+          ItemBlockTooltip<BlockBasicMultiblock<TileEntityParticleAcceleratorPort>>> PARTICLE_ACCELERATOR_PORT =
           registerTooltipBlock("particle_accelerator_port",
                 () -> new BlockBasicMultiblock<>(MeknucParticleAcceleratorBlockTypes.PARTICLE_ACCELERATOR_PORT,
                       properties -> properties.mapColor(MapColor.COLOR_LIGHT_GRAY)));
@@ -53,6 +59,7 @@ public class MeknucParticleAcceleratorBlocks {
     }
 
     public static void addTabBlocks(CreativeModeTab.Output output) {
+        output.accept(PARTICLE_ACCELERATOR_CONTROLLER);
         output.accept(PARTICLE_ACCELERATOR_RADIATION_RESISTANT_CASING);
         output.accept(PARTICLE_ACCELERATOR_SUPPORT_FRAME);
         output.accept(PARTICLE_ACCELERATOR_TARGET_MOUNTING_FRAME);

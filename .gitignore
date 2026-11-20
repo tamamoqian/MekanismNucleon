@@ -28,6 +28,9 @@ replay_pid*
 build/
 !gradle/wrapper/gradle-wrapper.jar
 
+# Dev run directory (server world / logs)
+run/
+
 # IDE
 .idea/
 *.iml

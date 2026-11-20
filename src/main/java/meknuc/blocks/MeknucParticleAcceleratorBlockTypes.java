@@ -5,13 +5,18 @@ import mekanism.api.text.EnumColor;
 import mekanism.api.text.ILangEntry;
 import mekanism.api.text.IHasTextComponent.IHasEnumNameTextComponent;
 import mekanism.common.block.attribute.Attribute;
+import mekanism.common.block.attribute.AttributeGui;
 import mekanism.common.content.blocktype.BlockTypeTile;
 import mekanism.common.content.blocktype.BlockTypeTile.BlockTileBuilder;
 import mekanism.common.registration.impl.TileEntityTypeRegistryObject;
 import mekanism.common.tile.base.TileEntityMekanism;
-import meknuc.blockentities.MeknucBlockEntityReactorPart;
-import meknuc.blockentities.MeknucBlockEntityReactorPort;
 import meknuc.blockentities.MeknucTileEntityTypes;
+import meknuc.particle.MeknucParticleAcceleratorContainerTypes;
+import meknuc.particle.MeknucParticleAcceleratorLang;
+import meknuc.particle.MeknucParticleAcceleratorSounds;
+import meknuc.particle.tile.TileEntityParticleAcceleratorController;
+import meknuc.particle.tile.TileEntityParticleAcceleratorPart;
+import meknuc.particle.tile.TileEntityParticleAcceleratorPort;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
@@ -23,41 +28,52 @@ public class MeknucParticleAcceleratorBlockTypes {
     public static final AttributeStateReactorPortMode<Mode> MODE_ATTRIBUTE =
           new AttributeStateReactorPortMode<>(MODE, Mode.BEAM_INPUT);
 
-    public static final BlockTypeTile<MeknucBlockEntityReactorPart> PARTICLE_ACCELERATOR_RADIATION_RESISTANT_CASING =
+    public static final BlockTypeTile<TileEntityParticleAcceleratorController> PARTICLE_ACCELERATOR_CONTROLLER =
+          createExternal(MeknucBlockReactorLang.PARTICLE_ACCELERATOR_CONTROLLER,
+                () -> MeknucTileEntityTypes.PARTICLE_ACCELERATOR_CONTROLLER, true);
+
+    public static final BlockTypeTile<TileEntityParticleAcceleratorPart> PARTICLE_ACCELERATOR_RADIATION_RESISTANT_CASING =
           createExternal(MeknucBlockReactorLang.PARTICLE_ACCELERATOR_RADIATION_RESISTANT_CASING,
-                () -> MeknucTileEntityTypes.PARTICLE_ACCELERATOR_RADIATION_RESISTANT_CASING);
+                () -> MeknucTileEntityTypes.PARTICLE_ACCELERATOR_RADIATION_RESISTANT_CASING, false);
 
-    public static final BlockTypeTile<MeknucBlockEntityReactorPart> PARTICLE_ACCELERATOR_SUPPORT_FRAME =
+    public static final BlockTypeTile<TileEntityParticleAcceleratorPart> PARTICLE_ACCELERATOR_SUPPORT_FRAME =
           createExternal(MeknucBlockReactorLang.PARTICLE_ACCELERATOR_SUPPORT_FRAME,
-                () -> MeknucTileEntityTypes.PARTICLE_ACCELERATOR_SUPPORT_FRAME);
+                () -> MeknucTileEntityTypes.PARTICLE_ACCELERATOR_SUPPORT_FRAME, false);
 
-    public static final BlockTypeTile<MeknucBlockEntityReactorPart> PARTICLE_ACCELERATOR_TARGET_MOUNTING_FRAME =
+    public static final BlockTypeTile<TileEntityParticleAcceleratorPart> PARTICLE_ACCELERATOR_TARGET_MOUNTING_FRAME =
           createExternal(MeknucBlockReactorLang.PARTICLE_ACCELERATOR_TARGET_MOUNTING_FRAME,
-                () -> MeknucTileEntityTypes.PARTICLE_ACCELERATOR_TARGET_MOUNTING_FRAME);
+                () -> MeknucTileEntityTypes.PARTICLE_ACCELERATOR_TARGET_MOUNTING_FRAME, false);
 
-    public static final BlockTypeTile<MeknucBlockEntityReactorPart> PARTICLE_ACCELERATION_COIL =
+    public static final BlockTypeTile<TileEntityParticleAcceleratorPart> PARTICLE_ACCELERATION_COIL =
           createExternal(MeknucBlockReactorLang.PARTICLE_ACCELERATION_COIL,
-                () -> MeknucTileEntityTypes.PARTICLE_ACCELERATION_COIL);
+                () -> MeknucTileEntityTypes.PARTICLE_ACCELERATION_COIL, false);
 
-    public static final BlockTypeTile<MeknucBlockEntityReactorPort> PARTICLE_ACCELERATOR_PORT =
+    public static final BlockTypeTile<TileEntityParticleAcceleratorPort> PARTICLE_ACCELERATOR_PORT =
           createPort(MeknucBlockReactorLang.PARTICLE_ACCELERATOR_PORT,
                 () -> MeknucTileEntityTypes.PARTICLE_ACCELERATOR_PORT, MODE_ATTRIBUTE);
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     private static <TILE extends TileEntityMekanism> BlockTypeTile<TILE> createExternal(
-          MeknucBlockReactorLang description, Supplier<TileEntityTypeRegistryObject<TILE>> tileType) {
+          MeknucBlockReactorLang description, Supplier<TileEntityTypeRegistryObject<TILE>> tileType, boolean gui) {
         BlockTileBuilder builder = (BlockTileBuilder) BlockTileBuilder.createBlock(tileType, description);
+        if (gui) {
+            builder.with(new Attribute[]{new AttributeGui(
+                  () -> MeknucParticleAcceleratorContainerTypes.PARTICLE_ACCELERATOR,
+                  MeknucParticleAcceleratorLang.GUI_TITLE)});
+        }
+        builder = (BlockTileBuilder) builder.withSound(MeknucParticleAcceleratorSounds.PARTICLE_ACCELERATOR_RUNNING);
         return (BlockTypeTile<TILE>) ((BlockTileBuilder) builder.externalMultiblock()).build();
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    private static BlockTypeTile<MeknucBlockEntityReactorPort> createPort(
+    private static BlockTypeTile<TileEntityParticleAcceleratorPort> createPort(
           MeknucBlockReactorLang description,
-          Supplier<TileEntityTypeRegistryObject<MeknucBlockEntityReactorPort>> tileType,
+          Supplier<TileEntityTypeRegistryObject<TileEntityParticleAcceleratorPort>> tileType,
           AttributeStateReactorPortMode<?> mode) {
         BlockTileBuilder builder = (BlockTileBuilder) BlockTileBuilder.createBlock(tileType, description);
         builder.with(new Attribute[]{mode});
-        return (BlockTypeTile<MeknucBlockEntityReactorPort>) ((BlockTileBuilder) builder.externalMultiblock()).build();
+        builder = (BlockTileBuilder) builder.withSound(MeknucParticleAcceleratorSounds.PARTICLE_ACCELERATOR_RUNNING);
+        return (BlockTypeTile<TileEntityParticleAcceleratorPort>) ((BlockTileBuilder) builder.externalMultiblock()).build();
     }
 
     public enum Mode implements StringRepresentable, IHasEnumNameTextComponent {

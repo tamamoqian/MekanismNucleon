@@ -14,6 +14,9 @@ import meknuc.items.MeknucItemBase;
 import meknuc.menu.MeknucMenuTypes;
 import meknuc.modules.MeknucModules;
 import meknuc.modules.MeknucSuitModuleEvents;
+import meknuc.particle.MeknucParticleAcceleratorContainerTypes;
+import meknuc.particle.MeknucParticleAcceleratorMultiblock;
+import meknuc.particle.MeknucParticleAcceleratorSounds;
 import meknuc.reactor.MeknucPwrMultiblock;
 import meknuc.reactor.MeknucPwrBlocks;
 import meknuc.reactor.MeknucPwrContainerTypes;
@@ -27,6 +30,9 @@ import meknuc.reactor.MeknucBwrLogicPacket;
 import meknuc.reactor.MeknucBwrMultiblock;
 import meknuc.reactor.MeknucBwrOpenGuiPacket;
 import meknuc.reactor.MeknucBwrTileEntityTypes;
+import meknuc.reactor.spentpool.MeknucSpentFuelPoolContainerTypes;
+import meknuc.reactor.spentpool.MeknucSpentFuelPoolMultiblock;
+import meknuc.reactor.spentpool.MeknucSpentFuelPoolSounds;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -80,6 +86,8 @@ public class meknuc {
 
         MeknucPwrMultiblock.initialize();
         MeknucBwrMultiblock.initialize();
+        MeknucSpentFuelPoolMultiblock.initialize();
+        MeknucParticleAcceleratorMultiblock.initialize();
         MeknucBlockBase.BLOCKS.register(modEventBus);
         MeknucHwrBlocks.BLOCKS.register(modEventBus);
         MeknucSpentFuelPoolBlocks.BLOCKS.register(modEventBus);
@@ -100,7 +108,11 @@ public class meknuc {
         MeknucBwrContainerTypes.CONTAINER_TYPES.register(modEventBus);
         MeknucTileEntityTypes.TILE_ENTITY_TYPES.register(modEventBus);
         MeknucMenuTypes.CONTAINER_TYPES.register(modEventBus);
+        MeknucSpentFuelPoolContainerTypes.CONTAINER_TYPES.register(modEventBus);
+        MeknucSpentFuelPoolSounds.SOUND_EVENTS.register(modEventBus);
         MeknucPwrSounds.SOUND_EVENTS.register(modEventBus);
+        MeknucParticleAcceleratorSounds.SOUND_EVENTS.register(modEventBus);
+        MeknucParticleAcceleratorContainerTypes.CONTAINER_TYPES.register(modEventBus);
         CREATIVE_MODE_TABS.register(modEventBus);
 
         NeoForge.EVENT_BUS.register(this);

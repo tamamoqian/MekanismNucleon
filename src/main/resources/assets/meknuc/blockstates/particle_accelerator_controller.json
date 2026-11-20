@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "meknuc:block/particle_accelerator_controller"
+    },
+    "facing=south": {
+      "model": "meknuc:block/particle_accelerator_controller",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "meknuc:block/particle_accelerator_controller",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "meknuc:block/particle_accelerator_controller",
+      "y": 90
+    }
+  }
+}

@@ -1,9 +1,11 @@
 package meknuc.client.jei;
 
 import java.util.List;
+import meknuc.blocks.MeknucParticleAcceleratorBlocks;
 import meknuc.items.MeknucItemFuelRodBase;
 import meknuc.items.MeknucRodType;
 import meknuc.reactor.MeknucPwrBlocks;
+import meknuc.blocks.MeknucSpentFuelPoolBlocks;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.helpers.IGuiHelper;
@@ -26,6 +28,11 @@ public class MeknucJEIPlugin implements IModPlugin {
         IGuiHelper helper = registration.getJeiHelpers().getGuiHelper();
         registration.addRecipeCategories(new MeknucPwrFuelCategory(helper, fuelRodIcon()));
         registration.addRecipeCategories(new MeknucPwrCoolantCategory(helper));
+        registration.addRecipeCategories(new MeknucSpentFuelPoolCoolingCategory(helper,
+              MeknucItemFuelRodBase.hotStack(MeknucRodType.URANIUM_235_MOX, 1)));
+        registration.addRecipeCategories(new MeknucParticleAcceleratorJEICategory(helper,
+              helper.createDrawable(ResourceLocation.fromNamespaceAndPath(meknuc.meknuc.MODID,
+                    "textures/jei/particle_accelerator.png"), 0, 0, 16, 16)));
     }
 
     @Override
@@ -38,6 +45,10 @@ public class MeknucJEIPlugin implements IModPlugin {
             registration.addRecipes(MeknucPwrFuelCategory.RECIPE_TYPE, recipes);
         }
         registration.addRecipes(MeknucPwrCoolantCategory.RECIPE_TYPE, MeknucPwrCoolantCategory.recipes());
+        registration.addRecipes(MeknucSpentFuelPoolCoolingCategory.RECIPE_TYPE,
+              MeknucSpentFuelPoolCoolingCategory.recipes());
+        registration.addRecipes(MeknucParticleAcceleratorJEICategory.RECIPE_TYPE,
+              meknuc.particle.MeknucParticleAcceleratorRecipes.recipes());
     }
 
     @Override
@@ -54,6 +65,14 @@ public class MeknucJEIPlugin implements IModPlugin {
               MeknucPwrBlocks.PRESSURIZED_WATER_REACTOR_LOGIC_ADAPTER,
               MeknucPwrBlocks.PRESSURIZED_WATER_REACTOR_FUEL_ASSEMBLY,
               MeknucPwrBlocks.PRESSURIZED_WATER_REACTOR_CONTROL_ASSEMBLY);
+        registration.addRecipeCatalysts(MeknucSpentFuelPoolCoolingCategory.RECIPE_TYPE,
+              MeknucSpentFuelPoolBlocks.SPENT_FUEL_POOL_RADIATION_RESISTANT_CASING,
+              MeknucSpentFuelPoolBlocks.SPENT_FUEL_POOL_PORT,
+              MeknucSpentFuelPoolBlocks.SPENT_FUEL_POOL_LOGIC_ADAPTER);
+        registration.addRecipeCatalysts(MeknucParticleAcceleratorJEICategory.RECIPE_TYPE,
+              MeknucParticleAcceleratorBlocks.PARTICLE_ACCELERATOR_CONTROLLER,
+              MeknucParticleAcceleratorBlocks.PARTICLE_ACCELERATOR_PORT,
+              MeknucParticleAcceleratorBlocks.PARTICLE_ACCELERATOR_RADIATION_RESISTANT_CASING);
     }
 
     private static ItemStack fuelRodIcon() {
