@@ -73,9 +73,14 @@ public class TileEntitySpentFuelPoolPort extends TileEntitySpentFuelPoolCasing {
     @NotNull
     @Override
     protected IInventorySlotHolder getInitialInventory(IContentsListener listener) {
-        // 物品能力与模式无关：输入槽只接受热乏燃料，输出槽只可抽取，
-        // 这样无论端口处于哪种模式都能接入漏斗/管道。
-        return side -> getMultiblock().getInventorySlots(null);
+        // 按模式只暴露对应槽位，避免冷却液端口也能抽走/塞入燃料棒：
+        // 废料输入 -> 输入缓存，废料输出 -> 完成缓存，其余模式不暴露物品。
+        // 直接返回数据里已有的槽位列表，不产生额外的列表分配。
+        return side -> switch (getPortMode()) {
+            case WASTE_INPUT -> getMultiblock().getInputSlots();
+            case WASTE_OUTPUT -> getMultiblock().getOutputSlots();
+            default -> Collections.emptyList();
+        };
     }
 
     @NotNull

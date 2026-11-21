@@ -19,7 +19,17 @@ import net.minecraft.world.level.block.state.BlockState;
  */
 public class TileEntityParticleAcceleratorPart extends TileEntityMultiblock<MeknucParticleAcceleratorMultiblockData> {
 
+    /**
+     * 停机后继续保留音效的 tick 数（6 秒）。
+     * <p>
+     * Mekanism 的机器音效一旦 {@link #canPlaySound()} 变 false 就立刻停止，重新开始还要等 1 秒冷却，
+     * 于是「缺电 / 缺料 / 两批配方之间」这种一两 tick 的抖动会让两分钟的循环白噪音反复从头播放，
+     * 听上去断断续续。这里留一段宽限期，短暂停机时声音继续循环，只有真正停下来才关闭。
+     */
+    private static final int SOUND_HOLD_TICKS = 120;
+
     private boolean prevPlaying;
+    private int soundHoldTicks;
 
     public TileEntityParticleAcceleratorPart(BlockPos pos, BlockState state) {
         super(state.getBlockHolder(), pos, state);
@@ -42,7 +52,8 @@ public class TileEntityParticleAcceleratorPart extends TileEntityMultiblock<Mekn
 
     @Override
     protected boolean canPlaySound() {
-        return shouldPlaySound(getMultiblock());
+        // 宽限期内即使状态短暂离开「运行中」也继续播放，避免循环音效反复从头开始
+        return soundHoldTicks > 0 || shouldPlaySound(getMultiblock());
     }
 
     @Override
@@ -64,8 +75,24 @@ public class TileEntityParticleAcceleratorPart extends TileEntityMultiblock<Mekn
     @Override
     protected void onUpdateClient() {
         super.onUpdateClient();
-        if (!shouldPlaySound(getMultiblock())) {
+        updateSoundHold();
+        if (!canPlaySound()) {
             SoundHandler.stopTileSound(getSoundPos());
+        }
+    }
+
+    /**
+     * 运行中把宽限期重置为满值；停机后逐 tick 递减，归零时才真正停止音效。
+     * 结构一旦破坏则立刻清零，不在废墟上继续播放。
+     */
+    private void updateSoundHold() {
+        MeknucParticleAcceleratorMultiblockData multiblock = getMultiblock();
+        if (shouldPlaySound(multiblock)) {
+            soundHoldTicks = SOUND_HOLD_TICKS;
+        } else if (!multiblock.isFormed()) {
+            soundHoldTicks = 0;
+        } else if (soundHoldTicks > 0) {
+            soundHoldTicks--;
         }
     }
 

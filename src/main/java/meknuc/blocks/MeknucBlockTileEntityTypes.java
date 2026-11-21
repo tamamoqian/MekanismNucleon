@@ -6,8 +6,8 @@ import mekanism.common.registration.impl.TileEntityTypeRegistryObject;
 import mekanism.common.tile.base.TileEntityMekanism;
 import meknuc.Meknuc;
 import meknuc.blockentities.MeknucBlockEntityRTG;
-import meknuc.blockentities.MeknucBlockEntityReactorPart;
-import meknuc.blockentities.MeknucBlockEntityReactorPort;
+import meknuc.wastestorage.tile.TileEntityWasteStorageCasing;
+import meknuc.wastestorage.tile.TileEntityWasteStoragePort;
 
 public class MeknucBlockTileEntityTypes {
 
@@ -18,13 +18,17 @@ public class MeknucBlockTileEntityTypes {
                 .serverTicker((level, pos, state, be) -> TileEntityMekanism.tickServer(level, pos, state, be))
                 .build();
 
-    public static final TileEntityTypeRegistryObject<MeknucBlockEntityReactorPart> RADIATION_RESISTANT_WASTE_STORAGE_CASING =
-          TILE_ENTITY_TYPES.mekBuilder(MeknucWasteStorageBlocks.RADIATION_RESISTANT_WASTE_STORAGE_CASING, MeknucBlockEntityReactorPart::new)
+    public static final TileEntityTypeRegistryObject<TileEntityWasteStorageCasing> RADIATION_RESISTANT_WASTE_STORAGE_CASING =
+          TILE_ENTITY_TYPES.mekBuilder(MeknucWasteStorageBlocks.RADIATION_RESISTANT_WASTE_STORAGE_CASING, TileEntityWasteStorageCasing::new)
+                .clientTicker(TileEntityMekanism::tickClient)
+                .serverTicker(TileEntityMekanism::tickServer)
                 .build();
 
-    public static final TileEntityTypeRegistryObject<MeknucBlockEntityReactorPort> RADIATION_RESISTANT_WASTE_STORAGE_PORT =
-          TILE_ENTITY_TYPES.mekBuilder(MeknucWasteStorageBlocks.RADIATION_RESISTANT_WASTE_STORAGE_PORT, MeknucBlockEntityReactorPort::new)
+    public static final TileEntityTypeRegistryObject<TileEntityWasteStoragePort> RADIATION_RESISTANT_WASTE_STORAGE_PORT =
+          TILE_ENTITY_TYPES.mekBuilder(MeknucWasteStorageBlocks.RADIATION_RESISTANT_WASTE_STORAGE_PORT, TileEntityWasteStoragePort::new)
                 .withSimple(Capabilities.CONFIGURABLE)
+                .clientTicker(TileEntityMekanism::tickClient)
+                .serverTicker(TileEntityMekanism::tickServer)
                 .build();
 
     private MeknucBlockTileEntityTypes() {

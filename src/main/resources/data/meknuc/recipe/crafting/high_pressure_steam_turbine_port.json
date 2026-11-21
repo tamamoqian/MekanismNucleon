@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " C ",
+    "CEC",
+    " C "
+  ],
+  "key": {
+    "C": {
+      "item": "meknuc:high_pressure_steam_turbine_casing"
+    },
+    "E": {
+      "item": "mekanism:elite_control_circuit"
+    }
+  },
+  "result": {
+    "id": "meknuc:high_pressure_steam_turbine_port",
+    "count": 2
+  }
+}

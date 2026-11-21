@@ -2,6 +2,7 @@ package meknuc.items;
 
 import java.util.List;
 
+import meknuc.Config;
 import meknuc.client.color.MeknucColorLerp;
 import meknuc.client.color.MeknucColorRainbowName;
 import net.minecraft.network.chat.Component;
@@ -14,7 +15,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 
-public class MeknucItemFuelRodBase extends MeknucItemBase {
+public class MeknucItemFuelRodBase extends MeknucItemRadioactive {
 
     public static final int MAX_RADIATION = 100;
 
@@ -158,5 +159,17 @@ public class MeknucItemFuelRodBase extends MeknucItemBase {
 
     public static double getPowerPerTick(ItemStack stack) {
         return isDepleted(stack) ? 60.0D : 9600.0D;
+    }
+
+    /**
+     * 枯竭燃料棒放在玩家物品栏内时每 tick 施加的辐射剂量（Sv）：热的枯竭燃料棒更高；未枯竭的新燃料棒为 0，
+     * 既不会在背包里辐射，被销毁时也不会爆炸。
+     */
+    @Override
+    public double getRadiationPerTick(ItemStack stack) {
+        if (!isDepleted(stack)) {
+            return 0.0D;
+        }
+        return isHot(stack) ? Config.HOT_DEPLETED_FUEL_ROD_RADIATION.get() : Config.DEPLETED_FUEL_ROD_RADIATION.get();
     }
 }

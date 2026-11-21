@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "#c:shards/beryllium",
+    "#c:shards/boron",
+    "#c:shards/chromium",
+    "#c:shards/thorium",
+    "#c:shards/zirconium"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "#c:dusts/beryllium",
+    "#c:dusts/boron",
+    "#c:dusts/chromium",
+    "#c:dusts/thorium",
+    "#c:dusts/zirconium",
+    "#c:dusts/uranium_238"
+  ]
+}

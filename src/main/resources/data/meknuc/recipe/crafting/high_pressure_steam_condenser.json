@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    " S ",
+    "SMS",
+    " S "
+  ],
+  "key": {
+    "S": {
+      "item": "meknuc:high_strength_alloy_ingot"
+    },
+    "M": {
+      "item": "mekanismgenerators:saturating_condenser"
+    }
+  },
+  "result": {
+    "id": "meknuc:high_pressure_steam_condenser",
+    "count": 2
+  }
+}

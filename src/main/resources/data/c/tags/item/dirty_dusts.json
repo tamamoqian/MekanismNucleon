@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "#c:dirty_dusts/beryllium",
+    "#c:dirty_dusts/boron",
+    "#c:dirty_dusts/chromium",
+    "#c:dirty_dusts/thorium",
+    "#c:dirty_dusts/zirconium"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " S ",
+    "SVS",
+    " S "
+  ],
+  "key": {
+    "S": {
+      "item": "meknuc:high_strength_alloy_ingot"
+    },
+    "V": {
+      "item": "mekanismgenerators:turbine_vent"
+    }
+  },
+  "result": {
+    "id": "meknuc:high_pressure_steam_turbine_vent",
+    "count": 2
+  }
+}

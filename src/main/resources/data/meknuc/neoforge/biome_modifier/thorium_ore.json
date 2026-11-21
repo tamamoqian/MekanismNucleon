@@ -2,5 +2,8 @@
   "type": "neoforge:add_features",
   "biomes": "#minecraft:is_overworld",
   "step": "underground_ores",
-  "features": "meknuc:thorium_ore"
+  "features": [
+    "meknuc:thorium_ore",
+    "meknuc:thorium_ore_lower"
+  ]
 }
