@@ -46,9 +46,9 @@ public class MeknucFbrCache extends MultiblockCache<MeknucFbrMultiblockData> {
     public void apply(Provider provider, MeknucFbrMultiblockData data) {
         super.apply(provider, data);
         data.setActive(active);
-        data.setControlRodInsertion(insertion);
+        data.restoreControlRodInsertion(insertion);
         if (temperature >= 0) {
-            data.setCoreTemperature(temperature);
+            data.restoreTemperature(temperature);
         }
         data.setPower(power);
         data.setXenon(xenon);

@@ -10,7 +10,6 @@ import mekanism.api.inventory.IInventorySlot;
 import mekanism.common.capabilities.chemical.VariableCapacityChemicalTank;
 import mekanism.common.inventory.container.sync.dynamic.ContainerSync;
 import mekanism.common.inventory.slot.BasicInventorySlot;
-import mekanism.common.lib.multiblock.MultiblockData;
 import mekanism.common.registries.MekanismChemicals;
 import mekanism.common.util.MekanismUtils;
 import mekanism.common.util.NBTUtils;
@@ -39,7 +38,7 @@ import net.neoforged.neoforge.event.EventHooks;
  * <p>物理按《快中子增殖堆运行公式 v2》实现：功率由「控制棒插入度 × 氙毒/高温惩罚」给出，
  * 钠带走热量，燃料按进度烧掉，反射包层按批产出钚-239粉。</p>
  */
-public class MeknucFbrMultiblockData extends MultiblockData {
+public class MeknucFbrMultiblockData extends MeknucReactorMultiblockData {
 
     public static final int MIN_SIZE = 9;
     public static final int MAX_SIZE = 13;
@@ -138,6 +137,8 @@ public class MeknucFbrMultiblockData extends MultiblockData {
     /** 控制棒是否被玩家动过：初始全插，未拔出前反应堆不启动。 */
     private boolean rodsReleased;
 
+    private boolean autoStopOnFuelExhausted = true;
+
     private int fuelAssemblies;
     private int surfaceArea;
     private static final int SOUND_INTERVAL = 50;
@@ -151,7 +152,7 @@ public class MeknucFbrMultiblockData extends MultiblockData {
     private MeknucRodType fuelType = MeknucFbrFuels.MOX;
 
     public MeknucFbrMultiblockData(BlockEntity tile) {
-        super(tile);
+        super(tile, 0, MeknucFbrFuels::isFuel);
         soundOrigin = tile.getBlockPos();
         sodiumTank = VariableCapacityChemicalTank.input(this, this::tankCapacity,
               chemical -> chemical.is(MekanismChemicals.SODIUM.get()), this);
@@ -171,6 +172,101 @@ public class MeknucFbrMultiblockData extends MultiblockData {
         inventorySlots.add(wasteSlot);
         inventorySlots.add(breederSlot);
         inventorySlots.add(plutoniumSlot);
+    }
+
+    @Override
+    protected double defaultTemperature() {
+        return 25.0;
+    }
+
+    @Override
+    protected int defaultControlRodInsertion() {
+        return 100;
+    }
+
+    @Override
+    public double getTemperature() {
+        return coreTemp;
+    }
+
+    @Override
+    public void setTemperature(double value) {
+        setCoreTemperature(value);
+    }
+
+    @Override
+    public boolean isAutoStopOnFuelExhausted() {
+        return autoStopOnFuelExhausted;
+    }
+
+    @Override
+    public void setAutoStopOnFuelExhausted(boolean enabled) {
+        autoStopOnFuelExhausted = enabled;
+    }
+
+    @Override
+    public int getMeltdownTimer() {
+        return 0;
+    }
+
+    @Override
+    public void setMeltdownTimer(int timer) {
+    }
+
+    @Override
+    public boolean isMeltedDown() {
+        return exploded;
+    }
+
+    @Override
+    public void setMeltedDown(boolean melted) {
+        setExploded(melted);
+    }
+
+    @Override
+    public int getInCoreCount() {
+        return rodsInCore;
+    }
+
+    @Override
+    public void setInCoreCount(int count) {
+        setRodsInCore(count);
+    }
+
+    @Override
+    public int getFuelCount() {
+        return 0;
+    }
+
+    @Override
+    public void setFuelCount(int count) {
+    }
+
+    @Override
+    public int getWasteCount() {
+        return 0;
+    }
+
+    @Override
+    public void setWasteCount(int count) {
+    }
+
+    @Override
+    public ItemStack getFuelStack() {
+        return ItemStack.EMPTY;
+    }
+
+    @Override
+    public void setFuelStack(ItemStack stack) {
+    }
+
+    @Override
+    public ItemStack getWasteStack() {
+        return ItemStack.EMPTY;
+    }
+
+    @Override
+    public void setWasteStack(ItemStack stack) {
     }
 
     /**
@@ -700,6 +796,7 @@ public class MeknucFbrMultiblockData extends MultiblockData {
         exploded = value;
     }
 
+    @Override
     public int getFuelAssemblies() {
         return fuelAssemblies;
     }

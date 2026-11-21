@@ -42,6 +42,10 @@ public abstract class MeknucReactorMultiblockData extends MultiblockData {
 
     protected abstract double defaultTemperature();
 
+    protected int defaultControlRodInsertion() {
+        return NOMINAL_INSERTION_PERCENT;
+    }
+
     public abstract void setTemperature(double value);
 
     public abstract void setControlRodInsertion(int value);
@@ -110,7 +114,7 @@ public abstract class MeknucReactorMultiblockData extends MultiblockData {
         }
         temperatureFromCache = false;
         if (!insertionFromCache) {
-            setControlRodInsertion(NOMINAL_INSERTION_PERCENT);
+            setControlRodInsertion(defaultControlRodInsertion());
         }
         insertionFromCache = false;
         if (!autoStopFromCache) {
