@@ -8,8 +8,8 @@ import mekanism.client.gui.element.gauge.GaugeType;
 import mekanism.client.gui.element.gauge.GuiChemicalGauge;
 import mekanism.client.gui.element.gauge.GuiGauge;
 import mekanism.client.recipe_viewer.jei.BaseRecipeCategory;
-import mekanism.client.recipe_viewer.jei.MekanismJEI;
 import mekanism.client.recipe_viewer.type.IRecipeViewerRecipeType;
+import meknuc.Meknuc;
 import meknuc.chemicals.MeknucChemicals;
 import meknuc.reactor.MeknucPwrBlocks;
 import meknuc.reactor.MeknucPwrLang;
@@ -30,7 +30,7 @@ import org.jetbrains.annotations.Nullable;
 public class MeknucPwrCoolantCategory extends BaseRecipeCategory<MeknucPwrCoolantCategory.CoolantLoopRecipe> {
 
     public static final RecipeType<CoolantLoopRecipe> RECIPE_TYPE = RecipeType.create(
-          meknuc.meknuc.MODID, "reactor_coolant", CoolantLoopRecipe.class);
+          Meknuc.MOD_ID, "reactor_coolant", CoolantLoopRecipe.class);
     public static final IRecipeViewerRecipeType<CoolantLoopRecipe> RECIPE_VIEWER_TYPE = new CoolantLoopRecipeType();
 
     private static final int WATER_TANK_X = 6;
@@ -52,7 +52,7 @@ public class MeknucPwrCoolantCategory extends BaseRecipeCategory<MeknucPwrCoolan
     }
 
     public static List<CoolantLoopRecipe> recipes() {
-        return List.of(new CoolantLoopRecipe(ResourceLocation.fromNamespaceAndPath(meknuc.meknuc.MODID, "reactor_coolant/reactor")));
+        return List.of(new CoolantLoopRecipe(ResourceLocation.fromNamespaceAndPath(Meknuc.MOD_ID, "reactor_coolant/reactor")));
     }
 
     @Override

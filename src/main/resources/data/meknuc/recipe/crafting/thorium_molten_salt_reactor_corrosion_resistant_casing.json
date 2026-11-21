@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    " A ",
+    "ACA",
+    " A "
+  ],
+  "key": {
+    "A": {
+      "item": "meknuc:corrosion_resistant_alloy_ingot"
+    },
+    "C": {
+      "item": "mekanism:steel_casing"
+    }
+  },
+  "result": {
+    "id": "meknuc:thorium_molten_salt_reactor_corrosion_resistant_casing",
+    "count": 4
+  }
+}

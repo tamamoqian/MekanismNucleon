@@ -1,0 +1,16 @@
+{
+  "type": "mekanism:metallurgic_infusing",
+  "item_input": {
+    "count": 1,
+    "item": "meknuc:stainless_steel_ingot"
+  },
+  "chemical_input": {
+    "amount": 20,
+    "chemical": "meknuc:boron"
+  },
+  "output": {
+    "count": 1,
+    "id": "meknuc:high_strength_alloy_ingot"
+  },
+  "per_tick_usage": false
+}

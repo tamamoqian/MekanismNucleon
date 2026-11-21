@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "RCR",
+    "RLR",
+    "RLR"
+  ],
+  "key": {
+    "R": {
+      "item": "meknuc:corrosion_resistant_alloy_ingot"
+    },
+    "C": {
+      "item": "mekanism:elite_control_circuit"
+    },
+    "L": {
+      "item": "meknuc:lead_based_alloy_ingot"
+    }
+  },
+  "result": {
+    "id": "meknuc:thorium_molten_salt_reactor_corrosion_resistant_control_assembly",
+    "count": 2
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "mekanism:metallurgic_infusing",
+  "item_input": {
+    "count": 1,
+    "item": "meknuc:high_strength_alloy_ingot"
+  },
+  "chemical_input": {
+    "amount": 20,
+    "chemical": "meknuc:lead"
+  },
+  "output": {
+    "count": 1,
+    "id": "meknuc:radiation_resistant_high_strength_alloy_ingot"
+  },
+  "per_tick_usage": false
+}

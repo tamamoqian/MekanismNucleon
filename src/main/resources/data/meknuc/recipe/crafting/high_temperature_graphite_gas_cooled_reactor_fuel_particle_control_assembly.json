@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "OCO",
+    "RGR",
+    "OGO"
+  ],
+  "key": {
+    "O": {
+      "item": "mekanism:ingot_refined_obsidian"
+    },
+    "C": {
+      "item": "mekanism:elite_control_circuit"
+    },
+    "R": {
+      "item": "meknuc:radiation_resistant_high_strength_alloy_ingot"
+    },
+    "G": {
+      "item": "meknuc:graphite_ingot"
+    }
+  },
+  "result": {
+    "id": "meknuc:high_temperature_graphite_gas_cooled_reactor_fuel_particle_control_assembly",
+    "count": 2
+  }
+}

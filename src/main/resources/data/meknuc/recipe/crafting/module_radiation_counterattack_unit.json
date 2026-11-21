@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "RPR",
+    "AMU",
+    "RCR"
+  ],
+  "key": {
+    "R": {
+      "item": "meknuc:radiation_resistant_high_strength_alloy_ingot"
+    },
+    "P": {
+      "item": "meknuc:polonium_210_dust"
+    },
+    "A": {
+      "item": "meknuc:americium_241_dust"
+    },
+    "M": {
+      "item": "mekanism:module_base"
+    },
+    "U": {
+      "item": "meknuc:uranium_233_dust"
+    },
+    "C": {
+      "item": "meknuc:radiation_control_circuit"
+    }
+  },
+  "result": {
+    "id": "meknuc:module_radiation_counterattack_unit",
+    "count": 1
+  }
+}

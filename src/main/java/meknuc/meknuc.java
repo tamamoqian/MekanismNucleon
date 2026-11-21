@@ -1,7 +1,6 @@
 package meknuc;
 
 import meknuc.blockentities.MeknucTileEntityTypes;
-import meknuc.blocks.MeknucBlockBase;
 import meknuc.blocks.MeknucFbrBlocks;
 import meknuc.blocks.MeknucHtgrBlocks;
 import meknuc.blocks.MeknucHwrBlocks;
@@ -10,8 +9,14 @@ import meknuc.blocks.MeknucParticleAcceleratorBlocks;
 import meknuc.blocks.MeknucSpentFuelPoolBlocks;
 import meknuc.blocks.MeknucWasteStorageBlocks;
 import meknuc.chemicals.MeknucChemicals;
-import meknuc.items.MeknucItemBase;
+import meknuc.init.MeknucBlock;
+import meknuc.init.MeknucItems;
 import meknuc.menu.MeknucMenuTypes;
+import meknuc.modules.MeknucModules;
+import meknuc.modules.MeknucSuitModuleEvents;
+import meknuc.particle.MeknucParticleAcceleratorContainerTypes;
+import meknuc.particle.MeknucParticleAcceleratorMultiblock;
+import meknuc.particle.MeknucParticleAcceleratorSounds;
 import meknuc.reactor.MeknucPwrMultiblock;
 import meknuc.reactor.MeknucPwrBlocks;
 import meknuc.reactor.MeknucPwrContainerTypes;
@@ -25,6 +30,12 @@ import meknuc.reactor.MeknucBwrLogicPacket;
 import meknuc.reactor.MeknucBwrMultiblock;
 import meknuc.reactor.MeknucBwrOpenGuiPacket;
 import meknuc.reactor.MeknucBwrTileEntityTypes;
+import meknuc.reactor.spentpool.MeknucSpentFuelPoolContainerTypes;
+import meknuc.reactor.spentpool.MeknucSpentFuelPoolMultiblock;
+import meknuc.reactor.spentpool.MeknucSpentFuelPoolSounds;
+import meknuc.turbine.MeknucTurbineBlocks;
+import meknuc.turbine.MeknucTurbineMultiblock;
+import meknuc.turbine.MeknucTurbineTileEntityTypes;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -46,20 +57,21 @@ import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-@Mod(meknuc.MODID)
-public class meknuc {
-    public static final String MODID = "meknuc";
+@Mod(Meknuc.MOD_ID)
+public class Meknuc {
+    public static final String MOD_ID = "meknuc";
     public static final Logger LOGGER = LogUtils.getLogger();
 
-    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
+    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MOD_ID);
 
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MEKNUC_TAB = CREATIVE_MODE_TABS.register("meknuc_tab", () -> CreativeModeTab.builder()
             .title(Component.translatable("itemGroup.meknuc"))
             .withTabsBefore(CreativeModeTabs.COMBAT)
-            .icon(() -> MeknucItemBase.BERYLLIUM_INGOT.get().getDefaultInstance())
+            .icon(() -> MeknucItems.BERYLLIUM_INGOT.get().getDefaultInstance())
             .displayItems((parameters, output) -> {
-                MeknucItemBase.addTabItems(output);
-                MeknucBlockBase.addTabBlocks(output);
+                MeknucItems.addTabItems(output);
+                MeknucModules.addTabItems(output);
+                MeknucBlock.addTabBlocks(output);
                 MeknucPwrBlocks.addTabBlocks(output);
                 MeknucBwrBlocks.addTabBlocks(output);
                 MeknucHwrBlocks.addTabBlocks(output);
@@ -69,15 +81,19 @@ public class meknuc {
                 MeknucParticleAcceleratorBlocks.addTabBlocks(output);
                 MeknucMoltenSaltReactorBlocks.addTabBlocks(output);
                 MeknucWasteStorageBlocks.addTabBlocks(output);
+                MeknucTurbineBlocks.addTabBlocks(output);
             }).build());
 
-    public meknuc(IEventBus modEventBus, ModContainer modContainer) {
+    public Meknuc(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::registerPayloads);
 
         MeknucPwrMultiblock.initialize();
         MeknucBwrMultiblock.initialize();
-        MeknucBlockBase.BLOCKS.register(modEventBus);
+        MeknucSpentFuelPoolMultiblock.initialize();
+        MeknucParticleAcceleratorMultiblock.initialize();
+        MeknucTurbineMultiblock.initialize();
+        MeknucBlock.BLOCKS.register(modEventBus);
         MeknucHwrBlocks.BLOCKS.register(modEventBus);
         MeknucSpentFuelPoolBlocks.BLOCKS.register(modEventBus);
         MeknucFbrBlocks.BLOCKS.register(modEventBus);
@@ -85,8 +101,10 @@ public class meknuc {
         MeknucParticleAcceleratorBlocks.BLOCKS.register(modEventBus);
         MeknucMoltenSaltReactorBlocks.BLOCKS.register(modEventBus);
         MeknucWasteStorageBlocks.BLOCKS.register(modEventBus);
-        MeknucItemBase.ITEMS.register(modEventBus);
-        MeknucItemBase.DATA_COMPONENTS.register(modEventBus);
+        MeknucTurbineBlocks.BLOCKS.register(modEventBus);
+        MeknucItems.ITEMS.register(modEventBus);
+        MeknucItems.DATA_COMPONENTS.register(modEventBus);
+        MeknucModules.MODULES.register(modEventBus);
         MeknucPwrBlocks.BLOCKS.register(modEventBus);
         MeknucBwrBlocks.BLOCKS.register(modEventBus);
         MeknucChemicals.CHEMICALS.register(modEventBus);
@@ -95,11 +113,18 @@ public class meknuc {
         MeknucBwrTileEntityTypes.TILE_ENTITY_TYPES.register(modEventBus);
         MeknucBwrContainerTypes.CONTAINER_TYPES.register(modEventBus);
         MeknucTileEntityTypes.TILE_ENTITY_TYPES.register(modEventBus);
+        MeknucTurbineTileEntityTypes.TILE_ENTITY_TYPES.register(modEventBus);
         MeknucMenuTypes.CONTAINER_TYPES.register(modEventBus);
+        MeknucSpentFuelPoolContainerTypes.CONTAINER_TYPES.register(modEventBus);
+        MeknucSpentFuelPoolSounds.SOUND_EVENTS.register(modEventBus);
         MeknucPwrSounds.SOUND_EVENTS.register(modEventBus);
+        MeknucParticleAcceleratorSounds.SOUND_EVENTS.register(modEventBus);
+        MeknucParticleAcceleratorContainerTypes.CONTAINER_TYPES.register(modEventBus);
         CREATIVE_MODE_TABS.register(modEventBus);
 
         NeoForge.EVENT_BUS.register(this);
+        NeoForge.EVENT_BUS.register(new MeknucSuitModuleEvents());
+        MeknucModules.sendIMC();
 
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }

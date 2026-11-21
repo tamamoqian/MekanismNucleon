@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "STS",
+    "SBS",
+    "STS"
+  ],
+  "key": {
+    "S": {
+      "item": "meknuc:stainless_steel_ingot"
+    },
+    "T": {
+      "item": "mekanism:ingot_steel"
+    },
+    "B": {
+      "item": "mekanism:basic_bin"
+    }
+  },
+  "result": {
+    "id": "meknuc:pressurized_water_reactor_fuel_assembly",
+    "count": 1
+  }
+}

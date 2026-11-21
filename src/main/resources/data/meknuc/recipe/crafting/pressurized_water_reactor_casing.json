@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    " A ",
+    "ACA",
+    " A "
+  ],
+  "key": {
+    "A": {
+      "item": "meknuc:high_strength_alloy_ingot"
+    },
+    "C": {
+      "item": "mekanism:steel_casing"
+    }
+  },
+  "result": {
+    "id": "meknuc:pressurized_water_reactor_casing",
+    "count": 4
+  }
+}

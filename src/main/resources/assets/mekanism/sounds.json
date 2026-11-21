@@ -4,5 +4,11 @@
       "meknuc:pressurized_water_reactor_running"
     ],
     "subtitle": "subtitles.meknuc.reactor_running"
+  },
+  "tile.machine.particle_accelerator_running": {
+    "sounds": [
+      "meknuc:particle_accelerator_running"
+    ],
+    "subtitle": "subtitles.meknuc.particle_accelerator_running"
   }
 }

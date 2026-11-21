@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PRP",
+    "RMR",
+    "PCP"
+  ],
+  "key": {
+    "P": {
+      "item": "meknuc:plutonium_239_dust"
+    },
+    "R": {
+      "item": "meknuc:radiation_resistant_high_strength_alloy_ingot"
+    },
+    "M": {
+      "item": "mekanism:module_base"
+    },
+    "C": {
+      "item": "mekanism:ultimate_control_circuit"
+    }
+  },
+  "result": {
+    "id": "meknuc:module_radioisotope_energy_generation_unit",
+    "count": 1
+  }
+}

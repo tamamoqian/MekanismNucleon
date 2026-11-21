@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SIS",
+    "SBS",
+    "SIS"
+  ],
+  "key": {
+    "S": {
+      "item": "mekanism:ingot_steel"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "B": {
+      "item": "mekanism:basic_bin"
+    }
+  },
+  "result": {
+    "id": "meknuc:boiling_water_reactor_fuel_assembly",
+    "count": 1
+  }
+}

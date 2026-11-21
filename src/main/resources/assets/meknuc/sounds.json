@@ -1,0 +1,8 @@
+{
+  "tile.machine.spent_fuel_pool_geiger": {
+    "sounds": [
+      "meknuc:spent_fuel_pool_geiger"
+    ],
+    "subtitle": "subtitles.meknuc.spent_fuel_pool_geiger"
+  }
+}

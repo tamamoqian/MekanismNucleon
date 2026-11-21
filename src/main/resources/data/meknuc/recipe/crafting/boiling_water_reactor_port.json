@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " C ",
+    "CAC",
+    " C "
+  ],
+  "key": {
+    "C": {
+      "item": "meknuc:boiling_water_reactor_casing"
+    },
+    "A": {
+      "item": "mekanism:basic_control_circuit"
+    }
+  },
+  "result": {
+    "id": "meknuc:boiling_water_reactor_port",
+    "count": 2
+  }
+}

@@ -97,7 +97,13 @@ public enum MeknucPwrLang implements ILangEntry {
     JEI_REACTOR_FUEL_BURN_TIME("jei", "reactor_fuel.burn_time"),
     JEI_REACTOR_FUEL_BATCH("jei", "reactor_fuel.batch"),
 
-    JEI_REACTOR_COOLANT("jei", "reactor_coolant");
+    JEI_REACTOR_COOLANT("jei", "reactor_coolant"),
+
+    JEI_SPENT_FUEL_POOL_COOLING("jei", "spent_fuel_pool_cooling"),
+    JEI_SPENT_FUEL_POOL_TIME("jei", "spent_fuel_pool_cooling.time"),
+    JEI_SPENT_FUEL_POOL_WATER("jei", "spent_fuel_pool_cooling.water"),
+    JEI_SPENT_FUEL_POOL_STEAM("jei", "spent_fuel_pool_cooling.steam"),
+    JEI_SPENT_FUEL_POOL_NOTE("jei", "spent_fuel_pool_cooling.note");
 
     private final String key;
 

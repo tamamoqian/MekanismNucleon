@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "BRB",
+    "BTB",
+    "BRB"
+  ],
+  "key": {
+    "B": {
+      "item": "meknuc:beryllium_ingot"
+    },
+    "R": {
+      "item": "meknuc:corrosion_resistant_alloy_ingot"
+    },
+    "T": {
+      "item": "mekanism:basic_chemical_tank"
+    }
+  },
+  "result": {
+    "id": "meknuc:thorium_molten_salt_reactor_corrosion_resistant_fuel_assembly",
+    "count": 1
+  }
+}

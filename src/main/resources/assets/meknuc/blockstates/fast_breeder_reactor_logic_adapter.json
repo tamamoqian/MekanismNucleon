@@ -1,0 +1,22 @@
+{
+  "variants": {
+    "mode=disabled": {
+      "model": "meknuc:block/fast_breeder_reactor_logic_adapter"
+    },
+    "mode=activation": {
+      "model": "meknuc:block/fast_breeder_reactor_logic_adapter"
+    },
+    "mode=control_rod": {
+      "model": "meknuc:block/fast_breeder_reactor_logic_adapter"
+    },
+    "mode=high_temperature": {
+      "model": "meknuc:block/fast_breeder_reactor_logic_adapter"
+    },
+    "mode=critical_waste_level": {
+      "model": "meknuc:block/fast_breeder_reactor_logic_adapter"
+    },
+    "mode=damaged": {
+      "model": "meknuc:block/fast_breeder_reactor_logic_adapter"
+    }
+  }
+}

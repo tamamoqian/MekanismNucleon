@@ -9,6 +9,7 @@ import mekanism.common.content.blocktype.BlockTypeTile;
 import mekanism.common.item.block.ItemBlockTooltip;
 import mekanism.common.registration.impl.BlockDeferredRegister;
 import mekanism.common.registration.impl.BlockRegistryObject;
+import meknuc.blockentities.MeknucBlockEntityLogicAdapter;
 import meknuc.blockentities.MeknucBlockEntityReactorPart;
 import meknuc.blockentities.MeknucBlockEntityReactorPort;
 import net.minecraft.world.item.CreativeModeTab;
@@ -49,6 +50,12 @@ public class MeknucFbrBlocks {
                 () -> new BlockBasicMultiblock<>(MeknucFbrBlockTypes.FAST_BREEDER_REACTOR_PORT,
                       properties -> properties.mapColor(MapColor.COLOR_LIGHT_GRAY)));
 
+    public static final BlockRegistryObject<BlockBasicMultiblock<MeknucBlockEntityLogicAdapter>,
+          ItemBlockTooltip<BlockBasicMultiblock<MeknucBlockEntityLogicAdapter>>> FAST_BREEDER_REACTOR_LOGIC_ADAPTER =
+          registerTooltipBlock("fast_breeder_reactor_logic_adapter",
+                () -> new BlockBasicMultiblock<>(MeknucFbrBlockTypes.FAST_BREEDER_REACTOR_LOGIC_ADAPTER,
+                      properties -> properties.mapColor(MapColor.COLOR_LIGHT_GRAY)));
+
     private static <BLOCK extends Block & IHasDescription> BlockRegistryObject<BLOCK, ItemBlockTooltip<BLOCK>> registerTooltipBlock(
           String name, Supplier<BLOCK> blockCreator) {
         return BLOCKS.register(name, blockCreator, (block, properties) -> new ItemBlockTooltip<>(block, properties));
@@ -60,6 +67,7 @@ public class MeknucFbrBlocks {
         output.accept(FAST_BREEDER_REACTOR_RADIATION_RESISTANT_CONTROL_ASSEMBLY);
         output.accept(FAST_BREEDER_REACTOR_RADIATION_RESISTANT_FUEL_ASSEMBLY);
         output.accept(FAST_BREEDER_REACTOR_PORT);
+        output.accept(FAST_BREEDER_REACTOR_LOGIC_ADAPTER);
     }
 
     private MeknucFbrBlocks() {

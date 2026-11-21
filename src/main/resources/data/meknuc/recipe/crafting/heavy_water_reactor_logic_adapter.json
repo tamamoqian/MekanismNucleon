@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " R ",
+    "RCR",
+    " R "
+  ],
+  "key": {
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "C": {
+      "item": "meknuc:heavy_water_reactor_casing"
+    }
+  },
+  "result": {
+    "id": "meknuc:heavy_water_reactor_logic_adapter",
+    "count": 1
+  }
+}

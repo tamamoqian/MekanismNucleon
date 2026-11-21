@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "RCR",
+    "RLR",
+    "RLR"
+  ],
+  "key": {
+    "R": {
+      "item": "meknuc:radiation_resistant_high_strength_alloy_ingot"
+    },
+    "C": {
+      "item": "meknuc:radiation_control_circuit"
+    },
+    "L": {
+      "item": "meknuc:lead_based_alloy_ingot"
+    }
+  },
+  "result": {
+    "id": "meknuc:fast_breeder_reactor_radiation_resistant_control_assembly",
+    "count": 2
+  }
+}

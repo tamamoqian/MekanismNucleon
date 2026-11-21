@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "LLL",
+    "LBL",
+    "LLL"
+  ],
+  "key": {
+    "L": {
+      "item": "meknuc:lead_based_alloy_ingot"
+    },
+    "B": {
+      "item": "mekanism:basic_bin"
+    }
+  },
+  "result": {
+    "id": "meknuc:radiation_resistant_waste_storage_casing",
+    "count": 4
+  }
+}

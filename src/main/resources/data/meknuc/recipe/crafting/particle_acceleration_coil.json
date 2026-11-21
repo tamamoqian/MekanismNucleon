@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "BOB",
+    "CFC",
+    "BOB"
+  ],
+  "key": {
+    "B": {
+      "item": "mekanism:ingot_bronze"
+    },
+    "O": {
+      "item": "minecraft:copper_block"
+    },
+    "C": {
+      "item": "meknuc:radiation_control_circuit"
+    },
+    "F": {
+      "item": "meknuc:particle_accelerator_support_frame"
+    }
+  },
+  "result": {
+    "id": "meknuc:particle_acceleration_coil",
+    "count": 2
+  }
+}

@@ -5,12 +5,12 @@ import mekanism.api.chemical.ChemicalBuilder;
 import mekanism.common.registration.impl.ChemicalDeferredRegister;
 import mekanism.common.registration.impl.DeferredChemical;
 import mekanism.common.util.ChemicalUtil;
-import meknuc.meknuc;
+import meknuc.Meknuc;
 import net.minecraft.resources.ResourceLocation;
 
 public class MeknucChemicals {
 
-    public static final ChemicalDeferredRegister CHEMICALS = new ChemicalDeferredRegister(meknuc.MODID);
+    public static final ChemicalDeferredRegister CHEMICALS = new ChemicalDeferredRegister(Meknuc.MOD_ID);
 
     private static final ResourceLocation WATER_TEXTURE = ResourceLocation.fromNamespaceAndPath("mekanism", "liquid/liquid");
     private static final ResourceLocation STEAM_TEXTURE = ResourceLocation.fromNamespaceAndPath("mekanism", "liquid/steam");
@@ -105,6 +105,16 @@ public class MeknucChemicals {
           () -> ChemicalUtil.chemical(ChemicalBuilder.builder(MeknucChemicals.WATER_TEXTURE)
                     .tint(0xFF4D6C6C), 0xFF4D6C6C));
 
+    /** 热质子等离子体：粒子加速模式使用的质子束（红色配色）。 */
+    public static final DeferredChemical<Chemical> HOT_PROTON_PLASMA = CHEMICALS.register("hot_proton_plasma",
+          () -> ChemicalUtil.chemical(ChemicalBuilder.builder(MeknucChemicals.WATER_TEXTURE)
+                    .tint(0xFFFF2D2D), 0xFFFF2D2D));
+
+    /** 热中子等离子体：粒子加速模式使用的中子束（黑色配色）。 */
+    public static final DeferredChemical<Chemical> HOT_NEUTRON_PLASMA = CHEMICALS.register("hot_neutron_plasma",
+          () -> ChemicalUtil.chemical(ChemicalBuilder.builder(MeknucChemicals.WATER_TEXTURE)
+                    .tint(0xFF111111), 0xFF111111));
+
     public static final DeferredChemical<Chemical> BORON = CHEMICALS.registerInfuse("boron", 0xFFA4A3A9);
 
     public static final DeferredChemical<Chemical> BERYLLIUM = CHEMICALS.registerInfuse("beryllium", 0xFF6EA125);
@@ -116,6 +126,8 @@ public class MeknucChemicals {
     public static final DeferredChemical<Chemical> LEAD = CHEMICALS.registerInfuse("lead", 0xFF798988);
 
     public static final DeferredChemical<Chemical> URANIUM = CHEMICALS.registerInfuse("uranium", 0xFF97C597);
+
+    public static final DeferredChemical<Chemical> URANIUM_238 = CHEMICALS.registerInfuse("uranium_238", 0xFF25AE57);
 
 
     public static final DeferredChemical<Chemical> DIRTY_BERYLLIUM = CHEMICALS.register("dirty_beryllium",

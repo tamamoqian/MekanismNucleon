@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    " L ",
+    "HCH",
+    " L "
+  ],
+  "key": {
+    "L": {
+      "item": "meknuc:lead_based_alloy_ingot"
+    },
+    "H": {
+      "item": "meknuc:high_strength_alloy_ingot"
+    },
+    "C": {
+      "item": "mekanism:steel_casing"
+    }
+  },
+  "result": {
+    "id": "meknuc:heavy_water_reactor_casing",
+    "count": 4
+  }
+}

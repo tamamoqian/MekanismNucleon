@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SCS",
+    "SGS",
+    "SGS"
+  ],
+  "key": {
+    "S": {
+      "item": "meknuc:stainless_steel_ingot"
+    },
+    "C": {
+      "item": "mekanism:advanced_control_circuit"
+    },
+    "G": {
+      "item": "meknuc:graphite_ingot"
+    }
+  },
+  "result": {
+    "id": "meknuc:pressurized_water_reactor_control_assembly",
+    "count": 2
+  }
+}

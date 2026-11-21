@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " A ",
+    "ACA",
+    " A "
+  ],
+  "key": {
+    "A": {
+      "item": "meknuc:particle_accelerator_radiation_resistant_casing"
+    },
+    "C": {
+      "item": "meknuc:radiation_control_circuit"
+    }
+  },
+  "result": {
+    "id": "meknuc:particle_accelerator_port",
+    "count": 2
+  }
+}

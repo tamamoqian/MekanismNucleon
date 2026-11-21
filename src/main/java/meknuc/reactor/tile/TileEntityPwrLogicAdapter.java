@@ -13,7 +13,7 @@ import mekanism.common.inventory.container.MekanismContainer;
 import mekanism.common.inventory.container.sync.SyncableEnum;
 import mekanism.common.tile.interfaces.IRedstoneControl.RedstoneControl;
 import mekanism.common.util.NBTUtils;
-import meknuc.items.MeknucItemBase;
+import meknuc.init.MeknucItems;
 import meknuc.reactor.MeknucPwrLang;
 import meknuc.reactor.MeknucPwrMultiblockData;
 import net.minecraft.core.BlockPos;
@@ -168,13 +168,13 @@ public class TileEntityPwrLogicAdapter extends TileEntityPwrPart {
     @Override
     protected void collectImplicitComponents(DataComponentMap.Builder builder) {
         super.collectImplicitComponents(builder);
-        builder.set(MeknucItemBase.PWR_LOGIC_TYPE, logicType);
+        builder.set(MeknucItems.PWR_LOGIC_TYPE, logicType);
     }
 
     @Override
     protected void applyImplicitComponents(BlockEntity.DataComponentInput input) {
         super.applyImplicitComponents(input);
-        logicType = input.getOrDefault(MeknucItemBase.PWR_LOGIC_TYPE, logicType);
+        logicType = input.getOrDefault(MeknucItems.PWR_LOGIC_TYPE, logicType);
     }
 
     @Override

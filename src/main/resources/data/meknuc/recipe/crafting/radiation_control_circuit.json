@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "ELE",
+    "LUL",
+    "ELE"
+  ],
+  "key": {
+    "E": {
+      "item": "mekanism:elite_control_circuit"
+    },
+    "L": {
+      "item": "meknuc:lead_based_alloy_ingot"
+    },
+    "U": {
+      "item": "mekanism:ultimate_control_circuit"
+    }
+  },
+  "result": {
+    "id": "meknuc:radiation_control_circuit",
+    "count": 1
+  }
+}
