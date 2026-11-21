@@ -15,7 +15,7 @@ import mekanism.common.registries.MekanismChemicals;
 import mekanism.common.util.MekanismUtils;
 import mekanism.common.util.NBTUtils;
 import meknuc.blocks.MeknucFbrBlockTypes;
-import meknuc.items.MeknucItemBase;
+import meknuc.init.MeknucItems;
 import meknuc.items.MeknucItemFuelRodBase;
 import meknuc.items.MeknucRodType;
 import mekanism.api.radiation.IRadiationManager;
@@ -164,7 +164,7 @@ public class MeknucFbrMultiblockData extends MultiblockData {
         wasteSlot = new FbrSlot(SLOT_LIMIT, ConstantPredicates.alwaysTrueBi(),
               ConstantPredicates.internalOnly(), ConstantPredicates.alwaysTrue(), this);
         breederSlot = new FbrSlot(SLOT_LIMIT, ConstantPredicates.internalOnly(),
-              ConstantPredicates.alwaysTrueBi(), stack -> stack.is(MeknucItemBase.URANIUM_238_DUST.get()), this);
+              ConstantPredicates.alwaysTrueBi(), stack -> stack.is(MeknucItems.URANIUM_238_DUST.get()), this);
         plutoniumSlot = new FbrSlot(SLOT_LIMIT, ConstantPredicates.alwaysTrueBi(),
               ConstantPredicates.internalOnly(), ConstantPredicates.alwaysTrue(), this);
         inventorySlots.add(fuelSlot);
@@ -441,7 +441,7 @@ public class MeknucFbrMultiblockData extends MultiblockData {
         consumeUranium(kg);
         int output = kg;
         while (output > 0) {
-            ItemStack dust = new ItemStack(MeknucItemBase.PLUTONIUM_239_DUST.get(), Math.min(output, 64));
+            ItemStack dust = new ItemStack(MeknucItems.PLUTONIUM_239_DUST.get(), Math.min(output, 64));
             ItemStack rest = plutoniumSlot.insertItem(dust, Action.EXECUTE, AutomationType.INTERNAL);
             int accepted = dust.getCount() - rest.getCount();
             if (accepted <= 0) {

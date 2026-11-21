@@ -1,7 +1,7 @@
 package meknuc.wastestorage;
 
 import java.util.List;
-import meknuc.items.MeknucItemBase;
+import meknuc.init.MeknucItems;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -41,15 +41,15 @@ public final class MeknucWasteStorageRecipes {
     public static List<Recipe> recipes() {
         if (recipes == null) {
             recipes = List.of(
-                  new Recipe("americium_241", MeknucItemBase.AMERICIUM_241_DUST.get(),
-                        MeknucItemBase.RUTHENIUM_DUST.get(), 600),
-                  new Recipe("plutonium_239", MeknucItemBase.PLUTONIUM_239_DUST.get(),
-                        MeknucItemBase.URANIUM_235_DUST.get(), 300),
-                  new Recipe("uranium_235", MeknucItemBase.URANIUM_235_DUST.get(),
+                  new Recipe("americium_241", MeknucItems.AMERICIUM_241_DUST.get(),
+                        MeknucItems.RUTHENIUM_DUST.get(), 600),
+                  new Recipe("plutonium_239", MeknucItems.PLUTONIUM_239_DUST.get(),
+                        MeknucItems.URANIUM_235_DUST.get(), 300),
+                  new Recipe("uranium_235", MeknucItems.URANIUM_235_DUST.get(),
                         item("mekanism", "dust_lead"), 800),
-                  new Recipe("uranium_233", MeknucItemBase.URANIUM_233_DUST.get(),
-                        MeknucItemBase.THORIUM_DUST.get(), 600),
-                  new Recipe("polonium_210", MeknucItemBase.POLONIUM_210_DUST.get(),
+                  new Recipe("uranium_233", MeknucItems.URANIUM_233_DUST.get(),
+                        MeknucItems.THORIUM_DUST.get(), 600),
+                  new Recipe("polonium_210", MeknucItems.POLONIUM_210_DUST.get(),
                         item("mekanism", "dust_lead"), 100)
             );
         }
