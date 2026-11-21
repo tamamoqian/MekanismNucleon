@@ -1,6 +1,10 @@
 package meknuc.client.gui;
 
+import java.util.List;
+import mekanism.client.gui.element.tab.GuiHeatTab;
 import mekanism.common.inventory.container.tile.EmptyTileContainer;
+import mekanism.common.util.MekanismUtils;
+import mekanism.common.util.UnitDisplayUtils.TemperatureUnit;
 import meknuc.client.gui.element.MeknucPwrTab;
 import meknuc.client.gui.element.MeknucPwrTab.PwrTab;
 import meknuc.reactor.MeknucPwrLang;
@@ -23,6 +27,9 @@ public class MeknucPwrStatsGui
     protected void addGuiElements() {
         super.addGuiElements();
         addRenderableWidget(new MeknucPwrTab(this, tile, PwrTab.MAIN));
+        addRenderableWidget(new GuiHeatTab(this, () -> List.of(MeknucPwrLang.GUI_TEMPERATURE.translate(
+              MekanismUtils.getTemperatureDisplay(multiblock().getTemperature(), TemperatureUnit.CELSIUS,
+                    false)))));
     }
 
     private MeknucPwrMultiblockData multiblock() {
@@ -42,27 +49,30 @@ public class MeknucPwrStatsGui
         drawRow(guiGraphics, MeknucPwrLang.GUI_COOLANT_FLOW.translate(
               Component.literal(formatRate(multiblock.getBaseFlow()))), 58, titleTextColor());
         drawRow(guiGraphics, MeknucPwrLang.GUI_TEMPERATURE.translate(
-              Component.literal(String.format("%.1f ℃", multiblock.getTemperature()))), 68, titleTextColor());
+              MekanismUtils.getTemperatureDisplay(multiblock.getTemperature(), TemperatureUnit.CELSIUS, true)), 68,
+              titleTextColor());
         drawRow(guiGraphics, MeknucPwrLang.GUI_WATER_PRESSURE.translate(
               Component.literal(String.format("%.2f MPa", multiblock.getWaterPressure()))), 78, titleTextColor());
 
         drawRow(guiGraphics, MeknucPwrLang.GUI_FUEL_STATISTICS.translate(), 92, headingTextColor());
         drawRow(guiGraphics, MeknucPwrLang.GUI_FUEL_ROD_COUNT.translate(formatCount(rods)), 104,
               titleTextColor());
+        drawRow(guiGraphics, MeknucPwrLang.GUI_SURFACE_AREA.translate(formatCount(multiblock.getSurfaceArea())),
+              114, titleTextColor());
         drawRow(guiGraphics, MeknucPwrLang.GUI_BURN_TIME_BATCH.translate(
-              formatBurnTime(multiblock.getBurnTime()), formatBurnTime(multiblock.getBatchBurnTime())), 114,
+              formatBurnTime(multiblock.getBurnTime()), formatBurnTime(multiblock.getBatchBurnTime())), 124,
               titleTextColor());
         drawRow(guiGraphics, MeknucPwrLang.GUI_CONTROL_ROD_INSERTION.translate(
-              formatCount(multiblock.getControlRodInsertion())), 124, titleTextColor());
+              formatCount(multiblock.getControlRodInsertion())), 134, titleTextColor());
         drawRow(guiGraphics, MeknucPwrLang.GUI_IN_CORE_COUNT.translate(formatCount(multiblock.getInCoreCount())),
-              134, titleTextColor());
-        drawRow(guiGraphics, MeknucPwrLang.GUI_FUEL.translate(formatCount(multiblock.getFuelCount())), 144,
+              144, titleTextColor());
+        drawRow(guiGraphics, MeknucPwrLang.GUI_FUEL.translate(formatCount(multiblock.getFuelCount())), 154,
               titleTextColor());
-        drawRow(guiGraphics, MeknucPwrLang.GUI_WASTE.translate(formatCount(multiblock.getWasteCount())), 154,
+        drawRow(guiGraphics, MeknucPwrLang.GUI_WASTE.translate(formatCount(multiblock.getWasteCount())), 164,
               titleTextColor());
 
-        drawRow(guiGraphics, MeknucPwrLang.GUI_OPERATING_STATISTICS.translate(), 168, headingTextColor());
-        drawRow(guiGraphics, operatingText(multiblock), 180, operatingColor(multiblock));
+        drawRow(guiGraphics, MeknucPwrLang.GUI_OPERATING_STATISTICS.translate(), 178, headingTextColor());
+        drawRow(guiGraphics, operatingText(multiblock), 190, operatingColor(multiblock));
         super.drawForegroundText(guiGraphics, mouseX, mouseY);
     }
 

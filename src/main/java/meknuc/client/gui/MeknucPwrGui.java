@@ -11,10 +11,12 @@ import mekanism.client.gui.element.button.TranslationButton;
 import mekanism.client.gui.element.gauge.GaugeType;
 import mekanism.client.gui.element.gauge.GuiChemicalGauge;
 import mekanism.client.gui.element.graph.GuiDoubleGraph;
+import mekanism.client.gui.element.tab.GuiHeatTab;
 import mekanism.common.lib.Color.ColorFunction;
+import mekanism.common.util.MekanismUtils;
+import mekanism.common.util.UnitDisplayUtils.TemperatureUnit;
 import meknuc.client.gui.element.MeknucPwrTab;
 import meknuc.client.gui.element.MeknucPwrTab.PwrTab;
-import meknuc.reactor.MeknucPwrConstants;
 import meknuc.reactor.MeknucPwrContainer;
 import meknuc.reactor.MeknucPwrLang;
 import meknuc.reactor.MeknucPwrMultiblockData;
@@ -45,6 +47,9 @@ public class MeknucPwrGui extends MeknucReactorGui<TileEntityPwrPart, MeknucPwrC
               .setLabel(MeknucPwrLang.GUI_HEATED_COOLANT_TANK.translate()));
         addRenderableWidget(new GuiInnerScreen(this, PANEL_X, PANEL_Y, PANEL_WIDTH, PANEL_HEIGHT, this::infoLines).spacing(0));
         addRenderableWidget(new MeknucPwrTab(this, tile, PwrTab.STAT));
+        addRenderableWidget(new GuiHeatTab(this, () -> List.of(MeknucPwrLang.GUI_TEMPERATURE.translate(
+              MekanismUtils.getTemperatureDisplay(multiblock().getTemperature(), TemperatureUnit.CELSIUS,
+                    false)))));
         activateButton = addRenderableWidget(new TranslationButton(this, 8, BUTTON_Y, 80, BUTTON_HEIGHT,
               MeknucPwrLang.GUI_ACTIVATE, (element, mouseX, mouseY) -> {
                   pressButton(MeknucPwrContainer.BUTTON_ACTIVATE);
@@ -60,7 +65,7 @@ public class MeknucPwrGui extends MeknucReactorGui<TileEntityPwrPart, MeknucPwrC
         addRenderableWidget(new GuiDynamicHorizontalRateBar(this, heatBarHandler(), 8, TEMPERATURE_BAR_Y, imageWidth - 16,
               ColorFunction.HEAT));
         heatGraph = addRenderableWidget(new GuiDoubleGraph(this, 8, GRAPH_Y, imageWidth - 16, GRAPH_HEIGHT,
-              temp -> Component.literal(String.format("%.0f ℃", temp))));
+              temp -> MekanismUtils.getTemperatureDisplay(temp, TemperatureUnit.CELSIUS, true)));
         heatGraph.setMinScale(1300.0);
     }
 
@@ -88,7 +93,8 @@ public class MeknucPwrGui extends MeknucReactorGui<TileEntityPwrPart, MeknucPwrC
         return new IBarInfoHandler() {
             @Override
             public Component getTooltip() {
-                return Component.literal(String.format("%.1f ℃", multiblock().getTemperature()));
+                return MekanismUtils.getTemperatureDisplay(multiblock().getTemperature(), TemperatureUnit.CELSIUS,
+                      true);
             }
 
             @Override
@@ -111,8 +117,8 @@ public class MeknucPwrGui extends MeknucReactorGui<TileEntityPwrPart, MeknucPwrC
         }
         List<Component> lines = new ArrayList<>();
         lines.add(status);
-        lines.add(MeknucPwrLang.GUI_TEMPERATURE.translate(temperatureColor(multiblock.getTemperature()),
-              Component.literal(String.format("%.1f ℃", multiblock.getTemperature()))));
+        lines.add(MeknucPwrLang.GUI_TEMPERATURE.translate(EnumColor.RED,
+              MekanismUtils.getTemperatureDisplay(multiblock.getTemperature(), TemperatureUnit.CELSIUS, true)));
         lines.add(MeknucPwrLang.GUI_POWER.translate(powerColor(multiblock),
               Component.literal(String.format("%.1f MW", multiblock.getPowerLevel()))));
         lines.add(MeknucPwrLang.GUI_WATER_PRESSURE_SHORT.translate(EnumColor.WHITE,
@@ -129,22 +135,6 @@ public class MeknucPwrGui extends MeknucReactorGui<TileEntityPwrPart, MeknucPwrC
 
     private static EnumColor powerColor(MeknucPwrMultiblockData multiblock) {
         return multiblock.isRodsFailed() ? EnumColor.DARK_RED : EnumColor.AQUA;
-    }
-
-    private static EnumColor temperatureColor(double temperature) {
-        if (temperature < MeknucPwrConstants.DERATE_TEMPERATURE) {
-            return EnumColor.BRIGHT_GREEN;
-        }
-        if (temperature < MeknucPwrConstants.ROD_FAILURE_TEMPERATURE) {
-            return EnumColor.YELLOW;
-        }
-        if (temperature < 600.0) {
-            return EnumColor.ORANGE;
-        }
-        if (temperature < MeknucPwrConstants.MELTDOWN_TEMPERATURE) {
-            return EnumColor.RED;
-        }
-        return EnumColor.DARK_RED;
     }
 
     @Override

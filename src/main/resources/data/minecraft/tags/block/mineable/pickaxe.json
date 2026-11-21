@@ -26,6 +26,14 @@
     "meknuc:pressurized_water_reactor_logic_adapter",
     "meknuc:pressurized_water_reactor_fuel_assembly",
     "meknuc:pressurized_water_reactor_control_assembly",
-    "meknuc:radioisotope_thermoelectric_generator"
+    "meknuc:radioisotope_thermoelectric_generator",
+    "meknuc:fast_breeder_reactor_casing",
+    "meknuc:fast_breeder_reactor_neutron_reflector_cladding",
+    "meknuc:fast_breeder_reactor_radiation_resistant_control_assembly",
+    "meknuc:fast_breeder_reactor_radiation_resistant_fuel_assembly",
+    "meknuc:fast_breeder_reactor_port",
+    "meknuc:fast_breeder_reactor_logic_adapter",
+    "meknuc:radiation_resistant_waste_storage_casing",
+    "meknuc:radiation_resistant_waste_storage_port"
   ]
 }

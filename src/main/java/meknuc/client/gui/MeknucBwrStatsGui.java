@@ -45,43 +45,47 @@ public class MeknucBwrStatsGui
         MeknucBwrMultiblockData multiblock = multiblock();
         int rods = multiblock.getFuelAssemblies();
         drawRow(guiGraphics, MeknucBwrLang.GUI_HEAT_STATISTICS.translate(), 26, headingTextColor());
-        drawRow(guiGraphics, MeknucBwrLang.GUI_HEAT_CAPACITY.translate(
-              TextUtils.format(rods * MeknucBwrConstants.HEAT_CAPACITY_PER_ASSEMBLY)), 38, titleTextColor());
-        drawRow(guiGraphics, MeknucBwrLang.GUI_MAX_EXCHANGE.translate(
-              TextUtils.format(rods * MeknucBwrConstants.STEAM_PER_ASSEMBLY * MeknucBwrConstants.HEAT_PER_MB
-                    / (MeknucBwrConstants.DESIGN_TEMPERATURE - MeknucBwrConstants.SATURATION_TEMPERATURE)
-                    * multiblock.getBoilEfficiency())), 48, titleTextColor());
-        drawRow(guiGraphics, MeknucBwrLang.GUI_COOLANT_CAPACITY.translate(
-              TextUtils.format(multiblock.coolantCapacity())), 58, titleTextColor());
         drawRow(guiGraphics, MeknucBwrLang.GUI_TEMPERATURE.translate(
-              MekanismUtils.getTemperatureDisplay(multiblock.getTemperature(), TemperatureUnit.KELVIN, true)), 68,
+              MekanismUtils.getTemperatureDisplay(multiblock.getTemperature() - 273.15, TemperatureUnit.CELSIUS,
+                    true)), 38, titleTextColor());
+        drawRow(guiGraphics, MeknucBwrLang.GUI_POWER.translate(
+              Component.literal(String.format("%.1f%%", multiblock.getPowerPercent()))), 48, titleTextColor());
+        drawRow(guiGraphics, MeknucBwrLang.GUI_HEAT_CAPACITY.translate(
+              TextUtils.format((long) (rods * MeknucBwrConstants.HEAT_CAPACITY_PER_ASSEMBLY))), 58,
               titleTextColor());
-        drawRow(guiGraphics, MekanismLang.DISSIPATED_RATE.translate(
-              MekanismUtils.getTemperatureDisplay(multiblock.getLastEnvironmentLoss(), TemperatureUnit.KELVIN, false)),
-              78, titleTextColor());
+        drawRow(guiGraphics, MeknucBwrLang.GUI_MAX_EXCHANGE.translate(
+              TextUtils.format((long) (rods * MeknucBwrConstants.STEAM_PER_ASSEMBLY * MeknucBwrConstants.HEAT_PER_MB
+                    / (MeknucBwrConstants.DESIGN_TEMPERATURE - MeknucBwrConstants.SATURATION_TEMPERATURE)
+                    * multiblock.getBoilEfficiency()))), 68, titleTextColor());
+        drawRow(guiGraphics, MeknucBwrLang.GUI_COOLANT_CAPACITY.translate(
+              TextUtils.format(multiblock.coolantCapacity())), 78, titleTextColor());
 
         drawRow(guiGraphics, MeknucBwrLang.GUI_FUEL_STATISTICS.translate(), 92, headingTextColor());
         drawRow(guiGraphics, MeknucBwrLang.GUI_FUEL_ROD_COUNT.translate(formatCount(rods)), 104,
               titleTextColor());
+        drawRow(guiGraphics, MeknucBwrLang.GUI_SURFACE_AREA.translate(formatCount(multiblock.getSurfaceArea())),
+              114, titleTextColor());
         drawRow(guiGraphics, multiblock.isBurnPaused()
               ? MeknucBwrLang.GUI_BURN_TIME.translate(MeknucBwrLang.GUI_BURN_STOPPED.translate())
               : MeknucBwrLang.GUI_BURN_TIME_BATCH.translate(
                     formatBurnTime(multiblock.getDisplayedBurnTime()),
-                    formatBurnTime(multiblock.getDisplayedBatchBurnTime())), 114, titleTextColor());
+                    formatBurnTime(multiblock.getDisplayedBatchBurnTime())), 124, titleTextColor());
         drawRow(guiGraphics, MeknucBwrLang.GUI_CONTROL_ROD_INSERTION.translate(
-              formatCount(multiblock.getControlRodInsertion())), 124, titleTextColor());
+              formatCount(multiblock.getControlRodInsertion())), 134, titleTextColor());
         drawRow(guiGraphics, MeknucBwrLang.GUI_IN_CORE_COUNT.translate(formatCount(multiblock.getInCoreCount())),
-              134, titleTextColor());
-        drawRow(guiGraphics, MeknucBwrLang.GUI_FUEL.translate(formatCount(multiblock.getFuelCount())), 144,
+              144, titleTextColor());
+        drawRow(guiGraphics, MeknucBwrLang.GUI_FUEL.translate(formatCount(multiblock.getFuelCount())), 154,
               titleTextColor());
-        drawRow(guiGraphics, MeknucBwrLang.GUI_WASTE.translate(formatCount(multiblock.getWasteCount())), 154,
+        drawRow(guiGraphics, MeknucBwrLang.GUI_WASTE.translate(formatCount(multiblock.getWasteCount())), 164,
               titleTextColor());
 
-        drawRow(guiGraphics, MeknucBwrLang.GUI_OPERATING_STATISTICS.translate(), 168, headingTextColor());
-        drawRow(guiGraphics, coreDamageText(multiblock), 180, coreDamageColor(multiblock));
-        String flow = TextUtils.format(multiblock.getLastFlow());
-        drawRow(guiGraphics, MeknucBwrLang.GUI_COOLANT_USAGE.translate(flow), 190, titleTextColor());
-        drawRow(guiGraphics, MeknucBwrLang.GUI_STEAM_PRODUCTION.translate(flow), 200, titleTextColor());
+        drawRow(guiGraphics, MeknucBwrLang.GUI_OPERATING_STATISTICS.translate(), 176, headingTextColor());
+        drawRow(guiGraphics, coreDamageText(multiblock), 185, coreDamageColor(multiblock));
+        drawRow(guiGraphics, MeknucBwrLang.GUI_VOID_FRACTION.translate(
+              Component.literal(String.format("%.1f", multiblock.getLastVoidFraction() * 100.0))), 194,
+              titleTextColor());
+        drawRow(guiGraphics, MeknucBwrLang.GUI_STEAM_PRODUCTION.translate(
+              Component.literal(TextUtils.format((long) multiblock.getLastFlow()))), 203, titleTextColor());
         super.drawForegroundText(guiGraphics, mouseX, mouseY);
     }
 

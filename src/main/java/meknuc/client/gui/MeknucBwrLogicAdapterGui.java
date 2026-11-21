@@ -1,11 +1,13 @@
 package meknuc.client.gui;
 
 import java.util.List;
+import mekanism.api.text.EnumColor;
 import mekanism.common.inventory.container.tile.EmptyTileContainer;
 import meknuc.reactor.BwrLogicAdapterMode;
 import meknuc.reactor.MeknucBwrLang;
 import meknuc.reactor.MeknucReactorLogicPacket;
 import meknuc.reactor.tile.TileEntityBwrLogicAdapter;
+import meknuc.reactor.tile.TileEntityBwrLogicAdapter.RedstoneStatus;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
@@ -36,17 +38,17 @@ public class MeknucBwrLogicAdapterGui extends MeknucReactorLogicAdapterGui<BwrLo
 
     @Override
     protected ItemStack modeIcon(BwrLogicAdapterMode mode) {
-        return ItemStack.EMPTY;
+        return mode.getRenderStack();
     }
 
     @Override
     protected int modeRowColor(BwrLogicAdapterMode mode) {
-        return ROW_COLOR;
+        return 0xFF000000 | mode.getColor().getPackedColor();
     }
 
     @Override
     protected List<Component> modeTooltip(BwrLogicAdapterMode mode) {
-        return List.of(mode.getTextComponent());
+        return List.of(mode.getTextComponent(), mode.getDescription());
     }
 
     @Override
@@ -56,6 +58,18 @@ public class MeknucBwrLogicAdapterGui extends MeknucReactorLogicAdapterGui<BwrLo
 
     @Override
     protected List<Component> statusLines() {
-        return List.of(MeknucBwrLang.GUI_LOGIC_MODE.translate(tile.getMode().getTextComponent()));
+        BwrLogicAdapterMode mode = tile.getMode();
+        RedstoneStatus status = tile.getStatus();
+        return List.of(
+              MeknucBwrLang.GUI_LOGIC_MODE.translate(mode.getColor(), mode.getTextComponent()),
+              MeknucBwrLang.GUI_STATUS.translate(statusColor(status), status.getTranslatedName()));
+    }
+
+    private static EnumColor statusColor(RedstoneStatus status) {
+        return switch (status) {
+            case OUTPUTTING -> EnumColor.RED;
+            case POWERED -> EnumColor.BRIGHT_GREEN;
+            case IDLE -> EnumColor.GRAY;
+        };
     }
 }

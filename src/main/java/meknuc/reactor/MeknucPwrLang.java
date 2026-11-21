@@ -67,6 +67,7 @@ public enum MeknucPwrLang implements ILangEntry {
     GUI_WATER_PRESSURE("reactor", "water_pressure"),
     GUI_FUEL_STATISTICS("reactor", "fuel_statistics"),
     GUI_FUEL_ROD_COUNT("reactor", "fuel_rod_count"),
+    GUI_SURFACE_AREA("reactor", "surface_area"),
     GUI_BURN_TIME_BATCH("reactor", "burn_time_batch"),
     GUI_CONTROL_ROD_INSERTION("reactor", "control_rod_insertion"),
     GUI_IN_CORE_COUNT("reactor", "in_core_count"),

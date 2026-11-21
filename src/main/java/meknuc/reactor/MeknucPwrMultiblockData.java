@@ -87,6 +87,9 @@ public class MeknucPwrMultiblockData extends MeknucReactorMultiblockData {
     @ContainerSync(getter = "getFuelAssemblies", setter = "setFuelAssemblies")
     private int fuelAssemblies;
 
+    @ContainerSync(getter = "getSurfaceArea", setter = "setSurfaceArea")
+    private int surfaceArea;
+
     @ContainerSync(getter = "getFuelCount", setter = "setFuelCount")
     private int fuelCount;
 
@@ -172,6 +175,18 @@ public class MeknucPwrMultiblockData extends MeknucReactorMultiblockData {
         int clamped = Math.max(0, count);
         if (fuelAssemblies != clamped) {
             fuelAssemblies = clamped;
+            markDirty();
+        }
+    }
+
+    public int getSurfaceArea() {
+        return surfaceArea;
+    }
+
+    public void setSurfaceArea(int area) {
+        int clamped = Math.max(0, area);
+        if (surfaceArea != clamped) {
+            surfaceArea = clamped;
             markDirty();
         }
     }

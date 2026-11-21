@@ -113,6 +113,12 @@ public class MeknucBwrMultiblockData extends MeknucReactorMultiblockData {
     @ContainerSync(getter = "getLastFlow", setter = "setLastFlow")
     private double lastFlow;
 
+    @ContainerSync(getter = "getLastFissionPower", setter = "setLastFissionPower")
+    private double lastFissionPower;
+
+    @ContainerSync(getter = "getLastVoidFraction", setter = "setLastVoidFraction")
+    private double lastVoidFraction;
+
     @ContainerSync(getter = "getBatchBurnTime", setter = "setBatchBurnTime")
     private int batchBurnTime;
 
@@ -473,6 +479,39 @@ public class MeknucBwrMultiblockData extends MeknucReactorMultiblockData {
             lastFlow = clamped;
             markDirty();
         }
+    }
+
+    public double getLastFissionPower() {
+        return lastFissionPower;
+    }
+
+    public void setLastFissionPower(double power) {
+        double clamped = Math.max(0.0, power);
+        if (lastFissionPower != clamped) {
+            lastFissionPower = clamped;
+            markDirty();
+        }
+    }
+
+    public double getLastVoidFraction() {
+        return lastVoidFraction;
+    }
+
+    public void setLastVoidFraction(double fraction) {
+        double clamped = Mth.clamp(fraction, 0.0, 1.0);
+        if (lastVoidFraction != clamped) {
+            lastVoidFraction = clamped;
+            markDirty();
+        }
+    }
+
+    public double getRatedPower() {
+        return Math.max(0, fuelAssemblies) * HEAT_PER_ASSEMBLY;
+    }
+
+    public double getPowerPercent() {
+        double rated = getRatedPower();
+        return rated <= 0.0 ? 0.0 : Mth.clamp(lastFissionPower / rated * 100.0, 0.0, 100.0);
     }
 
     public int getBatchBurnTime() {

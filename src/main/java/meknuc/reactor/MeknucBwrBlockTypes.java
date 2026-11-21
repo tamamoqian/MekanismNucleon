@@ -2,6 +2,7 @@ package meknuc.reactor;
 
 import mekanism.common.block.attribute.Attribute;
 import mekanism.common.block.attribute.AttributeGui;
+import mekanism.common.block.attribute.Attributes;
 import mekanism.common.content.blocktype.BlockTypeTile;
 import meknuc.reactor.tile.TileEntityBwrControlAssembly;
 import meknuc.reactor.tile.TileEntityBwrFuelAssembly;
@@ -28,8 +29,10 @@ public class MeknucBwrBlockTypes {
           MeknucReactorBlockTypes.createLogicAdapter(
                 MeknucBwrLang.DESCRIPTION_BOILING_WATER_REACTOR_LOGIC_ADAPTER,
                 () -> MeknucBwrTileEntityTypes.BOILING_WATER_REACTOR_LOGIC_ADAPTER,
-                new Attribute[]{new AttributeStateBwrLogicAdapterMode<>(
-                      AttributeStateBwrLogicAdapterMode.modeProperty, BwrLogicAdapterMode.DISABLED)},
+                new Attribute[]{new Attributes.AttributeRedstoneEmitter<TileEntityBwrLogicAdapter>(
+                      TileEntityBwrLogicAdapter::getRedstoneLevel),
+                      new AttributeStateBwrLogicAdapterMode<>(
+                            AttributeStateBwrLogicAdapterMode.modeProperty, BwrLogicAdapterMode.DISABLED)},
                 new AttributeGui(() -> MeknucBwrContainerTypes.BOILING_WATER_REACTOR_LOGIC_ADAPTER,
                       MeknucBwrLang.GUI_LOGIC_TITLE),
                 MeknucPwrSounds.PRESSURIZED_WATER_REACTOR_RUNNING);

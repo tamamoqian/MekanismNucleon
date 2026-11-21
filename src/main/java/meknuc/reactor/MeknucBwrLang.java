@@ -19,7 +19,7 @@ public enum MeknucBwrLang implements ILangEntry {
     PORT_MODE_CHANGE("reactor", "port_mode_change"),
     LOGIC_MODE_CHANGE("reactor", "logic_mode_change"),
 
-    INVALID_DIAMETER("reactor", "invalid_not_cylinder"),
+    INVALID_DIAMETER("reactor", "boiling_water_reactor.invalid_diameter"),
     INVALID_HEIGHT("reactor", "invalid_height"),
     INVALID_MISSING_FUEL("reactor", "invalid_missing_fuel"),
     INVALID_BAD_FUEL_ASSEMBLY("reactor", "invalid_bad_fuel_assembly"),
@@ -27,7 +27,7 @@ public enum MeknucBwrLang implements ILangEntry {
     INVALID_BAD_CONTROL_ROD("reactor", "invalid_bad_control_rod"),
     INVALID_EXTRA_CONTROL_ROD("reactor", "invalid_extra_control_rod"),
 
-    GUI_TITLE("reactor", "title"),
+    GUI_TITLE("reactor", "boiling_water_reactor.title"),
     GUI_ACTIVATE("reactor", "activate"),
     GUI_AUTO_STOP("reactor", "auto_stop"),
     GUI_AUTO_STOP_ON("reactor", "auto_stop_on"),
@@ -43,7 +43,7 @@ public enum MeknucBwrLang implements ILangEntry {
     GUI_DAMAGE_MELTDOWN("reactor", "damage_meltdown"),
     GUI_FUEL("reactor", "fuel"),
     GUI_IN_CORE("reactor", "in_core"),
-    GUI_FUEL_HINT("reactor", "fuel_hint"),
+    GUI_FUEL_HINT("reactor", "boiling_water_reactor.fuel_hint"),
     GUI_FUEL_TYPE("reactor", "fuel_type"),
     GUI_WASTE("reactor", "waste"),
     GUI_TEMPERATURE_BAR("reactor", "temperature_bar"),
@@ -56,13 +56,15 @@ public enum MeknucBwrLang implements ILangEntry {
 
     GUI_MAIN_TAB("reactor", "main_tab"),
     GUI_STATS_TAB("reactor", "stats_tab"),
-    GUI_STATS_TITLE("reactor", "stats_title"),
+    GUI_STATS_TITLE("reactor", "boiling_water_reactor.stats_title"),
     GUI_HEAT_STATISTICS("reactor", "heat_statistics"),
     GUI_HEAT_CAPACITY("reactor", "heat_capacity"),
     GUI_MAX_EXCHANGE("reactor", "max_exchange"),
     GUI_COOLANT_CAPACITY("reactor", "coolant_capacity"),
+    GUI_POWER("reactor", "power"),
     GUI_FUEL_STATISTICS("reactor", "fuel_statistics"),
     GUI_FUEL_ROD_COUNT("reactor", "fuel_rod_count"),
+    GUI_SURFACE_AREA("reactor", "surface_area"),
     GUI_BURN_TIME_BATCH("reactor", "burn_time_batch"),
     GUI_CONTROL_ROD_INSERTION("reactor", "control_rod_insertion"),
     GUI_IN_CORE_COUNT("reactor", "in_core_count"),
@@ -71,6 +73,7 @@ public enum MeknucBwrLang implements ILangEntry {
     GUI_CORE_DAMAGE_MELTDOWN("reactor", "core_damage_meltdown"),
     GUI_COOLANT_USAGE("reactor", "coolant_usage"),
     GUI_STEAM_PRODUCTION("reactor", "steam_production"),
+    GUI_VOID_FRACTION("reactor", "void_fraction"),
 
     LOGIC_DISABLED("reactor", "logic.disabled"),
     LOGIC_ACTIVATION("reactor", "logic.activation"),
@@ -81,14 +84,14 @@ public enum MeknucBwrLang implements ILangEntry {
     LOGIC_OUTPUTTING("reactor", "logic.outputting"),
     LOGIC_POWERED("reactor", "logic.powered"),
 
-    DESCRIPTION_LOGIC_DISABLED("description", "reactor.logic.disabled"),
-    DESCRIPTION_LOGIC_ACTIVATION("description", "reactor.logic.activation"),
-    DESCRIPTION_LOGIC_CONTROL_ROD("description", "reactor.logic.control_rod"),
-    DESCRIPTION_LOGIC_HIGH_TEMPERATURE("description", "reactor.logic.high_temperature"),
-    DESCRIPTION_LOGIC_CRITICAL_WASTE_LEVEL("description", "reactor.logic.critical_waste_level"),
-    DESCRIPTION_LOGIC_DAMAGED("description", "reactor.logic.damaged"),
+    DESCRIPTION_LOGIC_DISABLED("description", "boiling_water_reactor.logic.disabled"),
+    DESCRIPTION_LOGIC_ACTIVATION("description", "boiling_water_reactor.logic.activation"),
+    DESCRIPTION_LOGIC_CONTROL_ROD("description", "boiling_water_reactor.logic.control_rod"),
+    DESCRIPTION_LOGIC_HIGH_TEMPERATURE("description", "boiling_water_reactor.logic.high_temperature"),
+    DESCRIPTION_LOGIC_CRITICAL_WASTE_LEVEL("description", "boiling_water_reactor.logic.critical_waste_level"),
+    DESCRIPTION_LOGIC_DAMAGED("description", "boiling_water_reactor.logic.damaged"),
 
-    GUI_LOGIC_TITLE("reactor", "logic.title"),
+    GUI_LOGIC_TITLE("reactor", "boiling_water_reactor.logic.title"),
     GUI_LOGIC_MODE("reactor", "logic.redstone_mode"),
     REACTOR_LOGIC_REDSTONE_MODE("reactor", "logic.redstone_mode.tooltip");
 

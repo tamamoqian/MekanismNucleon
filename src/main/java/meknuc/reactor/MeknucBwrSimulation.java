@@ -22,6 +22,8 @@ final class MeknucBwrSimulation {
         int rods = data.getFuelAssemblies();
         tickFuelCycle(rods);
         if (rods <= 0) {
+            data.setLastFissionPower(0.0);
+            data.setLastVoidFraction(0.0);
             return;
         }
         double current = data.getTemperature();
@@ -48,6 +50,8 @@ final class MeknucBwrSimulation {
         double voidFraction = Mth.clamp(
               MeknucBwrMultiblockData.VOID_GENERATION * fissionPower / voidDenominator, 0.0,
               MeknucBwrMultiblockData.MAX_VOID);
+        data.setLastFissionPower(fissionPower);
+        data.setLastVoidFraction(voidFraction);
         double dryoutFactor = voidFraction >= MeknucBwrMultiblockData.CRITICAL_VOID
               ? MeknucBwrMultiblockData.DRYOUT_HEAT_FACTOR : 1.0;
 

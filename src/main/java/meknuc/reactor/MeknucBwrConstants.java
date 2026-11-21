@@ -7,4 +7,5 @@ public class MeknucBwrConstants {
     public static final double STEAM_PER_ASSEMBLY = 9375.0;
     public static final double DESIGN_TEMPERATURE = 585.0;
     public static final double SATURATION_TEMPERATURE = 285.0;
+    public static final double HIGH_TEMPERATURE_THRESHOLD = 800.0 + 273.15;
 }
