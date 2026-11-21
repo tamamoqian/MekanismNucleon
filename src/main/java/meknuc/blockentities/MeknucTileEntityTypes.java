@@ -73,32 +73,6 @@ public class MeknucTileEntityTypes {
                 .serverTicker(TileEntityMekanism::tickServer)
                 .build();
 
-    public static final TileEntityTypeRegistryObject<MeknucBlockEntityReactorPart> FAST_BREEDER_REACTOR_CASING =
-          TILE_ENTITY_TYPES.mekBuilder(MeknucFbrBlocks.FAST_BREEDER_REACTOR_CASING, MeknucBlockEntityReactorPart::new)
-                .build();
-
-    public static final TileEntityTypeRegistryObject<MeknucBlockEntityReactorPart> FAST_BREEDER_REACTOR_NEUTRON_REFLECTOR_CLADDING =
-          TILE_ENTITY_TYPES.mekBuilder(MeknucFbrBlocks.FAST_BREEDER_REACTOR_NEUTRON_REFLECTOR_CLADDING, MeknucBlockEntityReactorPart::new)
-                .build();
-
-    public static final TileEntityTypeRegistryObject<MeknucBlockEntityReactorPart> FAST_BREEDER_REACTOR_RADIATION_RESISTANT_CONTROL_ASSEMBLY =
-          TILE_ENTITY_TYPES.mekBuilder(MeknucFbrBlocks.FAST_BREEDER_REACTOR_RADIATION_RESISTANT_CONTROL_ASSEMBLY, MeknucBlockEntityReactorPart::new)
-                .build();
-
-    public static final TileEntityTypeRegistryObject<MeknucBlockEntityReactorPart> FAST_BREEDER_REACTOR_RADIATION_RESISTANT_FUEL_ASSEMBLY =
-          TILE_ENTITY_TYPES.mekBuilder(MeknucFbrBlocks.FAST_BREEDER_REACTOR_RADIATION_RESISTANT_FUEL_ASSEMBLY, MeknucBlockEntityReactorPart::new)
-                .build();
-
-    public static final TileEntityTypeRegistryObject<MeknucBlockEntityReactorPort> FAST_BREEDER_REACTOR_PORT =
-          TILE_ENTITY_TYPES.mekBuilder(MeknucFbrBlocks.FAST_BREEDER_REACTOR_PORT, MeknucBlockEntityReactorPort::new)
-                .withSimple(Capabilities.CONFIGURABLE)
-                .build();
-
-    public static final TileEntityTypeRegistryObject<MeknucBlockEntityLogicAdapter> FAST_BREEDER_REACTOR_LOGIC_ADAPTER =
-          TILE_ENTITY_TYPES.mekBuilder(MeknucFbrBlocks.FAST_BREEDER_REACTOR_LOGIC_ADAPTER, MeknucBlockEntityLogicAdapter::new)
-                .withSimple(Capabilities.CONFIGURABLE)
-                .build();
-
     public static final TileEntityTypeRegistryObject<MeknucBlockEntityReactorPart> HIGH_TEMPERATURE_GRAPHITE_GAS_COOLED_REACTOR_CASING =
           TILE_ENTITY_TYPES.mekBuilder(MeknucHtgrBlocks.HIGH_TEMPERATURE_GRAPHITE_GAS_COOLED_REACTOR_CASING, MeknucBlockEntityReactorPart::new)
                 .build();

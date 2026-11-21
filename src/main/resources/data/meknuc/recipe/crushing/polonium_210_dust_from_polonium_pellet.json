@@ -1,0 +1,11 @@
+{
+  "type": "mekanism:crushing",
+  "input": {
+    "count": 1,
+    "item": "mekanism:pellet_polonium"
+  },
+  "output": {
+    "count": 1,
+    "id": "meknuc:polonium_210_dust"
+  }
+}

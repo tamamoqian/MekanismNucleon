@@ -58,6 +58,8 @@ public enum MeknucBlockReactorLang implements ILangEntry {
     PORT_MODE_FAST_BREEDER_REACTOR_COOLANT_OUTPUT("port_mode", "fast_breeder_reactor_coolant_output"),
     PORT_MODE_FAST_BREEDER_REACTOR_FUEL_INPUT("port_mode", "fast_breeder_reactor_fuel_input"),
     PORT_MODE_FAST_BREEDER_REACTOR_BREEDER_FUEL_OUTPUT("port_mode", "fast_breeder_reactor_breeder_fuel_output"),
+    PORT_MODE_FAST_BREEDER_REACTOR_BREEDER_MATERIAL_INPUT("port_mode", "fast_breeder_reactor_breeder_material_input"),
+    PORT_MODE_FAST_BREEDER_REACTOR_BREEDER_MATERIAL_OUTPUT("port_mode", "fast_breeder_reactor_breeder_material_output"),
     PORT_MODE_HIGH_TEMPERATURE_GRAPHITE_GAS_COOLED_REACTOR_COOLANT_INPUT("port_mode", "high_temperature_graphite_gas_cooled_reactor_coolant_input"),
     PORT_MODE_HIGH_TEMPERATURE_GRAPHITE_GAS_COOLED_REACTOR_COOLANT_OUTPUT("port_mode", "high_temperature_graphite_gas_cooled_reactor_coolant_output"),
     PORT_MODE_HIGH_TEMPERATURE_GRAPHITE_GAS_COOLED_REACTOR_FUEL_PARTICLE_INPUT("port_mode", "high_temperature_graphite_gas_cooled_reactor_fuel_particle_input"),

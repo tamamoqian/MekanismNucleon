@@ -20,6 +20,7 @@ import meknuc.particle.MeknucParticleAcceleratorMultiblock;
 import meknuc.particle.MeknucParticleAcceleratorSounds;
 import meknuc.reactor.MeknucPwrMultiblock;
 import meknuc.reactor.MeknucPwrBlocks;
+import meknuc.reactor.MeknucFbrContainerTypes;
 import meknuc.reactor.MeknucPwrContainerTypes;
 import meknuc.reactor.MeknucPwrLogicPacket;
 import meknuc.reactor.MeknucPwrOpenGuiPacket;
@@ -31,6 +32,9 @@ import meknuc.reactor.MeknucBwrLogicPacket;
 import meknuc.reactor.MeknucBwrMultiblock;
 import meknuc.reactor.MeknucBwrOpenGuiPacket;
 import meknuc.reactor.MeknucBwrTileEntityTypes;
+import meknuc.reactor.MeknucFbrMultiblock;
+import meknuc.reactor.MeknucFbrTestStructure;
+import meknuc.reactor.MeknucFbrTileEntityTypes;
 import meknuc.reactor.spentpool.MeknucSpentFuelPoolContainerTypes;
 import meknuc.reactor.spentpool.MeknucSpentFuelPoolMultiblock;
 import meknuc.reactor.spentpool.MeknucSpentFuelPoolSounds;
@@ -93,6 +97,7 @@ public class Meknuc {
 
         MeknucPwrMultiblock.initialize();
         MeknucBwrMultiblock.initialize();
+        MeknucFbrMultiblock.initialize();
         MeknucSpentFuelPoolMultiblock.initialize();
         MeknucWasteStorageMultiblock.initialize();
         MeknucParticleAcceleratorMultiblock.initialize();
@@ -114,7 +119,9 @@ public class Meknuc {
         MeknucChemicals.CHEMICALS.register(modEventBus);
         MeknucPwrTileEntityTypes.TILE_ENTITY_TYPES.register(modEventBus);
         MeknucPwrContainerTypes.CONTAINER_TYPES.register(modEventBus);
+        MeknucFbrContainerTypes.CONTAINER_TYPES.register(modEventBus);
         MeknucBwrTileEntityTypes.TILE_ENTITY_TYPES.register(modEventBus);
+        MeknucFbrTileEntityTypes.TILE_ENTITY_TYPES.register(modEventBus);
         MeknucBwrContainerTypes.CONTAINER_TYPES.register(modEventBus);
         MeknucTileEntityTypes.TILE_ENTITY_TYPES.register(modEventBus);
         MeknucTurbineTileEntityTypes.TILE_ENTITY_TYPES.register(modEventBus);
@@ -128,6 +135,7 @@ public class Meknuc {
         CREATIVE_MODE_TABS.register(modEventBus);
 
         NeoForge.EVENT_BUS.register(this);
+        NeoForge.EVENT_BUS.register(MeknucFbrTestStructure.class);
         NeoForge.EVENT_BUS.register(new MeknucSuitModuleEvents());
         NeoForge.EVENT_BUS.register(new MeknucRadiationEvents());
         MeknucModules.sendIMC();

@@ -2,19 +2,28 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "pattern": [
-    "ACA",
-    "CEC",
-    "ACA"
+    "PBL",
+    "RCR",
+    "LUP"
   ],
   "key": {
-    "A": {
-      "item": "meknuc:particle_accelerator_radiation_resistant_casing"
+    "P": {
+      "item": "mekanism:pellet_polonium"
+    },
+    "L": {
+      "item": "mekanism:pellet_plutonium"
+    },
+    "B": {
+      "item": "meknuc:fast_breeder_reactor_radiation_resistant_control_assembly"
+    },
+    "R": {
+      "item": "meknuc:radiation_control_circuit"
     },
     "C": {
-      "item": "meknuc:particle_acceleration_coil"
+      "item": "meknuc:particle_accelerator_radiation_resistant_casing"
     },
-    "E": {
-      "item": "mekanism:elite_control_circuit"
+    "U": {
+      "item": "mekanism:ultimate_control_circuit"
     }
   },
   "result": {

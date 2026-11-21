@@ -5,14 +5,20 @@ import mekanism.api.text.EnumColor;
 import mekanism.api.text.ILangEntry;
 import mekanism.api.text.IHasTextComponent.IHasEnumNameTextComponent;
 import mekanism.common.block.attribute.Attribute;
+import mekanism.common.block.attribute.AttributeGui;
 import mekanism.common.content.blocktype.BlockTypeTile;
 import mekanism.common.content.blocktype.BlockTypeTile.BlockTileBuilder;
 import mekanism.common.registration.impl.TileEntityTypeRegistryObject;
 import mekanism.common.tile.base.TileEntityMekanism;
-import meknuc.blockentities.MeknucBlockEntityLogicAdapter;
-import meknuc.blockentities.MeknucBlockEntityReactorPart;
-import meknuc.blockentities.MeknucBlockEntityReactorPort;
-import meknuc.blockentities.MeknucTileEntityTypes;
+import meknuc.reactor.MeknucFbrContainerTypes;
+import meknuc.reactor.MeknucFbrLang;
+import meknuc.reactor.MeknucFbrTileEntityTypes;
+import meknuc.reactor.tile.TileEntityFbrControlAssembly;
+import meknuc.reactor.tile.TileEntityFbrFuelAssembly;
+import meknuc.reactor.tile.TileEntityFbrLogicAdapter;
+import meknuc.reactor.tile.TileEntityFbrPart;
+import meknuc.reactor.tile.TileEntityFbrPort;
+import meknuc.reactor.tile.TileEntityFbrReflectorCladding;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
@@ -24,52 +30,53 @@ public class MeknucFbrBlockTypes {
     public static final AttributeStateReactorPortMode<Mode> MODE_ATTRIBUTE =
           new AttributeStateReactorPortMode<>(MODE, Mode.COOLANT_INPUT);
 
-    public static final BlockTypeTile<MeknucBlockEntityReactorPart> FAST_BREEDER_REACTOR_CASING =
-          createExternal(MeknucBlockReactorLang.FAST_BREEDER_REACTOR_CASING, () -> MeknucTileEntityTypes.FAST_BREEDER_REACTOR_CASING);
+    public static final BlockTypeTile<TileEntityFbrPart> FAST_BREEDER_REACTOR_CASING =
+          createExternal(MeknucBlockReactorLang.FAST_BREEDER_REACTOR_CASING, () -> MeknucFbrTileEntityTypes.FAST_BREEDER_REACTOR_CASING);
 
-    public static final BlockTypeTile<MeknucBlockEntityReactorPart> FAST_BREEDER_REACTOR_NEUTRON_REFLECTOR_CLADDING =
+    public static final BlockTypeTile<TileEntityFbrReflectorCladding> FAST_BREEDER_REACTOR_NEUTRON_REFLECTOR_CLADDING =
           createInternal(MeknucBlockReactorLang.FAST_BREEDER_REACTOR_NEUTRON_REFLECTOR_CLADDING,
-                () -> MeknucTileEntityTypes.FAST_BREEDER_REACTOR_NEUTRON_REFLECTOR_CLADDING);
+                () -> MeknucFbrTileEntityTypes.FAST_BREEDER_REACTOR_NEUTRON_REFLECTOR_CLADDING);
 
-    public static final BlockTypeTile<MeknucBlockEntityReactorPart> FAST_BREEDER_REACTOR_RADIATION_RESISTANT_CONTROL_ASSEMBLY =
+    public static final BlockTypeTile<TileEntityFbrControlAssembly> FAST_BREEDER_REACTOR_RADIATION_RESISTANT_CONTROL_ASSEMBLY =
           createInternal(MeknucBlockReactorLang.FAST_BREEDER_REACTOR_RADIATION_RESISTANT_CONTROL_ASSEMBLY,
-                () -> MeknucTileEntityTypes.FAST_BREEDER_REACTOR_RADIATION_RESISTANT_CONTROL_ASSEMBLY);
+                () -> MeknucFbrTileEntityTypes.FAST_BREEDER_REACTOR_RADIATION_RESISTANT_CONTROL_ASSEMBLY);
 
-    public static final BlockTypeTile<MeknucBlockEntityReactorPart> FAST_BREEDER_REACTOR_RADIATION_RESISTANT_FUEL_ASSEMBLY =
+    public static final BlockTypeTile<TileEntityFbrFuelAssembly> FAST_BREEDER_REACTOR_RADIATION_RESISTANT_FUEL_ASSEMBLY =
           createInternal(MeknucBlockReactorLang.FAST_BREEDER_REACTOR_RADIATION_RESISTANT_FUEL_ASSEMBLY,
-                () -> MeknucTileEntityTypes.FAST_BREEDER_REACTOR_RADIATION_RESISTANT_FUEL_ASSEMBLY);
+                () -> MeknucFbrTileEntityTypes.FAST_BREEDER_REACTOR_RADIATION_RESISTANT_FUEL_ASSEMBLY);
 
-    public static final BlockTypeTile<MeknucBlockEntityReactorPort> FAST_BREEDER_REACTOR_PORT =
-          createPort(MeknucBlockReactorLang.FAST_BREEDER_REACTOR_PORT, () -> MeknucTileEntityTypes.FAST_BREEDER_REACTOR_PORT, MODE_ATTRIBUTE);
+    public static final BlockTypeTile<TileEntityFbrPort> FAST_BREEDER_REACTOR_PORT =
+          createPort(MeknucBlockReactorLang.FAST_BREEDER_REACTOR_PORT, () -> MeknucFbrTileEntityTypes.FAST_BREEDER_REACTOR_PORT, MODE_ATTRIBUTE);
 
-    public static final BlockTypeTile<MeknucBlockEntityLogicAdapter> FAST_BREEDER_REACTOR_LOGIC_ADAPTER =
+    public static final BlockTypeTile<TileEntityFbrLogicAdapter> FAST_BREEDER_REACTOR_LOGIC_ADAPTER =
           createLogicAdapter(MeknucBlockReactorLang.FAST_BREEDER_REACTOR_LOGIC_ADAPTER,
-                () -> MeknucTileEntityTypes.FAST_BREEDER_REACTOR_LOGIC_ADAPTER);
+                () -> MeknucFbrTileEntityTypes.FAST_BREEDER_REACTOR_LOGIC_ADAPTER);
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     private static <TILE extends TileEntityMekanism> BlockTypeTile<TILE> createExternal(
           MeknucBlockReactorLang description, Supplier<TileEntityTypeRegistryObject<TILE>> tileType) {
         BlockTileBuilder builder = (BlockTileBuilder) BlockTileBuilder.createBlock(tileType, description);
+        builder.with(new AttributeGui(() -> MeknucFbrContainerTypes.FAST_BREEDER_REACTOR, MeknucFbrLang.GUI_TITLE));
         return (BlockTypeTile<TILE>) ((BlockTileBuilder) builder.externalMultiblock()).build();
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    private static BlockTypeTile<MeknucBlockEntityReactorPort> createPort(
+    private static BlockTypeTile<TileEntityFbrPort> createPort(
           MeknucBlockReactorLang description,
-          Supplier<TileEntityTypeRegistryObject<MeknucBlockEntityReactorPort>> tileType,
+          Supplier<TileEntityTypeRegistryObject<TileEntityFbrPort>> tileType,
           AttributeStateReactorPortMode<?> mode) {
         BlockTileBuilder builder = (BlockTileBuilder) BlockTileBuilder.createBlock(tileType, description);
         builder.with(new Attribute[]{mode});
-        return (BlockTypeTile<MeknucBlockEntityReactorPort>) ((BlockTileBuilder) builder.externalMultiblock()).build();
+        return (BlockTypeTile<TileEntityFbrPort>) ((BlockTileBuilder) builder.externalMultiblock()).build();
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    private static BlockTypeTile<MeknucBlockEntityLogicAdapter> createLogicAdapter(
+    private static BlockTypeTile<TileEntityFbrLogicAdapter> createLogicAdapter(
           MeknucBlockReactorLang description,
-          Supplier<TileEntityTypeRegistryObject<MeknucBlockEntityLogicAdapter>> tileType) {
+          Supplier<TileEntityTypeRegistryObject<TileEntityFbrLogicAdapter>> tileType) {
         BlockTileBuilder builder = (BlockTileBuilder) BlockTileBuilder.createBlock(tileType, description);
         builder.with(new Attribute[]{new AttributeStateLogicAdapterMode<>(MeknucLogicAdapterMode.MODE, MeknucLogicAdapterMode.DISABLED)});
-        return (BlockTypeTile<MeknucBlockEntityLogicAdapter>) ((BlockTileBuilder) builder.externalMultiblock()).build();
+        return (BlockTypeTile<TileEntityFbrLogicAdapter>) ((BlockTileBuilder) builder.externalMultiblock()).build();
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
@@ -84,6 +91,8 @@ public class MeknucFbrBlockTypes {
         COOLANT_OUTPUT("coolant_output", MeknucBlockReactorLang.PORT_MODE_FAST_BREEDER_REACTOR_COOLANT_OUTPUT, EnumColor.DARK_AQUA),
         FUEL_INPUT("fuel_input", MeknucBlockReactorLang.PORT_MODE_FAST_BREEDER_REACTOR_FUEL_INPUT, EnumColor.BRIGHT_GREEN),
         BREEDER_FUEL_OUTPUT("breeder_fuel_output", MeknucBlockReactorLang.PORT_MODE_FAST_BREEDER_REACTOR_BREEDER_FUEL_OUTPUT, EnumColor.ORANGE),
+        BREEDER_MATERIAL_INPUT("breeder_material_input", MeknucBlockReactorLang.PORT_MODE_FAST_BREEDER_REACTOR_BREEDER_MATERIAL_INPUT, EnumColor.PURPLE),
+        BREEDER_MATERIAL_OUTPUT("breeder_material_output", MeknucBlockReactorLang.PORT_MODE_FAST_BREEDER_REACTOR_BREEDER_MATERIAL_OUTPUT, EnumColor.PURPLE),
         ;
 
         private final String name;
