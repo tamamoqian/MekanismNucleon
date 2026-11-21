@@ -164,20 +164,11 @@ public class MeknucPwrValidator extends CuboidStructureValidator<MeknucPwrMultib
     @Override
     public FormationResult postcheck(MeknucPwrMultiblockData structure, Long2ObjectMap<ChunkAccess> chunkMap) {
         Map<Long, Column> byColumn = new HashMap<>();
-        Set<BlockPos> fuelBlocks = new HashSet<>();
-        int surfaceArea = 0;
         for (BlockPos pos : structure.internalLocations) {
             Column column = byColumn.computeIfAbsent(columnKey(pos.getX(), pos.getZ()), key -> new Column());
             BlockEntity tile = WorldUtils.getTileEntity(world, chunkMap, pos);
             if (tile instanceof TileEntityPwrFuelAssembly) {
                 column.fuel.add(pos);
-                surfaceArea += 6;
-                for (Direction side : EnumUtils.DIRECTIONS) {
-                    if (fuelBlocks.contains(pos.relative(side))) {
-                        surfaceArea -= 2;
-                    }
-                }
-                fuelBlocks.add(pos);
             } else if (tile instanceof TileEntityPwrControlAssembly) {
                 if (column.controlRod != null) {
                     return FormationResult.fail(MeknucPwrLang.INVALID_EXTRA_CONTROL_ROD, pos);
@@ -219,7 +210,6 @@ public class MeknucPwrValidator extends CuboidStructureValidator<MeknucPwrMultib
         }
 
         structure.setFuelAssemblies(assemblies);
-        structure.setSurfaceArea(surfaceArea);
         return FormationResult.SUCCESS;
     }
 

@@ -3,7 +3,6 @@ package meknuc.reactor.tile;
 import java.util.List;
 import mekanism.api.IContentsListener;
 import mekanism.api.text.EnumColor;
-import mekanism.common.MekanismLang;
 import mekanism.common.attachments.containers.ContainerType;
 import mekanism.common.capabilities.Capabilities;
 import mekanism.common.capabilities.holder.chemical.IChemicalTankHolder;
@@ -11,6 +10,7 @@ import mekanism.common.capabilities.holder.fluid.IFluidTankHolder;
 import mekanism.common.capabilities.holder.slot.IInventorySlotHolder;
 import meknuc.reactor.AttributeStateBwrPortMode;
 import meknuc.reactor.AttributeStateBwrPortMode.BwrPortMode;
+import meknuc.reactor.MeknucBwrLang;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionResult;
@@ -68,7 +68,7 @@ public class TileEntityBwrPort extends TileEntityBwrPart {
         if (!isRemote()) {
             BwrPortMode mode = getMode().getNext();
             setMode(mode);
-            player.displayClientMessage(MekanismLang.BOILER_VALVE_MODE_CHANGE.translateColored(EnumColor.GRAY, mode), true);
+            player.displayClientMessage(MeknucBwrLang.PORT_MODE_CHANGE.translateColored(EnumColor.GRAY, mode), true);
         }
         return InteractionResult.SUCCESS;
     }

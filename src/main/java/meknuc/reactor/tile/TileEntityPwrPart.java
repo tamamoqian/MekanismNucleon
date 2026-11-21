@@ -2,7 +2,9 @@ package meknuc.reactor.tile;
 
 import java.util.Set;
 import java.util.UUID;
+import mekanism.api.IContentsListener;
 import mekanism.client.sound.SoundHandler;
+import mekanism.common.capabilities.holder.slot.IInventorySlotHolder;
 import mekanism.common.lib.multiblock.MultiblockManager;
 import mekanism.common.tile.prefab.TileEntityMultiblock;
 import meknuc.reactor.MeknucPwrMultiblock;
@@ -10,6 +12,7 @@ import meknuc.reactor.MeknucPwrCache;
 import meknuc.reactor.MeknucPwrMultiblockData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 
 public class TileEntityPwrPart extends TileEntityMultiblock<MeknucPwrMultiblockData> {
 
@@ -27,6 +30,12 @@ public class TileEntityPwrPart extends TileEntityMultiblock<MeknucPwrMultiblockD
     @Override
     public MultiblockManager<MeknucPwrMultiblockData> getManager() {
         return MeknucPwrMultiblock.MANAGER;
+    }
+
+    @Nullable
+    @Override
+    protected IInventorySlotHolder getInitialInventory(IContentsListener listener) {
+        return null;
     }
 
     @Override
@@ -47,7 +56,7 @@ public class TileEntityPwrPart extends TileEntityMultiblock<MeknucPwrMultiblockD
 
     private boolean shouldPlaySound(MeknucPwrMultiblockData multiblock) {
         return isMaster() && multiblock.isFormed() && multiblock.isActive() && !multiblock.isMeltedDown()
-              && multiblock.getBurnTime() > 0 && !multiblock.isBurnPaused();
+              && multiblock.getPowerLevel() > 0.0;
     }
 
     @Override

@@ -19,6 +19,7 @@ public class MeknucBwrCache extends MultiblockCache<MeknucBwrMultiblockData> {
     private boolean meltedDown;
     private double temperature = -1.0;
     private ItemStack runningProduct = ItemStack.EMPTY;
+    private int inCoreCount;
 
     @Override
     public void merge(MultiblockCache<MeknucBwrMultiblockData> mergeCache, RejectContents rejectContents) {
@@ -33,6 +34,7 @@ public class MeknucBwrCache extends MultiblockCache<MeknucBwrMultiblockData> {
         temperature = Math.max(temperature, other.temperature);
         if (runningProduct.isEmpty()) {
             runningProduct = other.runningProduct;
+            inCoreCount = other.inCoreCount;
         }
     }
 
@@ -62,6 +64,7 @@ public class MeknucBwrCache extends MultiblockCache<MeknucBwrMultiblockData> {
             data.restoreTemperature(temperature);
         }
         data.setRunningProduct(runningProduct);
+        data.setInCoreCount(inCoreCount);
     }
 
     @Override
@@ -82,6 +85,7 @@ public class MeknucBwrCache extends MultiblockCache<MeknucBwrMultiblockData> {
         meltedDown = data.isMeltedDown();
         temperature = data.getTemperature();
         runningProduct = data.getRunningProduct();
+        inCoreCount = data.getInCoreCount();
     }
 
     @Override
@@ -96,9 +100,20 @@ public class MeknucBwrCache extends MultiblockCache<MeknucBwrMultiblockData> {
         NBTUtils.setIntIfPresent(nbtTags, "meltdown_timer", value -> meltdownTimer = value);
         meltedDown = nbtTags.getBoolean("melted_down");
         NBTUtils.setDoubleIfPresent(nbtTags, "temperature", value -> temperature = value);
-        runningProduct = nbtTags.contains("running_product")
-              ? ItemStack.parse(provider, nbtTags.getCompound("running_product")).orElse(ItemStack.EMPTY)
-              : ItemStack.EMPTY;
+        runningProduct = ItemStack.EMPTY;
+        inCoreCount = 0;
+        if (nbtTags.contains("running_product")) {
+            CompoundTag product = nbtTags.getCompound("running_product").copy();
+            int storedCount = product.contains("count") ? product.getInt("count") : 1;
+            product.putInt("count",
+                  Math.min(Math.max(storedCount, 1), MeknucBwrMultiblockData.SLOT_STACK_LIMIT));
+            ItemStack parsed = ItemStack.parse(provider, product).orElse(ItemStack.EMPTY);
+            if (!parsed.isEmpty()) {
+                runningProduct = parsed.copyWithCount(1);
+                inCoreCount = Math.max(storedCount, 0);
+            }
+        }
+        NBTUtils.setIntIfPresent(nbtTags, "in_core_count", value -> inCoreCount = value);
     }
 
     @Override
@@ -115,5 +130,6 @@ public class MeknucBwrCache extends MultiblockCache<MeknucBwrMultiblockData> {
         if (!runningProduct.isEmpty()) {
             nbtTags.put("running_product", runningProduct.save(provider));
         }
+        nbtTags.putInt("in_core_count", inCoreCount);
     }
 }

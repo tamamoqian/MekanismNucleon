@@ -38,8 +38,6 @@ import org.jetbrains.annotations.NotNull;
 public class TileEntityPwrLogicAdapter extends TileEntityPwrPart {
 
     private static final int REDSTONE_MAX = 15;
-    private static final int CRITICAL_WASTE_LEVEL =
-          (int) Math.ceil(MeknucPwrMultiblockData.CACHE_CAPACITY * 0.9);
 
     public PressurizedWaterReactorLogic logicType = PressurizedWaterReactorLogic.DISABLED;
     private RedstoneStatus prevStatus = RedstoneStatus.IDLE;
@@ -109,17 +107,18 @@ public class TileEntityPwrLogicAdapter extends TileEntityPwrPart {
                     }
                     break;
                 case HIGH_TEMPERATURE:
-                    if (multiblock.getTemperature() >= MeknucPwrMultiblockData.DAMAGE_TEMPERATURE) {
+                    if (multiblock.getTemperature() >= MeknucPwrMultiblockData.DERATE_TEMPERATURE) {
                         return RedstoneStatus.OUTPUTTING;
                     }
                     break;
                 case CRITICAL_WASTE_LEVEL:
-                    if (multiblock.getWasteCount() >= CRITICAL_WASTE_LEVEL) {
+                    int critical = (int) Math.ceil(multiblock.getCacheCapacity() * 0.9);
+                    if (critical > 0 && multiblock.getWasteCount() >= critical) {
                         return RedstoneStatus.OUTPUTTING;
                     }
                     break;
                 case DAMAGED:
-                    if (multiblock.getDamage() > 0.0) {
+                    if (multiblock.isMeltedDown() || multiblock.getMeltdownTimer() > 0) {
                         return RedstoneStatus.OUTPUTTING;
                     }
                     break;

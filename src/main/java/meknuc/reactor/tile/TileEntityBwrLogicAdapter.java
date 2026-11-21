@@ -1,10 +1,10 @@
 package meknuc.reactor.tile;
 
 import mekanism.api.text.EnumColor;
-import mekanism.common.MekanismLang;
 import meknuc.items.MeknucItemBase;
 import meknuc.reactor.AttributeStateBwrLogicAdapterMode;
 import meknuc.reactor.BwrLogicAdapterMode;
+import meknuc.reactor.MeknucBwrLang;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.world.InteractionResult;
@@ -85,7 +85,7 @@ public class TileEntityBwrLogicAdapter extends TileEntityBwrPart {
                 BlockState next = attribute.nextMode(state);
                 if (next != state) {
                     level.setBlockAndUpdate(worldPosition, next);
-                    player.displayClientMessage(MekanismLang.BOILER_VALVE_MODE_CHANGE.translateColored(EnumColor.GRAY,
+                    player.displayClientMessage(MeknucBwrLang.LOGIC_MODE_CHANGE.translateColored(EnumColor.GRAY,
                           attribute.getModeName(next)), true);
                 }
             }

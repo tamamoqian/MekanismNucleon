@@ -181,8 +181,8 @@ public class MeknucBwrGui extends GuiMekanismTile<TileEntityBwrPart, MeknucBwrCo
         );
     }
 
-    private static String fuelCountText(int count) {
-        return count + "/" + MeknucBwrMultiblockData.CACHE_CAPACITY;
+    private static String fuelCountText(int count, int capacity) {
+        return count + "/" + capacity;
     }
 
     private static String formatBurnTime(int ticks) {
@@ -196,27 +196,28 @@ public class MeknucBwrGui extends GuiMekanismTile<TileEntityBwrPart, MeknucBwrCo
         renderInventoryText(guiGraphics);
         MeknucBwrMultiblockData multiblock = multiblock();
         activateButton.active = !multiblock.isActive() && !multiblock.isMeltedDown();
+        int capacity = multiblock.getCacheCapacity();
         drawCacheBar(guiGraphics, FUEL_BAR_X, multiblock.getFuelCount(), multiblock.getInCoreCount(),
-              multiblock.getFuelStack(), CACHE_FUEL_COLOR, MeknucBwrLang.GUI_FUEL, MeknucBwrLang.GUI_FUEL_HINT,
+              multiblock.getFuelStack(), capacity, CACHE_FUEL_COLOR, MeknucBwrLang.GUI_FUEL, MeknucBwrLang.GUI_FUEL_HINT,
               mouseX, mouseY);
-        drawCacheBar(guiGraphics, WASTE_BAR_X, multiblock.getWasteCount(), 0, multiblock.getWasteStack(),
+        drawCacheBar(guiGraphics, WASTE_BAR_X, multiblock.getWasteCount(), 0, multiblock.getWasteStack(), capacity,
               CACHE_WASTE_COLOR, MeknucBwrLang.GUI_WASTE, null, mouseX, mouseY);
         drawControlRodBar(guiGraphics);
         drawLabels(guiGraphics, multiblock);
         super.drawForegroundText(guiGraphics, mouseX, mouseY);
     }
 
-    private void drawCacheBar(GuiGraphics guiGraphics, int x, int count, int inCore, ItemStack stack, int color,
-          MeknucBwrLang label, MeknucBwrLang hint, int mouseX, int mouseY) {
+    private void drawCacheBar(GuiGraphics guiGraphics, int x, int count, int inCore, ItemStack stack, int capacity,
+          int color, MeknucBwrLang label, MeknucBwrLang hint, int mouseX, int mouseY) {
         drawBarFrame(guiGraphics, x, GAUGE_Y, BAR_WIDTH, GAUGE_HEIGHT);
-        int stored = Math.min(MeknucBwrMultiblockData.CACHE_CAPACITY, count + inCore);
-        int fill = (int) ((GAUGE_HEIGHT - 4) * (stored / (double) MeknucBwrMultiblockData.CACHE_CAPACITY));
+        int stored = Math.min(capacity, count + inCore);
+        int fill = capacity <= 0 ? 0 : (int) ((GAUGE_HEIGHT - 4) * (stored / (double) capacity));
         if (fill > 0) {
             guiGraphics.fill(x + 2, GAUGE_Y + GAUGE_HEIGHT - 2 - fill, x + BAR_WIDTH - 2, GAUGE_Y + GAUGE_HEIGHT - 2, color);
         }
         if (isHovering(mouseX - leftPos, mouseY - topPos, x, GAUGE_Y, BAR_WIDTH, GAUGE_HEIGHT)) {
             List<Component> lines = new ArrayList<>();
-            lines.add(label.translate(EnumColor.WHITE, Component.literal(fuelCountText(count))));
+            lines.add(label.translate(EnumColor.WHITE, Component.literal(fuelCountText(count, capacity))));
             if (!stack.isEmpty()) {
                 lines.add(stack.getHoverName());
             }

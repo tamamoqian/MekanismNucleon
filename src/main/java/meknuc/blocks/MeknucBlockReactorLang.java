@@ -67,7 +67,9 @@ public enum MeknucBlockReactorLang implements ILangEntry {
     PORT_MODE_THORIUM_MOLTEN_SALT_REACTOR_MOLTEN_COOLANT_FISSION_FUEL_COMBINED_INPUT("port_mode", "thorium_molten_salt_reactor_molten_coolant_fission_fuel_combined_input"),
     PORT_MODE_RADIATION_RESISTANT_WASTE_STORAGE_RADIOACTIVE_WASTE_INPUT("port_mode", "radiation_resistant_waste_storage_radioactive_waste_input"),
     PORT_MODE_RADIATION_RESISTANT_WASTE_STORAGE_DECAY_PRODUCT_OUTPUT("port_mode", "radiation_resistant_waste_storage_decay_product_output"),
-    RADIATION_RESISTANT_WASTE_STORAGE_PORT("description", "radiation_resistant_waste_storage_port");
+    RADIATION_RESISTANT_WASTE_STORAGE_PORT("description", "radiation_resistant_waste_storage_port"),
+    PORT_MODE_CHANGE("reactor", "port_mode_change"),
+    LOGIC_MODE_CHANGE("reactor", "logic_mode_change");
 
     private final String key;
 

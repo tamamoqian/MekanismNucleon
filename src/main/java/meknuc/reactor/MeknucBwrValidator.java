@@ -21,6 +21,9 @@ import meknuc.reactor.tile.TileEntityBwrControlAssembly;
 import meknuc.reactor.tile.TileEntityBwrFuelAssembly;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
@@ -31,6 +34,8 @@ public class MeknucBwrValidator extends CuboidStructureValidator<MeknucBwrMultib
     public static final int MAX_DIAMETER = 18;
     public static final int MIN_HEIGHT = 5;
     public static final int MAX_HEIGHT = 18;
+
+    private static Block reactorGlass;
 
     private final Set<BlockPos> shell = new HashSet<>();
     private VoxelCuboid bounds;
@@ -123,19 +128,23 @@ public class MeknucBwrValidator extends CuboidStructureValidator<MeknucBwrMultib
         int y = pos.getY();
         boolean middle = y > bounds.getMinPos().getY() && y < bounds.getMaxPos().getY();
         if (middle) {
-            return isRing(pos.getX(), pos.getY(), pos.getZ()) ? StructureRequirement.FRAME : StructureRequirement.INNER;
+            return isRing(pos.getX(), pos.getY(), pos.getZ()) ? StructureRequirement.OTHER : StructureRequirement.INNER;
         }
         return isRing(pos.getX(), pos.getY(), pos.getZ()) ? StructureRequirement.FRAME : StructureRequirement.OTHER;
     }
 
     @Override
     protected CasingType getCasingType(BlockState state) {
-        if (BlockType.is(state.getBlock(), MeknucBwrBlockTypes.BOILING_WATER_REACTOR_CASING)) {
+        Block block = state.getBlock();
+        if (BlockType.is(block, MeknucBwrBlockTypes.BOILING_WATER_REACTOR_CASING)) {
             return CasingType.FRAME;
         }
-        if (BlockType.is(state.getBlock(), MeknucBwrBlockTypes.BOILING_WATER_REACTOR_PORT,
+        if (BlockType.is(block, MeknucBwrBlockTypes.BOILING_WATER_REACTOR_PORT,
               MeknucBwrBlockTypes.BOILING_WATER_REACTOR_LOGIC_ADAPTER)) {
             return CasingType.VALVE;
+        }
+        if (isReactorGlass(block)) {
+            return CasingType.OTHER;
         }
         return CasingType.INVALID;
     }
@@ -275,5 +284,13 @@ public class MeknucBwrValidator extends CuboidStructureValidator<MeknucBwrMultib
 
     private static long columnKey(int x, int z) {
         return ((long) x << 32) | (z & 0xFFFFFFFFL);
+    }
+
+    private static boolean isReactorGlass(Block block) {
+        if (reactorGlass == null) {
+            reactorGlass = BuiltInRegistries.BLOCK.get(
+                  ResourceLocation.fromNamespaceAndPath("mekanismgenerators", "reactor_glass"));
+        }
+        return reactorGlass != null && block == reactorGlass;
     }
 }

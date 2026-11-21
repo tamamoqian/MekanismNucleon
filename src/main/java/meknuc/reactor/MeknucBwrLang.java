@@ -16,6 +16,9 @@ public enum MeknucBwrLang implements ILangEntry {
     PORT_MODE_FUEL_INPUT("port_mode", "boiling_water_reactor_fuel_input"),
     PORT_MODE_WASTE_OUTPUT("port_mode", "boiling_water_reactor_waste_output"),
 
+    PORT_MODE_CHANGE("reactor", "port_mode_change"),
+    LOGIC_MODE_CHANGE("reactor", "logic_mode_change"),
+
     INVALID_DIAMETER("reactor", "invalid_not_cylinder"),
     INVALID_HEIGHT("reactor", "invalid_height"),
     INVALID_MISSING_FUEL("reactor", "invalid_missing_fuel"),

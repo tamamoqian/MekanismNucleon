@@ -42,6 +42,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 public class MeknucBwrMultiblockData extends MultiblockData {
 
     public static final int CACHE_CAPACITY = 2940;
+    public static final int SLOT_STACK_LIMIT = 99;
     public static final int COOLANT_CAPACITY_PER_BLOCK = 4000000;
     public static final int BOIL_CAPACITY_PER_BLOCK = 8000000;
     public static final double HEAT_PER_ASSEMBLY = 4.52942;
@@ -77,8 +78,8 @@ public class MeknucBwrMultiblockData extends MultiblockData {
     public static final double MELTDOWN_RADIATION_MAGNITUDE = 100.0;
 
     private final List<FuelColumn> fuelColumns = new ArrayList<>();
-    private final IInventorySlot fuelSlot;
-    private final IInventorySlot wasteSlot;
+    private final List<IInventorySlot> fuelSlots;
+    private final List<IInventorySlot> wasteSlots;
 
     @ContainerSync
     public final IExtendedFluidTank waterTank;
@@ -165,12 +166,27 @@ public class MeknucBwrMultiblockData extends MultiblockData {
         fluidTanks.add(waterTank);
         chemicalTanks.add(boilTank);
         chemicalTanks.add(steamTank);
-        fuelSlot = new CacheSlot(CACHE_CAPACITY, ConstantPredicates.alwaysTrueBi(), ConstantPredicates.alwaysTrueBi(),
-              MeknucBwrFuels::isFuel, this);
-        wasteSlot = new CacheSlot(CACHE_CAPACITY, ConstantPredicates.alwaysTrueBi(), ConstantPredicates.internalOnly(),
-              ConstantPredicates.alwaysTrue(), this);
-        inventorySlots.add(fuelSlot);
-        inventorySlots.add(wasteSlot);
+        fuelSlots = createSlots(CACHE_CAPACITY, ConstantPredicates.alwaysTrueBi(), MeknucBwrFuels::isFuel, true);
+        wasteSlots = createSlots(CACHE_CAPACITY, ConstantPredicates.internalOnly(), ConstantPredicates.alwaysTrue(),
+              false);
+        inventorySlots.addAll(fuelSlots);
+        inventorySlots.addAll(wasteSlots);
+    }
+
+    private List<IInventorySlot> createSlots(int capacity, BiPredicate<ItemStack, AutomationType> canInsert,
+          Predicate<ItemStack> validator, boolean fuel) {
+        List<IInventorySlot> slots = new ArrayList<>();
+        int remaining = capacity;
+        while (remaining > 0) {
+            int limit = Math.min(SLOT_STACK_LIMIT, remaining);
+            slots.add(new CacheSlot(limit, ConstantPredicates.alwaysTrueBi(), canInsert, validator, this, fuel));
+            remaining -= limit;
+        }
+        return slots;
+    }
+
+    public int getCacheCapacity() {
+        return Math.max(0, fuelAssemblies);
     }
 
     public int getDiameter() {
@@ -255,7 +271,8 @@ public class MeknucBwrMultiblockData extends MultiblockData {
 
     @Override
     protected int getMultiblockRedstoneLevel() {
-        return MekanismUtils.redstoneLevelFromContents(fuelCount, CACHE_CAPACITY);
+        int capacity = getCacheCapacity();
+        return capacity <= 0 ? 0 : MekanismUtils.redstoneLevelFromContents(fuelCount, capacity);
     }
 
     public int getSurfaceArea() {
@@ -313,17 +330,36 @@ public class MeknucBwrMultiblockData extends MultiblockData {
         if (isRemote()) {
             return;
         }
-        ItemStack fuel = fuelSlot.getStack();
-        setFuelCount(fuel.getCount());
-        if (!ItemStack.matches(fuelStack, fuel)) {
-            fuelStack = fuel.copy();
+        int fuelTotal = 0;
+        ItemStack fuelSample = ItemStack.EMPTY;
+        for (IInventorySlot slot : fuelSlots) {
+            ItemStack stack = slot.getStack();
+            if (!stack.isEmpty()) {
+                fuelTotal += stack.getCount();
+                if (fuelSample.isEmpty()) {
+                    fuelSample = stack.copy();
+                }
+            }
         }
-        ItemStack waste = wasteSlot.getStack();
-        setWasteCount(waste.getCount());
-        if (!ItemStack.matches(wasteStack, waste)) {
-            wasteStack = waste.copy();
+        setFuelCount(fuelTotal);
+        if (!ItemStack.matches(fuelStack, fuelSample)) {
+            fuelStack = fuelSample;
         }
-        setInCoreCount(runningProduct.getCount());
+        int wasteTotal = 0;
+        ItemStack wasteSample = ItemStack.EMPTY;
+        for (IInventorySlot slot : wasteSlots) {
+            ItemStack stack = slot.getStack();
+            if (!stack.isEmpty()) {
+                wasteTotal += stack.getCount();
+                if (wasteSample.isEmpty()) {
+                    wasteSample = stack.copy();
+                }
+            }
+        }
+        setWasteCount(wasteTotal);
+        if (!ItemStack.matches(wasteStack, wasteSample)) {
+            wasteStack = wasteSample;
+        }
     }
 
     private void tickReaction() {
@@ -410,22 +446,22 @@ public class MeknucBwrMultiblockData extends MultiblockData {
             }
             return;
         }
-        ItemStack fuel = fuelSlot.getStack();
+        ItemStack fuel = findFuel();
         MeknucRodType type = MeknucBwrFuels.get(fuel);
-        if (type == null || fuel.getCount() < rods) {
+        if (type == null || countFuel(fuel) < rods) {
             stopIfExhausted();
             return;
         }
-        ItemStack product = fuel.copyWithCount(rods);
+        ItemStack product = fuel.copyWithCount(1);
         MeknucItemFuelRodBase.setRadiation(product, 0);
         MeknucItemFuelRodBase.setHot(product, true);
-        if (!canStore(product)) {
+        if (!canStore(product, rods)) {
             stopIfExhausted();
             return;
         }
-        fuelSlot.setStack(fuel.copyWithCount(fuel.getCount() - rods));
+        consumeFuel(fuel, rods);
         runningProduct = product;
-        setInCoreCount(product.getCount());
+        setInCoreCount(rods);
         setBatchBurnTime(type.burnTime());
         setBurnTime(type.burnTime());
         burnPartial = 0.0;
@@ -438,28 +474,85 @@ public class MeknucBwrMultiblockData extends MultiblockData {
     }
 
     private void finishCycle() {
-        if (!runningProduct.isEmpty() && canStore(runningProduct)) {
-            ItemStack waste = wasteSlot.getStack();
-            if (waste.isEmpty()) {
-                wasteSlot.setStack(runningProduct.copy());
-            } else if (ItemStack.isSameItemSameComponents(waste, runningProduct)
-                  && waste.getCount() + runningProduct.getCount() <= wasteSlot.getLimit(ItemStack.EMPTY)) {
-                waste.grow(runningProduct.getCount());
-                wasteSlot.setStack(waste);
-            }
+        if (!runningProduct.isEmpty() && inCoreCount > 0) {
+            storeWaste(runningProduct, inCoreCount);
         }
         runningProduct = ItemStack.EMPTY;
         setInCoreCount(0);
         setBatchBurnTime(0);
     }
 
-    private boolean canStore(ItemStack stack) {
-        ItemStack waste = wasteSlot.getStack();
-        if (waste.isEmpty()) {
-            return stack.getCount() <= wasteSlot.getLimit(ItemStack.EMPTY);
+    private ItemStack findFuel() {
+        for (IInventorySlot slot : fuelSlots) {
+            ItemStack stack = slot.getStack();
+            if (!stack.isEmpty()) {
+                return stack;
+            }
         }
-        return ItemStack.isSameItemSameComponents(waste, stack)
-              && waste.getCount() + stack.getCount() <= wasteSlot.getLimit(ItemStack.EMPTY);
+        return ItemStack.EMPTY;
+    }
+
+    private int countFuel(ItemStack template) {
+        int total = 0;
+        for (IInventorySlot slot : fuelSlots) {
+            ItemStack stack = slot.getStack();
+            if (ItemStack.isSameItemSameComponents(stack, template)) {
+                total += stack.getCount();
+            }
+        }
+        return total;
+    }
+
+    private void consumeFuel(ItemStack template, int amount) {
+        int remaining = amount;
+        for (IInventorySlot slot : fuelSlots) {
+            if (remaining <= 0) {
+                return;
+            }
+            ItemStack stack = slot.getStack();
+            if (ItemStack.isSameItemSameComponents(stack, template)) {
+                int taken = Math.min(remaining, stack.getCount());
+                slot.setStack(stack.copyWithCount(stack.getCount() - taken));
+                remaining -= taken;
+            }
+        }
+    }
+
+    private void storeWaste(ItemStack template, int amount) {
+        int remaining = amount;
+        for (IInventorySlot slot : wasteSlots) {
+            if (remaining <= 0) {
+                return;
+            }
+            ItemStack waste = slot.getStack();
+            int stored;
+            if (waste.isEmpty()) {
+                stored = Math.min(remaining, slot.getLimit(template));
+                slot.setStack(template.copyWithCount(stored));
+            } else if (ItemStack.isSameItemSameComponents(waste, template)) {
+                stored = Math.min(remaining, slot.getLimit(template) - waste.getCount());
+                waste.grow(stored);
+                slot.setStack(waste);
+            } else {
+                continue;
+            }
+            remaining -= stored;
+        }
+    }
+
+    private boolean canStore(ItemStack template, int amount) {
+        int stored = 0;
+        int room = 0;
+        for (IInventorySlot slot : wasteSlots) {
+            ItemStack waste = slot.getStack();
+            stored += waste.getCount();
+            if (waste.isEmpty()) {
+                room += slot.getLimit(template);
+            } else if (ItemStack.isSameItemSameComponents(waste, template)) {
+                room += slot.getLimit(template) - waste.getCount();
+            }
+        }
+        return room >= amount && stored + amount <= getCacheCapacity();
     }
 
     private void handleDamage(Level world) {
@@ -582,8 +675,8 @@ public class MeknucBwrMultiblockData extends MultiblockData {
 
     public List<IInventorySlot> getInventorySlots(BwrPortMode mode) {
         return switch (mode) {
-            case FUEL_INPUT -> List.of(fuelSlot);
-            case WASTE_OUTPUT -> List.of(wasteSlot);
+            case FUEL_INPUT -> fuelSlots;
+            case WASTE_OUTPUT -> wasteSlots;
             default -> Collections.emptyList();
         };
     }
@@ -840,13 +933,32 @@ public class MeknucBwrMultiblockData extends MultiblockData {
         }
     }
 
-    private static class CacheSlot extends BasicInventorySlot {
+    private class CacheSlot extends BasicInventorySlot {
+
+        private final int slotLimit;
+        private final boolean fuel;
 
         private CacheSlot(int limit, BiPredicate<ItemStack, AutomationType> canExtract,
               BiPredicate<ItemStack, AutomationType> canInsert, Predicate<ItemStack> validator,
-              IContentsListener listener) {
+              IContentsListener listener, boolean fuel) {
             super(limit, canExtract, canInsert, validator, listener, 0, 0);
+            slotLimit = limit;
+            this.fuel = fuel;
             obeyStackLimit = false;
+        }
+
+        @Override
+        public int getLimit(ItemStack stack) {
+            if (fuel) {
+                int others = 0;
+                for (IInventorySlot slot : fuelSlots) {
+                    if (slot != this) {
+                        others += slot.getStack().getCount();
+                    }
+                }
+                return Math.max(0, Math.min(slotLimit, getCacheCapacity() - others));
+            }
+            return slotLimit;
         }
     }
 }

@@ -2,9 +2,9 @@ package meknuc.blockentities;
 
 import mekanism.api.IConfigurable;
 import mekanism.api.text.EnumColor;
-import mekanism.common.MekanismLang;
 import mekanism.common.tile.base.TileEntityMekanism;
 import meknuc.blocks.AttributeStateLogicAdapterMode;
+import meknuc.blocks.MeknucBlockReactorLang;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -26,7 +26,7 @@ public class MeknucBlockEntityLogicAdapter extends TileEntityMekanism implements
                 BlockState next = attribute.nextMode(state);
                 if (next != state) {
                     level.setBlockAndUpdate(worldPosition, next);
-                    player.displayClientMessage(MekanismLang.BOILER_VALVE_MODE_CHANGE.translateColored(EnumColor.GRAY,
+                    player.displayClientMessage(MeknucBlockReactorLang.LOGIC_MODE_CHANGE.translateColored(EnumColor.GRAY,
                           attribute.getModeName(next)), true);
                 }
             }
