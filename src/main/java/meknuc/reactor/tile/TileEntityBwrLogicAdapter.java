@@ -1,10 +1,10 @@
 package meknuc.reactor.tile;
 
 import mekanism.api.text.EnumColor;
-import meknuc.init.MeknucItems;
 import meknuc.reactor.AttributeStateBwrLogicAdapterMode;
 import meknuc.reactor.BwrLogicAdapterMode;
 import meknuc.reactor.MeknucBwrLang;
+import meknuc.reactor.MeknucReactorComponents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.world.InteractionResult;
@@ -56,16 +56,16 @@ public class TileEntityBwrLogicAdapter extends TileEntityBwrPart {
         BlockState state = getBlockState();
         AttributeStateBwrLogicAdapterMode<?> attribute = AttributeStateBwrLogicAdapterMode.get(state);
         if (attribute != null) {
-            builder.set(MeknucItems.BWR_LOGIC_TYPE, state.getValue(AttributeStateBwrLogicAdapterMode.modeProperty));
+            builder.set(MeknucReactorComponents.BWR_LOGIC_TYPE, state.getValue(AttributeStateBwrLogicAdapterMode.modeProperty));
         } else {
-            builder.set(MeknucItems.BWR_LOGIC_TYPE, logicType);
+            builder.set(MeknucReactorComponents.BWR_LOGIC_TYPE, logicType);
         }
     }
 
     @Override
     protected void applyImplicitComponents(BlockEntity.DataComponentInput input) {
         super.applyImplicitComponents(input);
-        this.logicType = input.getOrDefault(MeknucItems.BWR_LOGIC_TYPE, this.logicType);
+        this.logicType = input.getOrDefault(MeknucReactorComponents.BWR_LOGIC_TYPE, this.logicType);
         if (level != null) {
             BlockState state = getBlockState();
             AttributeStateBwrLogicAdapterMode<?> attribute = AttributeStateBwrLogicAdapterMode.get(state);

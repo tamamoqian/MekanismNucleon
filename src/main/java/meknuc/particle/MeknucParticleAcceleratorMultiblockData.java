@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.function.BiPredicate;
 import java.util.function.LongSupplier;
 import java.util.function.Predicate;
-import mekanism.api.Action;
 import mekanism.api.AutomationType;
 import mekanism.api.IContentsListener;
 import mekanism.api.Upgrade;
@@ -27,9 +26,9 @@ import mekanism.common.registration.impl.DeferredChemical;
 import mekanism.common.registries.MekanismChemicals;
 import mekanism.common.tile.base.TileEntityMekanism;
 import mekanism.common.util.MekanismUtils;
-import meknuc.blocks.MeknucParticleAcceleratorBlockTypes.Mode;
 import meknuc.chemicals.MeknucChemicals;
-import meknuc.particle.MeknucParticleAcceleratorRecipes.ChemicalInput;
+import meknuc.particle.MeknucParticleAcceleratorBlockTypes.Mode;
+import meknuc.particle.MeknucParticleAcceleratorRecipes.Recipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -50,28 +49,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
  */
 public class MeknucParticleAcceleratorMultiblockData extends MultiblockData {
 
-    /** 内部能量缓存上限：16 GFE。 */
-    public static final long ENERGY_CAPACITY = 16_000_000_000L;
-
-    /** 输入粒子束（氢气）的缓存上限：128,000 mB。 */
-    public static final long CHEMICAL_CAPACITY = 128_000L;
-
-    /** 已加工完成的热质子 / 热中子等离子体缓存上限：每种 64,000 mB；满了就停机，直到从「输出粒子束」端口导出。 */
-    public static final long PRODUCT_CAPACITY = 64_000L;
-
-    /** 靶材槽位的内部上限（反物质靶丸配方一次需要 100 个钋粉）。 */
-    public static final int SLOT_LIMIT = 1_000;
-
-    /** 运行状态。 */
-    public static final int STATUS_IDLE = 0;
-    public static final int STATUS_RUNNING = 1;
-    public static final int STATUS_MISSING_ITEM = 2;
-    public static final int STATUS_MISSING_CHEMICAL = 3;
-    public static final int STATUS_OUTPUT_FULL = 4;
-    public static final int STATUS_NO_ENERGY = 5;
-    /** 当前模式里没有检测到任何可以运行的配方。 */
-    public static final int STATUS_NO_RECIPE = 6;
-
     private static final int RECHECK_INTERVAL = 200;
 
     /** 能量端口只允许输入，内部逻辑可以抽取；未成形时拒绝外部输入。 */
@@ -90,6 +67,7 @@ public class MeknucParticleAcceleratorMultiblockData extends MultiblockData {
     private final List<BlockPos> monitoredPositions = new ArrayList<>();
     private final List<Block> monitoredBlocks = new ArrayList<>();
     private final Map<DeferredChemical<Chemical>, IChemicalTank> tanksByChemical = new HashMap<>();
+    private final MeknucParticleAcceleratorProcessor processor;
 
     private final IInventorySlot targetInputSlot;
     private final IInventorySlot targetOutputSlot;
@@ -115,13 +93,13 @@ public class MeknucParticleAcceleratorMultiblockData extends MultiblockData {
 
     /** 能量升级后的内部缓存上限（服务端计算，经容器同步给 GUI）。 */
     @ContainerSync(getter = "getEnergyCapacity", setter = "setEnergyCapacity")
-    private long energyCapacity = ENERGY_CAPACITY;
+    private long energyCapacity = MeknucParticleAcceleratorConstants.ENERGY_CAPACITY;
 
     /** 成形结构的主方块（控制器）；速度 / 能量升级数据都挂在它身上，未成形时为 null。 */
     private TileEntityMekanism upgradeTile;
 
     @ContainerSync(getter = "getStatus", setter = "setStatus")
-    private int status = STATUS_IDLE;
+    private int status = MeknucParticleAcceleratorConstants.STATUS_IDLE;
 
     @ContainerSync(getter = "getTargetInputStack", setter = "setTargetInputStack")
     private ItemStack targetInputStack = ItemStack.EMPTY;
@@ -131,24 +109,25 @@ public class MeknucParticleAcceleratorMultiblockData extends MultiblockData {
 
     public MeknucParticleAcceleratorMultiblockData(BlockEntity tile) {
         super(tile);
+        processor = new MeknucParticleAcceleratorProcessor(this);
         energyContainer = new ScaledEnergyContainer(this::computeCapacity,
               type -> type == AutomationType.INTERNAL,
               type -> type == AutomationType.INTERNAL || isFormed(),
               this);
         energyContainers.add(energyContainer);
 
-        hydrogenTank = createTank(MekanismChemicals.HYDROGEN, CHEMICAL_CAPACITY);
-        hotProtonTank = createTank(MeknucChemicals.HOT_PROTON_PLASMA, PRODUCT_CAPACITY);
-        hotNeutronTank = createTank(MeknucChemicals.HOT_NEUTRON_PLASMA, PRODUCT_CAPACITY);
+        hydrogenTank = createTank(MekanismChemicals.HYDROGEN, MeknucParticleAcceleratorConstants.CHEMICAL_CAPACITY);
+        hotProtonTank = createTank(MeknucChemicals.HOT_PROTON_PLASMA, MeknucParticleAcceleratorConstants.PRODUCT_CAPACITY);
+        hotNeutronTank = createTank(MeknucChemicals.HOT_NEUTRON_PLASMA, MeknucParticleAcceleratorConstants.PRODUCT_CAPACITY);
         chemicalTanks.add(hydrogenTank);
         chemicalTanks.add(hotProtonTank);
         chemicalTanks.add(hotNeutronTank);
         // 右侧从顶部往下依次显示 氢气、热质子等离子体、热中子等离子体
         displayTanks = List.of(hydrogenTank, hotProtonTank, hotNeutronTank);
 
-        targetInputSlot = new TargetSlot(SLOT_LIMIT, ConstantPredicates.alwaysTrueBi(),
+        targetInputSlot = new TargetSlot(MeknucParticleAcceleratorConstants.SLOT_LIMIT, ConstantPredicates.alwaysTrueBi(),
               ConstantPredicates.alwaysTrueBi(), MeknucParticleAcceleratorRecipes::isTargetInput, this, 146, 112);
-        targetOutputSlot = new TargetSlot(SLOT_LIMIT, ConstantPredicates.alwaysTrueBi(),
+        targetOutputSlot = new TargetSlot(MeknucParticleAcceleratorConstants.SLOT_LIMIT, ConstantPredicates.alwaysTrueBi(),
               ConstantPredicates.internalOnly(), ConstantPredicates.alwaysTrue(), this, 168, 112);
         inventorySlots.add(targetInputSlot);
         inventorySlots.add(targetOutputSlot);
@@ -161,11 +140,19 @@ public class MeknucParticleAcceleratorMultiblockData extends MultiblockData {
         return tank;
     }
 
+    IChemicalTank tankFor(DeferredChemical<Chemical> chemical) {
+        return tanksByChemical.get(chemical);
+    }
+
+    void markChanged() {
+        markDirty();
+    }
+
     @Override
     public boolean tick(Level world) {
         boolean needsPacket = super.tick(world);
         if (isFormed() && !isRemote()) {
-            tickRecipe();
+            processor.tick();
             syncDisplay();
             if (world.getGameTime() % RECHECK_INTERVAL == 0 && !integrityIntact(world)) {
                 // 只在抽查点真的被破坏时才整环复检，避免正常运行时重置多方块数据、关闭 GUI
@@ -199,214 +186,6 @@ public class MeknucParticleAcceleratorMultiblockData extends MultiblockData {
     }
 
     /**
-     * 每 tick 的配方逻辑：没有进度时自动检测并启动当前模式里第一条可运行的配方。
-     */
-    private void tickRecipe() {
-        List<MeknucParticleAcceleratorRecipes.Recipe> recipes = MeknucParticleAcceleratorRecipes.recipes();
-
-        // 已投入材料、正在推进：继续这一条配方
-        if (progressTicks > 0) {
-            MeknucParticleAcceleratorRecipes.Recipe recipe = recipeAt(recipes, activeRecipeIndex);
-            if (recipe == null) {
-                resetProgress();
-                activeRecipeIndex = -1;
-                status = STATUS_IDLE;
-                return;
-            }
-            recipeDuration = scaledDuration(recipe);
-            activeEnergyPerTick = scaledEnergyPerTick(recipe);
-            if (!consumeEnergy(recipe)) {
-                status = STATUS_NO_ENERGY;
-                return;
-            }
-            progressTicks++;
-            if (progressTicks >= recipeDuration) {
-                finishRecipe(recipe);
-            } else {
-                status = STATUS_RUNNING;
-            }
-            return;
-        }
-
-        int index = findStartableRecipe(recipes);
-        if (index < 0) {
-            reportBlockedRecipe(recipes);
-            return;
-        }
-
-        MeknucParticleAcceleratorRecipes.Recipe recipe = recipes.get(index);
-        activeRecipeIndex = index;
-        recipeDuration = scaledDuration(recipe);
-        activeEnergyPerTick = scaledEnergyPerTick(recipe);
-
-        // 开始加工：一次性扣掉靶材与全部粒子束
-        if (recipe.hasItemInput()) {
-            targetInputSlot.extractItem(recipe.inputCount(), Action.EXECUTE, AutomationType.INTERNAL);
-        }
-        for (ChemicalInput chemicalInput : recipe.chemicalInputs()) {
-            IChemicalTank tank = tanksByChemical.get(chemicalInput.chemical());
-            if (tank != null) {
-                tank.extract(chemicalInput.amount(), Action.EXECUTE, AutomationType.INTERNAL);
-            }
-        }
-        if (!consumeEnergy(recipe)) {
-            status = STATUS_NO_ENERGY;
-            return;
-        }
-        progressTicks = 1;
-        status = STATUS_RUNNING;
-        if (progressTicks >= recipeDuration) {
-            finishRecipe(recipe);
-        }
-        markDirty();
-    }
-
-    private MeknucParticleAcceleratorRecipes.Recipe recipeAt(
-          List<MeknucParticleAcceleratorRecipes.Recipe> recipes, int index) {
-        if (index < 0 || index >= recipes.size()) {
-            return null;
-        }
-        return recipes.get(index);
-    }
-
-    /**
-     * 选一条当前能跑的配方：
-     * <ol>
-     *   <li>优先「有靶材」的配方 —— 玩家把物品放进靶材槽就是明确指令，
-     *       束流收集模式下因此不会一直卡在只吃氢气的第一条配方上；</li>
-     *   <li>其次沿用上一条仍在运行的配方；</li>
-     *   <li>最后才是当前模式里任意一条可运行的配方。</li>
-     * </ol>
-     */
-    private int findStartableRecipe(List<MeknucParticleAcceleratorRecipes.Recipe> recipes) {
-        for (int i = 0; i < recipes.size(); i++) {
-            MeknucParticleAcceleratorRecipes.Recipe recipe = recipes.get(i);
-            if (recipe.hasItemInput() && isStartable(recipes, i)) {
-                return i;
-            }
-        }
-        if (isStartable(recipes, activeRecipeIndex)) {
-            return activeRecipeIndex;
-        }
-        for (int i = 0; i < recipes.size(); i++) {
-            if (isStartable(recipes, i)) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    private boolean isStartable(List<MeknucParticleAcceleratorRecipes.Recipe> recipes, int index) {
-        MeknucParticleAcceleratorRecipes.Recipe recipe = recipeAt(recipes, index);
-        return recipe != null && recipe.mode() == mode && hasTarget(recipe) && hasChemicals(recipe)
-              && canStoreOutput(recipe) && energyContainer.getEnergy() >= scaledEnergyPerTick(recipe);
-    }
-
-    /** 没有可运行的配方时，挑一条最接近的配方，让 GUI 显示到底缺什么。 */
-    private void reportBlockedRecipe(List<MeknucParticleAcceleratorRecipes.Recipe> recipes) {
-        progressTicks = 0;
-        recipeDuration = 0;
-        activeEnergyPerTick = 0.0D;
-        ItemStack input = targetInputSlot.getStack();
-
-        int candidate = -1;
-        // 优先展示与靶材槽里物品对应的配方（即使数量还不够），而不是永远显示第一条
-        if (!input.isEmpty()) {
-            for (int i = 0; i < recipes.size(); i++) {
-                MeknucParticleAcceleratorRecipes.Recipe recipe = recipes.get(i);
-                if (recipe.mode() == mode && recipe.hasItemInput() && input.is(recipe.input().getItem())) {
-                    candidate = i;
-                    break;
-                }
-            }
-        }
-        if (candidate < 0) {
-            for (int i = 0; i < recipes.size(); i++) {
-                MeknucParticleAcceleratorRecipes.Recipe recipe = recipes.get(i);
-                if (recipe.mode() == mode && !recipe.hasItemInput() && hasTarget(recipe)) {
-                    candidate = i;
-                    break;
-                }
-            }
-        }
-        if (candidate < 0) {
-            activeRecipeIndex = -1;
-            status = STATUS_NO_RECIPE;
-            return;
-        }
-
-        activeRecipeIndex = candidate;
-        MeknucParticleAcceleratorRecipes.Recipe recipe = recipes.get(candidate);
-        recipeDuration = scaledDuration(recipe);
-        activeEnergyPerTick = scaledEnergyPerTick(recipe);
-        if (!hasTarget(recipe)) {
-            status = STATUS_MISSING_ITEM;
-        } else if (!hasChemicals(recipe)) {
-            status = STATUS_MISSING_CHEMICAL;
-        } else if (!canStoreOutput(recipe)) {
-            status = STATUS_OUTPUT_FULL;
-        } else if (energyContainer.getEnergy() < recipe.energyPerTick()) {
-            status = STATUS_NO_ENERGY;
-        } else {
-            status = STATUS_IDLE;
-        }
-    }
-
-    private boolean hasTarget(MeknucParticleAcceleratorRecipes.Recipe recipe) {
-        if (!recipe.hasItemInput()) {
-            return true;
-        }
-        ItemStack stack = targetInputSlot.getStack();
-        return !stack.isEmpty() && stack.is(recipe.input().getItem()) && stack.getCount() >= recipe.inputCount();
-    }
-
-    private boolean hasChemicals(MeknucParticleAcceleratorRecipes.Recipe recipe) {
-        for (ChemicalInput chemicalInput : recipe.chemicalInputs()) {
-            IChemicalTank tank = tanksByChemical.get(chemicalInput.chemical());
-            if (tank == null || tank.getStored() < chemicalInput.amount()) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private boolean consumeEnergy(MeknucParticleAcceleratorRecipes.Recipe recipe) {
-        long energyPerTick = scaledEnergyPerTick(recipe);
-        if (energyContainer.getEnergy() < energyPerTick) {
-            return false;
-        }
-        return energyContainer.extract(energyPerTick, Action.EXECUTE, AutomationType.INTERNAL) >= energyPerTick;
-    }
-
-    private boolean canStoreOutput(MeknucParticleAcceleratorRecipes.Recipe recipe) {
-        if (recipe.hasChemicalOutput()) {
-            IChemicalTank tank = tanksByChemical.get(recipe.chemicalOutput());
-            return tank != null && tank.getStored() + recipe.chemicalOutputAmount() <= tank.getCapacity();
-        }
-        ItemStack result = recipe.output();
-        ItemStack current = targetOutputSlot.getStack();
-        if (current.isEmpty()) {
-            return result.getCount() <= targetOutputSlot.getLimit(result);
-        }
-        return ItemStack.isSameItemSameComponents(current, result)
-              && current.getCount() + result.getCount() <= targetOutputSlot.getLimit(result);
-    }
-
-    private void finishRecipe(MeknucParticleAcceleratorRecipes.Recipe recipe) {
-        if (recipe.hasChemicalOutput()) {
-            IChemicalTank tank = tanksByChemical.get(recipe.chemicalOutput());
-            if (tank != null) {
-                tank.insert(recipe.chemicalOutputStack(), Action.EXECUTE, AutomationType.INTERNAL);
-            }
-        } else {
-            targetOutputSlot.insertItem(recipe.output().copy(), Action.EXECUTE, AutomationType.INTERNAL);
-        }
-        progressTicks = 0;
-        status = STATUS_RUNNING;
-        markDirty();
-    }
-
-    /**
      * 切换工作模式：粒子加速 / 束流收集。切换会放弃当前这一份已投入的材料。
      */
     public boolean changeMode(int newMode) {
@@ -417,19 +196,13 @@ public class MeknucParticleAcceleratorMultiblockData extends MultiblockData {
         if (mode == newMode) {
             return true;
         }
-        resetProgress();
+        processor.resetProgress();
         activeRecipeIndex = -1;
-        status = STATUS_IDLE;
+        status = MeknucParticleAcceleratorConstants.STATUS_IDLE;
         markDirty();
         // 等服务端 tick 下一 tick 再按新模式的配方重新自动检测
         mode = newMode;
         return true;
-    }
-
-    private void resetProgress() {
-        progressTicks = 0;
-        recipeDuration = 0;
-        activeEnergyPerTick = 0.0D;
     }
 
     /**
@@ -472,13 +245,13 @@ public class MeknucParticleAcceleratorMultiblockData extends MultiblockData {
 
     private long computeCapacity() {
         if (upgradeTile != null && upgradeTile.supportsUpgrade(Upgrade.ENERGY)) {
-            return MekanismUtils.getMaxEnergy(upgradeTile, ENERGY_CAPACITY);
+            return MekanismUtils.getMaxEnergy(upgradeTile, MeknucParticleAcceleratorConstants.ENERGY_CAPACITY);
         }
-        return ENERGY_CAPACITY;
+        return MeknucParticleAcceleratorConstants.ENERGY_CAPACITY;
     }
 
     /** 速度升级：缩短配方所需 tick（与其他 Mekanism 机器一致）。 */
-    private int scaledDuration(MeknucParticleAcceleratorRecipes.Recipe recipe) {
+    int scaledDuration(MeknucParticleAcceleratorRecipes.Recipe recipe) {
         if (upgradeTile == null) {
             return recipe.durationTicks();
         }
@@ -486,7 +259,7 @@ public class MeknucParticleAcceleratorMultiblockData extends MultiblockData {
     }
 
     /** 速度 / 能量升级：每 tick 能耗；速度提升会按平方关系抬高维持功率。 */
-    private long scaledEnergyPerTick(MeknucParticleAcceleratorRecipes.Recipe recipe) {
+    long scaledEnergyPerTick(MeknucParticleAcceleratorRecipes.Recipe recipe) {
         if (upgradeTile == null) {
             return recipe.energyPerTick();
         }
@@ -495,7 +268,8 @@ public class MeknucParticleAcceleratorMultiblockData extends MultiblockData {
 
     /** 当前自动检测到的配方（可能是正在运行的，也可能是缺材料的那一条）。 */
     public MeknucParticleAcceleratorRecipes.Recipe getActiveRecipe() {
-        return recipeAt(MeknucParticleAcceleratorRecipes.recipes(), activeRecipeIndex);
+        List<MeknucParticleAcceleratorRecipes.Recipe> recipes = MeknucParticleAcceleratorRecipes.recipes();
+        return activeRecipeIndex < 0 || activeRecipeIndex >= recipes.size() ? null : recipes.get(activeRecipeIndex);
     }
 
     public boolean isRunning() {

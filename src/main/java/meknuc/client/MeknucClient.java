@@ -2,8 +2,8 @@ package meknuc.client;
 
 import meknuc.Meknuc;
 import meknuc.client.gui.MeknucGuiRTG;
-import meknuc.init.MeknucItems;
 import meknuc.items.MeknucItemFuelRodBase;
+import meknuc.items.MeknucItems;
 import meknuc.menu.MeknucMenuTypes;
 import meknuc.proxy.IClientRegister;
 import net.minecraft.client.renderer.item.ItemProperties;

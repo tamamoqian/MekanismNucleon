@@ -11,7 +11,7 @@ import mekanism.common.capabilities.holder.chemical.IChemicalTankHolder;
 import mekanism.common.capabilities.holder.fluid.IFluidTankHolder;
 import mekanism.common.capabilities.holder.slot.IInventorySlotHolder;
 import meknuc.blocks.AttributeStateReactorPortMode;
-import meknuc.blocks.MeknucSpentFuelPoolBlockTypes;
+import meknuc.reactor.spentpool.MeknucSpentFuelPoolBlockTypes;
 import meknuc.reactor.spentpool.MeknucSpentFuelPoolMultiblockData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;

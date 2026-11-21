@@ -3,7 +3,6 @@ package meknuc.reactor;
 import java.util.List;
 import mekanism.common.block.prefab.BlockBasicMultiblock;
 import mekanism.common.item.block.ItemBlockTooltip;
-import meknuc.init.MeknucItems;
 import meknuc.reactor.tile.TileEntityBwrLogicAdapter;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item.TooltipContext;
@@ -14,13 +13,13 @@ import org.jetbrains.annotations.NotNull;
 public class ItemBlockBwrLogicAdapter extends ItemBlockTooltip<BlockBasicMultiblock<TileEntityBwrLogicAdapter>> {
 
     public ItemBlockBwrLogicAdapter(BlockBasicMultiblock<TileEntityBwrLogicAdapter> block, Properties properties) {
-        super(block, true, properties.component(MeknucItems.BWR_LOGIC_TYPE, BwrLogicAdapterMode.DISABLED));
+        super(block, true, properties.component(MeknucReactorComponents.BWR_LOGIC_TYPE, BwrLogicAdapterMode.DISABLED));
     }
 
     @Override
     protected void addDetails(@NotNull ItemStack stack, @NotNull TooltipContext context, @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {
         super.addDetails(stack, context, tooltip, flag);
-        BwrLogicAdapterMode logicType = stack.getOrDefault(MeknucItems.BWR_LOGIC_TYPE, BwrLogicAdapterMode.DISABLED);
+        BwrLogicAdapterMode logicType = stack.getOrDefault(MeknucReactorComponents.BWR_LOGIC_TYPE, BwrLogicAdapterMode.DISABLED);
         tooltip.add(MeknucBwrLang.REACTOR_LOGIC_REDSTONE_MODE.translate(logicType.getTextComponent()));
     }
 }

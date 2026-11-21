@@ -12,7 +12,7 @@ import mekanism.common.capabilities.holder.energy.IEnergyContainerHolder;
 import mekanism.common.capabilities.holder.fluid.IFluidTankHolder;
 import mekanism.common.capabilities.holder.slot.IInventorySlotHolder;
 import meknuc.blocks.AttributeStateReactorPortMode;
-import meknuc.blocks.MeknucParticleAcceleratorBlockTypes.Mode;
+import meknuc.particle.MeknucParticleAcceleratorBlockTypes.Mode;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionResult;
@@ -42,7 +42,7 @@ public class TileEntityParticleAcceleratorPort extends TileEntityParticleAcceler
     }
 
     public Mode getMode() {
-        return getBlockState().getValue(meknuc.blocks.MeknucParticleAcceleratorBlockTypes.MODE);
+        return getBlockState().getValue(meknuc.particle.MeknucParticleAcceleratorBlockTypes.MODE);
     }
 
     @NotNull

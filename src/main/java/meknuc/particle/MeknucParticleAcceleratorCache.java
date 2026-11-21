@@ -33,7 +33,7 @@ public class MeknucParticleAcceleratorCache extends MultiblockCache<MeknucPartic
         progressTicks = Math.max(progressTicks, other.progressTicks);
         recipeDuration = Math.max(recipeDuration, other.recipeDuration);
         activeEnergyPerTick = Math.max(activeEnergyPerTick, other.activeEnergyPerTick);
-        if (status == MeknucParticleAcceleratorMultiblockData.STATUS_IDLE) {
+        if (status == MeknucParticleAcceleratorConstants.STATUS_IDLE) {
             status = other.status;
         }
     }

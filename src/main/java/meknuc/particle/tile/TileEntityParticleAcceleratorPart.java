@@ -6,6 +6,7 @@ import mekanism.client.sound.SoundHandler;
 import mekanism.common.lib.multiblock.MultiblockManager;
 import mekanism.common.tile.prefab.TileEntityMultiblock;
 import meknuc.particle.MeknucParticleAcceleratorCache;
+import meknuc.particle.MeknucParticleAcceleratorConstants;
 import meknuc.particle.MeknucParticleAcceleratorMultiblock;
 import meknuc.particle.MeknucParticleAcceleratorMultiblockData;
 import net.minecraft.core.BlockPos;
@@ -57,7 +58,7 @@ public class TileEntityParticleAcceleratorPart extends TileEntityMultiblock<Mekn
 
     private boolean shouldPlaySound(MeknucParticleAcceleratorMultiblockData multiblock) {
         return isMaster() && multiblock.isFormed()
-              && multiblock.getStatus() == MeknucParticleAcceleratorMultiblockData.STATUS_RUNNING;
+              && multiblock.getStatus() == MeknucParticleAcceleratorConstants.STATUS_RUNNING;
     }
 
     @Override

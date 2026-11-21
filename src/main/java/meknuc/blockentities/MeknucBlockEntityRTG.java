@@ -3,9 +3,9 @@ package meknuc.blockentities;
 import java.util.ArrayList;
 import java.util.List;
 
-import meknuc.init.MeknucBlock;
-import meknuc.init.MeknucItems;
+import meknuc.blocks.MeknucBlock;
 import meknuc.items.MeknucItemFuelRodBase;
+import meknuc.items.MeknucItems;
 import meknuc.Config;
 import mekanism.api.Action;
 import mekanism.api.AutomationType;

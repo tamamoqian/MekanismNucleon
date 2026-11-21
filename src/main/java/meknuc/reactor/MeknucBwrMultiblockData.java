@@ -1,30 +1,18 @@
 package meknuc.reactor;
 
-import com.mojang.datafixers.util.Pair;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.BiPredicate;
-import java.util.function.Predicate;
-import mekanism.api.Action;
-import mekanism.api.AutomationType;
-import mekanism.api.IContentsListener;
 import mekanism.api.chemical.IChemicalTank;
 import mekanism.api.fluid.IExtendedFluidTank;
 import mekanism.api.functions.ConstantPredicates;
 import mekanism.api.heat.HeatAPI;
 import mekanism.api.inventory.IInventorySlot;
-import mekanism.api.radiation.IRadiationManager;
 import mekanism.common.capabilities.chemical.VariableCapacityChemicalTank;
 import mekanism.common.capabilities.fluid.VariableCapacityFluidTank;
 import mekanism.common.inventory.container.sync.dynamic.ContainerSync;
-import mekanism.common.inventory.slot.BasicInventorySlot;
-import mekanism.common.lib.multiblock.MultiblockData;
 import mekanism.common.registries.MekanismChemicals;
-import mekanism.common.util.MekanismUtils;
 import mekanism.common.util.NBTUtils;
-import meknuc.items.MeknucItemFuelRodBase;
-import meknuc.items.MeknucRodType;
 import meknuc.reactor.AttributeStateBwrPortMode.BwrPortMode;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup.Provider;
@@ -32,25 +20,17 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.event.EventHooks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-public class MeknucBwrMultiblockData extends MultiblockData {
+public class MeknucBwrMultiblockData extends MeknucReactorMultiblockData {
 
     public static final int CACHE_CAPACITY = 2940;
-    public static final int SLOT_STACK_LIMIT = 99;
     public static final int COOLANT_CAPACITY_PER_BLOCK = 4000000;
     public static final int BOIL_CAPACITY_PER_BLOCK = 8000000;
     public static final double HEAT_PER_ASSEMBLY = 4.52942;
-    public static final double HEAT_CAPACITY_PER_ASSEMBLY = 11.5;
     public static final double ENVIRONMENT_LOSS_PER_ASSEMBLY = 0.0007;
-    public static final double HEAT_PER_MB = 0.00014;
     public static final double RECIRCULATION_PER_ASSEMBLY = 49218.75;
-    public static final double STEAM_PER_ASSEMBLY = 9375.0;
     public static final double FEEDWATER_MARGIN = 1.2;
     public static final double OUTPUT_MULTIPLIER = 1.0;
     public static final double VOID_FEEDBACK = 1.0;
@@ -59,10 +39,6 @@ public class MeknucBwrMultiblockData extends MultiblockData {
     public static final double CRITICAL_VOID = 0.35;
     public static final double DRYOUT_HEAT_FACTOR = 0.15;
     public static final double MAX_VOID = 0.95;
-    public static final double DESIGN_TEMPERATURE = 585.0;
-    public static final double SATURATION_TEMPERATURE = 285.0;
-    public static final double NOMINAL_INSERTION = 0.5;
-    private static final int NOMINAL_INSERTION_PERCENT = (int) (NOMINAL_INSERTION * 100.0);
     public static final double MIN_TIME_FACTOR = 0.20;
     public static final double MAX_TIME_FACTOR = 2.20;
     public static final double MAX_TEMPERATURE_STEP = 1.0;
@@ -71,15 +47,9 @@ public class MeknucBwrMultiblockData extends MultiblockData {
     public static final double DAMAGE_FACTOR = 1.0;
     public static final double MAX_DAMAGE = 100.0;
     public static final double MELTDOWN_THRESHOLD = 80.0;
-    public static final int MELTDOWN_TICKS = 200;
     private static final double SURFACE_AREA_TARGET = 4.0;
-    public static final float MELTDOWN_EXPLOSION_RADIUS = 25.0F;
-    public static final int MELTDOWN_RADIATION_RADIUS = 150;
-    public static final double MELTDOWN_RADIATION_MAGNITUDE = 100.0;
 
     private final List<FuelColumn> fuelColumns = new ArrayList<>();
-    private final List<IInventorySlot> fuelSlots;
-    private final List<IInventorySlot> wasteSlots;
 
     @ContainerSync
     public final IExtendedFluidTank waterTank;
@@ -146,14 +116,11 @@ public class MeknucBwrMultiblockData extends MultiblockData {
     @ContainerSync(getter = "getBatchBurnTime", setter = "setBatchBurnTime")
     private int batchBurnTime;
 
-    private double burnPartial;
-    private ItemStack runningProduct = ItemStack.EMPTY;
-    private boolean autoStopFromCache;
-    private boolean insertionFromCache;
-    private boolean temperatureFromCache;
+    private final MeknucBwrSimulation simulation;
 
     public MeknucBwrMultiblockData(BlockEntity tile) {
-        super(tile);
+        super(tile, CACHE_CAPACITY, MeknucBwrFuels::isFuel);
+        simulation = new MeknucBwrSimulation(this);
         ambientTemp = HeatAPI.getAmbientTemp(tile.getLevel(), tile.getBlockPos());
         temperature = ambientTemp;
         waterTank = VariableCapacityFluidTank.input(this, () -> (int) coolantCapacity(),
@@ -166,27 +133,11 @@ public class MeknucBwrMultiblockData extends MultiblockData {
         fluidTanks.add(waterTank);
         chemicalTanks.add(boilTank);
         chemicalTanks.add(steamTank);
-        fuelSlots = createSlots(CACHE_CAPACITY, ConstantPredicates.alwaysTrueBi(), MeknucBwrFuels::isFuel, true);
-        wasteSlots = createSlots(CACHE_CAPACITY, ConstantPredicates.internalOnly(), ConstantPredicates.alwaysTrue(),
-              false);
-        inventorySlots.addAll(fuelSlots);
-        inventorySlots.addAll(wasteSlots);
     }
 
-    private List<IInventorySlot> createSlots(int capacity, BiPredicate<ItemStack, AutomationType> canInsert,
-          Predicate<ItemStack> validator, boolean fuel) {
-        List<IInventorySlot> slots = new ArrayList<>();
-        int remaining = capacity;
-        while (remaining > 0) {
-            int limit = Math.min(SLOT_STACK_LIMIT, remaining);
-            slots.add(new CacheSlot(limit, ConstantPredicates.alwaysTrueBi(), canInsert, validator, this, fuel));
-            remaining -= limit;
-        }
-        return slots;
-    }
-
-    public int getCacheCapacity() {
-        return Math.max(0, fuelAssemblies);
+    @Override
+    protected double defaultTemperature() {
+        return ambientTemp;
     }
 
     public int getDiameter() {
@@ -209,20 +160,8 @@ public class MeknucBwrMultiblockData extends MultiblockData {
 
     @Override
     public void onCreated(Level world) {
-        super.onCreated(world);
         ambientTemp = calculateAverageAmbientTemperature(world);
-        if (!temperatureFromCache) {
-            setTemperature(ambientTemp);
-        }
-        temperatureFromCache = false;
-        if (!insertionFromCache) {
-            setControlRodInsertion(NOMINAL_INSERTION_PERCENT);
-        }
-        insertionFromCache = false;
-        if (!autoStopFromCache) {
-            setAutoStopOnFuelExhausted(true);
-        }
-        autoStopFromCache = false;
+        super.onCreated(world);
         refreshCacheCounts();
     }
 
@@ -231,8 +170,8 @@ public class MeknucBwrMultiblockData extends MultiblockData {
         boolean needsPacket = super.tick(world);
         if (isFormed() && !isRemote()) {
             refreshCacheCounts();
-            tickReaction();
-            handleDamage(world);
+            simulation.tickReaction();
+            simulation.handleDamage(world);
         }
         return needsPacket;
     }
@@ -257,6 +196,10 @@ public class MeknucBwrMultiblockData extends MultiblockData {
         tag.putBoolean("reactor_auto_stop", autoStopOnFuelExhausted);
     }
 
+    double getAmbientTemperature() {
+        return ambientTemp;
+    }
+
     public int getFuelAssemblies() {
         return fuelAssemblies;
     }
@@ -267,12 +210,6 @@ public class MeknucBwrMultiblockData extends MultiblockData {
             fuelAssemblies = clamped;
             markDirty();
         }
-    }
-
-    @Override
-    protected int getMultiblockRedstoneLevel() {
-        int capacity = getCacheCapacity();
-        return capacity <= 0 ? 0 : MekanismUtils.redstoneLevelFromContents(fuelCount, capacity);
     }
 
     public int getSurfaceArea() {
@@ -294,374 +231,12 @@ public class MeknucBwrMultiblockData extends MultiblockData {
         return Math.min(1.0, (double) surfaceArea / fuelAssemblies / SURFACE_AREA_TARGET);
     }
 
-    public ItemStack getRunningProduct() {
-        return runningProduct;
-    }
-
-    public void setRunningProduct(ItemStack stack) {
-        runningProduct = stack;
-    }
-
-    void restoreControlRodInsertion(int value) {
-        setControlRodInsertion(value);
-        insertionFromCache = true;
-    }
-
-    void restoreTemperature(double value) {
-        setTemperature(value);
-        temperatureFromCache = true;
-    }
-
     public long coolantCapacity() {
         return (long) getInteriorVolume() * COOLANT_CAPACITY_PER_BLOCK;
     }
 
     public long boilCapacity() {
         return (long) getInteriorVolume() * BOIL_CAPACITY_PER_BLOCK;
-    }
-
-    @Override
-    public void onContentsChanged() {
-        super.onContentsChanged();
-        refreshCacheCounts();
-    }
-
-    private void refreshCacheCounts() {
-        if (isRemote()) {
-            return;
-        }
-        int fuelTotal = 0;
-        ItemStack fuelSample = ItemStack.EMPTY;
-        for (IInventorySlot slot : fuelSlots) {
-            ItemStack stack = slot.getStack();
-            if (!stack.isEmpty()) {
-                fuelTotal += stack.getCount();
-                if (fuelSample.isEmpty()) {
-                    fuelSample = stack.copy();
-                }
-            }
-        }
-        setFuelCount(fuelTotal);
-        if (!ItemStack.matches(fuelStack, fuelSample)) {
-            fuelStack = fuelSample;
-        }
-        int wasteTotal = 0;
-        ItemStack wasteSample = ItemStack.EMPTY;
-        for (IInventorySlot slot : wasteSlots) {
-            ItemStack stack = slot.getStack();
-            if (!stack.isEmpty()) {
-                wasteTotal += stack.getCount();
-                if (wasteSample.isEmpty()) {
-                    wasteSample = stack.copy();
-                }
-            }
-        }
-        setWasteCount(wasteTotal);
-        if (!ItemStack.matches(wasteStack, wasteSample)) {
-            wasteStack = wasteSample;
-        }
-    }
-
-    private void tickReaction() {
-        int rods = getFuelAssemblies();
-        tickFuelCycle(rods);
-        if (rods <= 0) {
-            return;
-        }
-        double tempC = temperature - 273.15;
-        double envC = ambientTemp - 273.15;
-        double capacity = rods * HEAT_CAPACITY_PER_ASSEMBLY;
-        double environment = rods * ENVIRONMENT_LOSS_PER_ASSEMBLY;
-        double recirculation = rods * RECIRCULATION_PER_ASSEMBLY;
-        double steamTarget = rods * STEAM_PER_ASSEMBLY;
-        double heatTarget = steamTarget * HEAT_PER_MB;
-        double exchange = heatTarget / (DESIGN_TEMPERATURE - SATURATION_TEMPERATURE) * getBoilEfficiency();
-        double powerFactor = 1.0 - controlRodInsertion / 100.0;
-        double temperatureFactor = Mth.clamp(1.0 - TEMPERATURE_FEEDBACK * (tempC - DESIGN_TEMPERATURE), 0.0, 1.0);
-        double availablePower = rods * HEAT_PER_ASSEMBLY * powerFactor * temperatureFactor;
-        double voidDenominator = HEAT_PER_MB * recirculation;
-        double fissionPower = active && burnTime > 0
-              ? availablePower / (1.0 + VOID_FEEDBACK * VOID_GENERATION * availablePower / voidDenominator)
-              : 0.0;
-        double voidFraction = Mth.clamp(VOID_GENERATION * fissionPower / voidDenominator, 0.0, MAX_VOID);
-        double dryoutFactor = voidFraction >= CRITICAL_VOID ? DRYOUT_HEAT_FACTOR : 1.0;
-
-        double demand = exchange * Math.max(0.0, tempC - SATURATION_TEMPERATURE) * dryoutFactor;
-        double feedwaterLimit = steamTarget * FEEDWATER_MARGIN * HEAT_PER_MB;
-        double waterLimit = waterTank.getFluidAmount() * HEAT_PER_MB;
-        double heatTaken = Math.max(0.0, Math.min(Math.min(demand, feedwaterLimit), waterLimit));
-
-        long boilStored = boilTank.getStored();
-        double boilLimit = Math.max(0.0, (boilTank.getCapacity() - boilStored) + steamTarget * OUTPUT_MULTIPLIER);
-        double boiled = Math.min(heatTaken / HEAT_PER_MB, boilLimit);
-        heatTaken = boiled * HEAT_PER_MB;
-
-        if (boiled > 0.0) {
-            waterTank.extract((int) Math.ceil(boiled), Action.EXECUTE, AutomationType.INTERNAL);
-            boilTank.insert(MekanismChemicals.STEAM.asStack((long) Math.floor(boiled)),
-                  Action.EXECUTE, AutomationType.INTERNAL);
-        }
-
-        double output = Math.min(boilStored + boiled, steamTarget * OUTPUT_MULTIPLIER);
-        if (output > 0.0) {
-            long amount = (long) Math.floor(output);
-            boilTank.extract(amount, Action.EXECUTE, AutomationType.INTERNAL);
-            steamTank.insert(MekanismChemicals.STEAM.asStack(amount), Action.EXECUTE, AutomationType.INTERNAL);
-        }
-        setLastFlow(Math.floor(output));
-
-        double environmentLoss = environment * Math.max(0.0, tempC - envC);
-        setLastEnvironmentLoss(environmentLoss / capacity);
-
-        double previous = temperature;
-        temperature += (fissionPower - heatTaken - environmentLoss) / capacity;
-        double step = temperature - previous;
-        if (Math.abs(step) > MAX_TEMPERATURE_STEP) {
-            temperature = previous + Math.copySign(MAX_TEMPERATURE_STEP, step);
-        }
-        setTemperature(temperature);
-    }
-
-    private void tickFuelCycle(int rods) {
-        if (rods <= 0) {
-            setBurnTime(0);
-            stopIfExhausted();
-            return;
-        }
-        if (!active) {
-            return;
-        }
-        if (isBurnPaused()) {
-            return;
-        }
-        if (burnTime > 0) {
-            burnPartial += 1.0 / getBurnTimeMultiplier();
-            int steps = (int) burnPartial;
-            if (steps > 0) {
-                burnPartial -= steps;
-                setBurnTime(burnTime - steps);
-                if (burnTime <= 0) {
-                    finishCycle();
-                }
-            }
-            return;
-        }
-        ItemStack fuel = findFuel();
-        MeknucRodType type = MeknucBwrFuels.get(fuel);
-        if (type == null || countFuel(fuel) < rods) {
-            stopIfExhausted();
-            return;
-        }
-        ItemStack product = fuel.copyWithCount(1);
-        MeknucItemFuelRodBase.setRadiation(product, 0);
-        MeknucItemFuelRodBase.setHot(product, true);
-        if (!canStore(product, rods)) {
-            stopIfExhausted();
-            return;
-        }
-        consumeFuel(fuel, rods);
-        runningProduct = product;
-        setInCoreCount(rods);
-        setBatchBurnTime(type.burnTime());
-        setBurnTime(type.burnTime());
-        burnPartial = 0.0;
-    }
-
-    private void stopIfExhausted() {
-        if (autoStopOnFuelExhausted) {
-            setActive(false);
-        }
-    }
-
-    private void finishCycle() {
-        if (!runningProduct.isEmpty() && inCoreCount > 0) {
-            storeWaste(runningProduct, inCoreCount);
-        }
-        runningProduct = ItemStack.EMPTY;
-        setInCoreCount(0);
-        setBatchBurnTime(0);
-    }
-
-    private ItemStack findFuel() {
-        for (IInventorySlot slot : fuelSlots) {
-            ItemStack stack = slot.getStack();
-            if (!stack.isEmpty()) {
-                return stack;
-            }
-        }
-        return ItemStack.EMPTY;
-    }
-
-    private int countFuel(ItemStack template) {
-        int total = 0;
-        for (IInventorySlot slot : fuelSlots) {
-            ItemStack stack = slot.getStack();
-            if (ItemStack.isSameItemSameComponents(stack, template)) {
-                total += stack.getCount();
-            }
-        }
-        return total;
-    }
-
-    private void consumeFuel(ItemStack template, int amount) {
-        int remaining = amount;
-        for (IInventorySlot slot : fuelSlots) {
-            if (remaining <= 0) {
-                return;
-            }
-            ItemStack stack = slot.getStack();
-            if (ItemStack.isSameItemSameComponents(stack, template)) {
-                int taken = Math.min(remaining, stack.getCount());
-                slot.setStack(stack.copyWithCount(stack.getCount() - taken));
-                remaining -= taken;
-            }
-        }
-    }
-
-    private void storeWaste(ItemStack template, int amount) {
-        int remaining = amount;
-        for (IInventorySlot slot : wasteSlots) {
-            if (remaining <= 0) {
-                return;
-            }
-            ItemStack waste = slot.getStack();
-            int stored;
-            if (waste.isEmpty()) {
-                stored = Math.min(remaining, slot.getLimit(template));
-                slot.setStack(template.copyWithCount(stored));
-            } else if (ItemStack.isSameItemSameComponents(waste, template)) {
-                stored = Math.min(remaining, slot.getLimit(template) - waste.getCount());
-                waste.grow(stored);
-                slot.setStack(waste);
-            } else {
-                continue;
-            }
-            remaining -= stored;
-        }
-    }
-
-    private boolean canStore(ItemStack template, int amount) {
-        int stored = 0;
-        int room = 0;
-        for (IInventorySlot slot : wasteSlots) {
-            ItemStack waste = slot.getStack();
-            stored += waste.getCount();
-            if (waste.isEmpty()) {
-                room += slot.getLimit(template);
-            } else if (ItemStack.isSameItemSameComponents(waste, template)) {
-                room += slot.getLimit(template) - waste.getCount();
-            }
-        }
-        return room >= amount && stored + amount <= getCacheCapacity();
-    }
-
-    private void handleDamage(Level world) {
-        if (meltedDown) {
-            return;
-        }
-        double tempC = temperature - 273.15;
-        if (tempC > DAMAGE_TEMPERATURE) {
-            setDamage(damage + (tempC - DAMAGE_TEMPERATURE) / DAMAGE_DIVISOR * 100.0 * DAMAGE_FACTOR);
-        }
-        if (damage >= MELTDOWN_THRESHOLD) {
-            createMeltdown(world);
-        }
-    }
-
-    private void createMeltdown(Level world) {
-        if (meltedDown) {
-            return;
-        }
-        BlockPos min = getMinPos();
-        BlockPos max = getMaxPos();
-        double centerX = (min.getX() + max.getX() + 1) / 2.0;
-        double centerY = max.getY() + 0.5;
-        double centerZ = (min.getZ() + max.getZ() + 1) / 2.0;
-        Explosion explosion = new MeltdownExplosion(world, centerX, centerY, centerZ, MELTDOWN_EXPLOSION_RADIUS,
-              Explosion.BlockInteraction.DESTROY_WITH_DECAY);
-        if (!EventHooks.onExplosionStart(world, explosion)) {
-            explosion.explode();
-            explosion.finalizeExplosion(true);
-        }
-        destroyStructure(world, explosion);
-        radiateMeltdown(world, centerX, centerY, centerZ);
-        meltdownHappened(world);
-    }
-
-    private void destroyStructure(Level world, Explosion explosion) {
-        List<BlockPos> targets = new ArrayList<>();
-        for (BlockPos pos : locations) {
-            if (world.random.nextBoolean()) {
-                targets.add(pos);
-            }
-        }
-        for (BlockPos pos : internalLocations) {
-            if (world.random.nextBoolean()) {
-                targets.add(pos);
-            }
-        }
-        List<Pair<ItemStack, BlockPos>> drops = new ArrayList<>();
-        for (BlockPos pos : targets) {
-            if (!world.isLoaded(pos)) {
-                continue;
-            }
-            BlockState state = world.getBlockState(pos);
-            if (state.isAir()) {
-                continue;
-            }
-            state.onExplosionHit(world, pos, explosion, (stack, dropPos) -> addDrop(drops, stack, dropPos));
-        }
-        for (Pair<ItemStack, BlockPos> pair : drops) {
-            Block.popResource(world, pair.getSecond(), pair.getFirst());
-        }
-    }
-
-    private static void addDrop(List<Pair<ItemStack, BlockPos>> drops, ItemStack stack, BlockPos pos) {
-        if (stack.isEmpty()) {
-            return;
-        }
-        for (Pair<ItemStack, BlockPos> existing : drops) {
-            if (existing.getSecond().equals(pos)) {
-                existing.getFirst().grow(stack.getCount());
-                return;
-            }
-        }
-        drops.add(Pair.of(stack, pos));
-    }
-
-    private static class MeltdownExplosion extends Explosion {
-
-        private MeltdownExplosion(Level world, double x, double y, double z, float radius,
-              Explosion.BlockInteraction mode) {
-            super(world, null, x, y, z, radius, false, mode);
-        }
-    }
-
-    private void radiateMeltdown(Level world, double centerX, double centerY, double centerZ) {
-        if (!IRadiationManager.INSTANCE.isRadiationEnabled()) {
-            return;
-        }
-        int centerChunkX = Mth.floor(centerX) >> 4;
-        int centerChunkZ = Mth.floor(centerZ) >> 4;
-        int chunkRadius = MELTDOWN_RADIATION_RADIUS / 16 + 1;
-        int sourceY = Mth.floor(centerY);
-        for (int offsetX = -chunkRadius; offsetX <= chunkRadius; offsetX++) {
-            for (int offsetZ = -chunkRadius; offsetZ <= chunkRadius; offsetZ++) {
-                int sourceX = ((centerChunkX + offsetX) << 4) + 8;
-                int sourceZ = ((centerChunkZ + offsetZ) << 4) + 8;
-                double deltaX = sourceX - centerX;
-                double deltaZ = sourceZ - centerZ;
-                double distance = Math.sqrt(deltaX * deltaX + deltaZ * deltaZ);
-                if (distance >= MELTDOWN_RADIATION_RADIUS) {
-                    continue;
-                }
-                double magnitude = MELTDOWN_RADIATION_MAGNITUDE * (1.0 - distance / MELTDOWN_RADIATION_RADIUS);
-                if (magnitude <= 0.0) {
-                    continue;
-                }
-                IRadiationManager.INSTANCE.radiate(world, new BlockPos(sourceX, sourceY, sourceZ), magnitude);
-            }
-        }
     }
 
     @Override
@@ -748,11 +323,6 @@ public class MeknucBwrMultiblockData extends MultiblockData {
         }
     }
 
-    void restoreAutoStopOnFuelExhausted(boolean value) {
-        setAutoStopOnFuelExhausted(value);
-        autoStopFromCache = true;
-    }
-
     public double getBurnTimeMultiplier() {
         int offset = controlRodInsertion - NOMINAL_INSERTION_PERCENT;
         if (offset == 0) {
@@ -805,7 +375,7 @@ public class MeknucBwrMultiblockData extends MultiblockData {
     }
 
     public void setMeltdownTimer(int timer) {
-        int clamped = Mth.clamp(timer, 0, MELTDOWN_TICKS);
+        int clamped = Mth.clamp(timer, 0, MeknucReactorConstants.MELTDOWN_TICKS);
         if (meltdownTimer != clamped) {
             meltdownTimer = clamped;
             markDirty();
@@ -930,35 +500,6 @@ public class MeknucBwrMultiblockData extends MultiblockData {
 
         public int totalHeight() {
             return fuelHeight;
-        }
-    }
-
-    private class CacheSlot extends BasicInventorySlot {
-
-        private final int slotLimit;
-        private final boolean fuel;
-
-        private CacheSlot(int limit, BiPredicate<ItemStack, AutomationType> canExtract,
-              BiPredicate<ItemStack, AutomationType> canInsert, Predicate<ItemStack> validator,
-              IContentsListener listener, boolean fuel) {
-            super(limit, canExtract, canInsert, validator, listener, 0, 0);
-            slotLimit = limit;
-            this.fuel = fuel;
-            obeyStackLimit = false;
-        }
-
-        @Override
-        public int getLimit(ItemStack stack) {
-            if (fuel) {
-                int others = 0;
-                for (IInventorySlot slot : fuelSlots) {
-                    if (slot != this) {
-                        others += slot.getStack().getCount();
-                    }
-                }
-                return Math.max(0, Math.min(slotLimit, getCacheCapacity() - others));
-            }
-            return slotLimit;
         }
     }
 }

@@ -3,7 +3,6 @@ package meknuc.blocks;
 import java.util.List;
 
 import meknuc.blockentities.MeknucBlockEntityRTG;
-import meknuc.blockentities.MeknucTileEntityTypes;
 import meknuc.menu.MeknucMenuTypes;
 import mekanism.common.block.attribute.Attribute;
 import mekanism.common.block.attribute.AttributeGui;
@@ -47,7 +46,7 @@ public class MeknucBlockRTG extends MeknucBlockBase
     @NotNull
     @Override
     public TileEntityTypeRegistryObject<MeknucBlockEntityRTG> getTileType() {
-        return MeknucTileEntityTypes.RADIOISOTOPE_THERMOELECTRIC_GENERATOR;
+        return MeknucBlockTileEntityTypes.RADIOISOTOPE_THERMOELECTRIC_GENERATOR;
     }
 
     @NotNull

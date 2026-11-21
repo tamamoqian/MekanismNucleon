@@ -3,7 +3,6 @@ package meknuc.reactor.spentpool;
 import mekanism.common.content.blocktype.BlockType;
 import mekanism.common.lib.multiblock.CuboidStructureValidator;
 import mekanism.common.lib.multiblock.FormationProtocol;
-import meknuc.blocks.MeknucSpentFuelPoolBlockTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;

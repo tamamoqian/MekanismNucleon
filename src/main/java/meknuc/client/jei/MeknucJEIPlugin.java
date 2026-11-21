@@ -3,11 +3,11 @@ package meknuc.client.jei;
 import java.util.List;
 
 import meknuc.Meknuc;
-import meknuc.blocks.MeknucParticleAcceleratorBlocks;
+import meknuc.particle.MeknucParticleAcceleratorBlocks;
 import meknuc.items.MeknucItemFuelRodBase;
 import meknuc.items.MeknucRodType;
 import meknuc.reactor.MeknucPwrBlocks;
-import meknuc.blocks.MeknucSpentFuelPoolBlocks;
+import meknuc.reactor.spentpool.MeknucSpentFuelPoolBlocks;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.helpers.IGuiHelper;

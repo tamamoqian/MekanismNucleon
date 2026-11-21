@@ -12,6 +12,7 @@ import mekanism.client.gui.element.gauge.GuiChemicalGauge;
 import mekanism.client.gui.element.gauge.GuiFluidGauge;
 import meknuc.items.MeknucItemFuelRodBase;
 import meknuc.items.MeknucRodType;
+import meknuc.reactor.spentpool.MeknucSpentFuelPoolConstants;
 import meknuc.reactor.spentpool.MeknucSpentFuelPoolContainer;
 import meknuc.reactor.spentpool.MeknucSpentFuelPoolMultiblockData;
 import meknuc.reactor.spentpool.tile.TileEntitySpentFuelPoolCasing;
@@ -63,7 +64,7 @@ public class MeknucSpentFuelPoolGui
         lines.add(Component.translatable("gui.meknuc.spent_fuel_pool.running_threads", multiblock.getRunningThreads()));
         lines.add(Component.translatable("gui.meknuc.spent_fuel_pool.cooled", multiblock.getCooledCount()));
         lines.add(Component.translatable("gui.meknuc.spent_fuel_pool.steam_rate",
-              multiblock.getRunningThreads() * MeknucSpentFuelPoolMultiblockData.STEAM_PER_THREAD_PER_TICK));
+              multiblock.getRunningThreads() * MeknucSpentFuelPoolConstants.STEAM_PER_THREAD_PER_TICK));
         lines.add(Component.empty());
         Map<MeknucRodType, Integer> counts = new EnumMap<>(MeknucRodType.class);
         // 只统计池子自己的输出缓存槽；容器槽位列表里还包含玩家背包，

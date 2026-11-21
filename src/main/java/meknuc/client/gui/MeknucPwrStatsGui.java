@@ -1,10 +1,6 @@
 package meknuc.client.gui;
 
-import mekanism.api.text.EnumColor;
-import mekanism.client.gui.GuiMekanismTile;
-import mekanism.client.render.IFancyFontRenderer.TextAlignment;
 import mekanism.common.inventory.container.tile.EmptyTileContainer;
-import mekanism.common.util.text.TextUtils;
 import meknuc.client.gui.element.MeknucPwrTab;
 import meknuc.client.gui.element.MeknucPwrTab.PwrTab;
 import meknuc.reactor.MeknucPwrLang;
@@ -12,25 +8,15 @@ import meknuc.reactor.MeknucPwrMultiblockData;
 import meknuc.reactor.tile.TileEntityPwrPart;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import org.jetbrains.annotations.NotNull;
 
 public class MeknucPwrStatsGui
-      extends GuiMekanismTile<TileEntityPwrPart, EmptyTileContainer<TileEntityPwrPart>> {
-
-    private static final int TEXT_X = 0;
-    private static final int TEXT_PAD = 6;
-    private static final int MELTDOWN_COLOR = 0xFFFF5555;
-    private static final ResourceLocation BACKGROUND = ResourceLocation.fromNamespaceAndPath("meknuc",
-          "gui/pressurized_water_reactor_stats.png");
+      extends MeknucReactorStatsGui<TileEntityPwrPart, EmptyTileContainer<TileEntityPwrPart>> {
 
     public MeknucPwrStatsGui(EmptyTileContainer<TileEntityPwrPart> container, Inventory inv,
           Component title) {
         super(container, inv, title);
-        imageWidth = 195;
-        imageHeight = 216;
-        titleLabelY = 6;
     }
 
     @Override
@@ -80,10 +66,6 @@ public class MeknucPwrStatsGui
         super.drawForegroundText(guiGraphics, mouseX, mouseY);
     }
 
-    private void drawRow(GuiGraphics guiGraphics, Component text, int y, int color) {
-        drawScrollingString(guiGraphics, text, TEXT_X, y, TextAlignment.LEFT, color, TEXT_PAD, false);
-    }
-
     private static Component operatingText(MeknucPwrMultiblockData multiblock) {
         if (multiblock.getMeltdownTimer() > 0) {
             return MeknucPwrLang.GUI_MELTDOWN_COUNTDOWN.translate(
@@ -101,25 +83,11 @@ public class MeknucPwrStatsGui
         return 0xFF404040;
     }
 
-    private static String formatCount(int value) {
-        return TextUtils.format(value);
-    }
-
     private static String formatPower(double megawatts) {
         return String.format("%.1f MW", megawatts);
     }
 
     private static String formatRate(double millibuckets) {
         return String.format("%.0f mB/t", millibuckets);
-    }
-
-    private static String formatBurnTime(int ticks) {
-        int totalSeconds = Math.max(0, ticks) / 20;
-        return String.format("%02d:%02d", totalSeconds / 60, totalSeconds % 60);
-    }
-
-    @Override
-    protected void renderBg(@NotNull GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
-        guiGraphics.blit(BACKGROUND, leftPos, topPos, 0, 0, imageWidth, imageHeight, imageWidth, imageHeight);
     }
 }

@@ -17,6 +17,7 @@ import mekanism.common.lib.Color.ColorFunction;
 import mekanism.common.registries.MekanismChemicals;
 import mekanism.common.registration.impl.DeferredChemical;
 import meknuc.chemicals.MeknucChemicals;
+import meknuc.particle.MeknucParticleAcceleratorConstants;
 import meknuc.particle.MeknucParticleAcceleratorContainer;
 import meknuc.particle.MeknucParticleAcceleratorLang;
 import meknuc.particle.MeknucParticleAcceleratorMultiblockData;
@@ -200,24 +201,24 @@ public class MeknucParticleAcceleratorGui extends GuiMekanismTile<TileEntityPart
     private Component statusText(MeknucParticleAcceleratorMultiblockData multiblock) {
         MeknucParticleAcceleratorRecipes.Recipe recipe = multiblock.getActiveRecipe();
         return switch (multiblock.getStatus()) {
-            case MeknucParticleAcceleratorMultiblockData.STATUS_RUNNING ->
+            case MeknucParticleAcceleratorConstants.STATUS_RUNNING ->
                   MeknucParticleAcceleratorLang.GUI_STATE_RUNNING.translate(EnumColor.BRIGHT_GREEN);
-            case MeknucParticleAcceleratorMultiblockData.STATUS_MISSING_ITEM -> recipe == null
+            case MeknucParticleAcceleratorConstants.STATUS_MISSING_ITEM -> recipe == null
                   ? MeknucParticleAcceleratorLang.GUI_STATE_NO_RECIPE.translate(EnumColor.GRAY)
                   : MeknucParticleAcceleratorLang.GUI_STATE_MISSING_ITEM.translate(EnumColor.RED,
                         recipe.inputName(), recipe.inputCount());
-            case MeknucParticleAcceleratorMultiblockData.STATUS_MISSING_CHEMICAL -> recipe == null
+            case MeknucParticleAcceleratorConstants.STATUS_MISSING_CHEMICAL -> recipe == null
                   ? MeknucParticleAcceleratorLang.GUI_STATE_NO_RECIPE.translate(EnumColor.GRAY)
                   : MeknucParticleAcceleratorLang.GUI_STATE_MISSING_CHEMICAL.translate(EnumColor.RED,
                         recipe.chemicalInputs().isEmpty() ? "-" : recipe.chemicalInputs().get(0).name(),
                         recipe.chemicalInputs().isEmpty() ? 0L : recipe.chemicalInputs().get(0).amount());
-            case MeknucParticleAcceleratorMultiblockData.STATUS_OUTPUT_FULL ->
+            case MeknucParticleAcceleratorConstants.STATUS_OUTPUT_FULL ->
                   MeknucParticleAcceleratorLang.GUI_STATE_OUTPUT_FULL.translate(EnumColor.RED);
-            case MeknucParticleAcceleratorMultiblockData.STATUS_NO_ENERGY -> recipe == null
+            case MeknucParticleAcceleratorConstants.STATUS_NO_ENERGY -> recipe == null
                   ? MeknucParticleAcceleratorLang.GUI_STATE_NO_RECIPE.translate(EnumColor.GRAY)
                   : MeknucParticleAcceleratorLang.GUI_STATE_NO_ENERGY.translate(EnumColor.RED,
                         formatEnergy(multiblock.getActiveEnergyPerTick()));
-            case MeknucParticleAcceleratorMultiblockData.STATUS_NO_RECIPE ->
+            case MeknucParticleAcceleratorConstants.STATUS_NO_RECIPE ->
                   MeknucParticleAcceleratorLang.GUI_STATE_NO_RECIPE.translate(EnumColor.GRAY);
             default -> MeknucParticleAcceleratorLang.GUI_STATE_IDLE.translate(EnumColor.GRAY);
         };

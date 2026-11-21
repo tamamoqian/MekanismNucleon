@@ -1,35 +1,44 @@
 package meknuc;
 
-import meknuc.blockentities.MeknucTileEntityTypes;
-import meknuc.blocks.MeknucFbrBlocks;
-import meknuc.blocks.MeknucHtgrBlocks;
-import meknuc.blocks.MeknucHwrBlocks;
-import meknuc.blocks.MeknucMoltenSaltReactorBlocks;
-import meknuc.blocks.MeknucParticleAcceleratorBlocks;
-import meknuc.blocks.MeknucSpentFuelPoolBlocks;
+import meknuc.blocks.MeknucBlock;
+import meknuc.blocks.MeknucBlockTileEntityTypes;
+import meknuc.particle.MeknucParticleAcceleratorTileEntityTypes;
+import meknuc.reactor.fbr.MeknucFbrTileEntityTypes;
+import meknuc.reactor.htgr.MeknucHtgrTileEntityTypes;
+import meknuc.reactor.hwr.MeknucHwrTileEntityTypes;
+import meknuc.reactor.molten.MeknucMoltenSaltReactorTileEntityTypes;
+import meknuc.reactor.spentpool.MeknucSpentFuelPoolTileEntityTypes;
+import meknuc.reactor.fbr.MeknucFbrBlocks;
+import meknuc.reactor.htgr.MeknucHtgrBlocks;
+import meknuc.reactor.hwr.MeknucHwrBlocks;
+import meknuc.reactor.molten.MeknucMoltenSaltReactorBlocks;
 import meknuc.blocks.MeknucWasteStorageBlocks;
 import meknuc.chemicals.MeknucChemicals;
-import meknuc.init.MeknucBlock;
-import meknuc.init.MeknucItems;
+import meknuc.items.MeknucItems;
 import meknuc.menu.MeknucMenuTypes;
 import meknuc.modules.MeknucModules;
 import meknuc.modules.MeknucSuitModuleEvents;
+import meknuc.particle.MeknucParticleAcceleratorBlocks;
 import meknuc.particle.MeknucParticleAcceleratorContainerTypes;
 import meknuc.particle.MeknucParticleAcceleratorMultiblock;
 import meknuc.particle.MeknucParticleAcceleratorSounds;
 import meknuc.reactor.MeknucPwrMultiblock;
 import meknuc.reactor.MeknucPwrBlocks;
 import meknuc.reactor.MeknucPwrContainerTypes;
-import meknuc.reactor.MeknucPwrLogicPacket;
-import meknuc.reactor.MeknucPwrOpenGuiPacket;
+import meknuc.reactor.MeknucReactorLogicPacket;
+import meknuc.reactor.MeknucReactorOpenGuiPacket;
 import meknuc.reactor.MeknucPwrTileEntityTypes;
 import meknuc.reactor.MeknucPwrSounds;
+import meknuc.reactor.MeknucReactorComponents;
 import meknuc.reactor.MeknucBwrBlocks;
 import meknuc.reactor.MeknucBwrContainerTypes;
-import meknuc.reactor.MeknucBwrLogicPacket;
 import meknuc.reactor.MeknucBwrMultiblock;
-import meknuc.reactor.MeknucBwrOpenGuiPacket;
 import meknuc.reactor.MeknucBwrTileEntityTypes;
+import meknuc.reactor.fbr.MeknucFbrBlocks;
+import meknuc.reactor.htgr.MeknucHtgrBlocks;
+import meknuc.reactor.hwr.MeknucHwrBlocks;
+import meknuc.reactor.molten.MeknucMoltenSaltReactorBlocks;
+import meknuc.reactor.spentpool.MeknucSpentFuelPoolBlocks;
 import meknuc.reactor.spentpool.MeknucSpentFuelPoolContainerTypes;
 import meknuc.reactor.spentpool.MeknucSpentFuelPoolMultiblock;
 import meknuc.reactor.spentpool.MeknucSpentFuelPoolSounds;
@@ -104,6 +113,7 @@ public class Meknuc {
         MeknucTurbineBlocks.BLOCKS.register(modEventBus);
         MeknucItems.ITEMS.register(modEventBus);
         MeknucItems.DATA_COMPONENTS.register(modEventBus);
+        MeknucReactorComponents.DATA_COMPONENTS.register(modEventBus);
         MeknucModules.MODULES.register(modEventBus);
         MeknucPwrBlocks.BLOCKS.register(modEventBus);
         MeknucBwrBlocks.BLOCKS.register(modEventBus);
@@ -112,7 +122,13 @@ public class Meknuc {
         MeknucPwrContainerTypes.CONTAINER_TYPES.register(modEventBus);
         MeknucBwrTileEntityTypes.TILE_ENTITY_TYPES.register(modEventBus);
         MeknucBwrContainerTypes.CONTAINER_TYPES.register(modEventBus);
-        MeknucTileEntityTypes.TILE_ENTITY_TYPES.register(modEventBus);
+        MeknucBlockTileEntityTypes.TILE_ENTITY_TYPES.register(modEventBus);
+        MeknucHwrTileEntityTypes.TILE_ENTITY_TYPES.register(modEventBus);
+        MeknucFbrTileEntityTypes.TILE_ENTITY_TYPES.register(modEventBus);
+        MeknucHtgrTileEntityTypes.TILE_ENTITY_TYPES.register(modEventBus);
+        MeknucMoltenSaltReactorTileEntityTypes.TILE_ENTITY_TYPES.register(modEventBus);
+        MeknucSpentFuelPoolTileEntityTypes.TILE_ENTITY_TYPES.register(modEventBus);
+        MeknucParticleAcceleratorTileEntityTypes.TILE_ENTITY_TYPES.register(modEventBus);
         MeknucTurbineTileEntityTypes.TILE_ENTITY_TYPES.register(modEventBus);
         MeknucMenuTypes.CONTAINER_TYPES.register(modEventBus);
         MeknucSpentFuelPoolContainerTypes.CONTAINER_TYPES.register(modEventBus);
@@ -134,15 +150,11 @@ public class Meknuc {
     }
 
     private void registerPayloads(RegisterPayloadHandlersEvent event) {
-        PayloadRegistrar registrar = event.registrar("1");
-        registrar.playToServer(MeknucPwrLogicPacket.TYPE, MeknucPwrLogicPacket.STREAM_CODEC,
-              MeknucPwrLogicPacket::handle);
-        registrar.playToServer(MeknucPwrOpenGuiPacket.TYPE, MeknucPwrOpenGuiPacket.STREAM_CODEC,
-              MeknucPwrOpenGuiPacket::handle);
-        registrar.playToServer(MeknucBwrLogicPacket.TYPE, MeknucBwrLogicPacket.STREAM_CODEC,
-              MeknucBwrLogicPacket::handle);
-        registrar.playToServer(MeknucBwrOpenGuiPacket.TYPE, MeknucBwrOpenGuiPacket.STREAM_CODEC,
-              MeknucBwrOpenGuiPacket::handle);
+        PayloadRegistrar registrar = event.registrar("2");
+        registrar.playToServer(MeknucReactorLogicPacket.TYPE, MeknucReactorLogicPacket.STREAM_CODEC,
+              MeknucReactorLogicPacket::handle);
+        registrar.playToServer(MeknucReactorOpenGuiPacket.TYPE, MeknucReactorOpenGuiPacket.STREAM_CODEC,
+              MeknucReactorOpenGuiPacket::handle);
     }
 
     @SubscribeEvent

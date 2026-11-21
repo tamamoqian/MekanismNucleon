@@ -8,7 +8,7 @@ import mekanism.common.registries.MekanismItems;
 import mekanism.common.registration.impl.DeferredChemical;
 import meknuc.Meknuc;
 import meknuc.chemicals.MeknucChemicals;
-import meknuc.init.MeknucItems;
+import meknuc.items.MeknucItems;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;

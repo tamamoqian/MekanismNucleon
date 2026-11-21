@@ -9,9 +9,9 @@ import mekanism.client.render.lib.ColorAtlas.ColorRegistryObject;
 import mekanism.common.network.PacketUtils;
 import mekanism.common.util.MekanismUtils;
 import mekanism.common.util.MekanismUtils.ResourceType;
-import meknuc.reactor.MeknucBwrGuiTarget;
+import meknuc.reactor.MeknucReactorGuiTarget;
 import meknuc.reactor.MeknucBwrLang;
-import meknuc.reactor.MeknucBwrOpenGuiPacket;
+import meknuc.reactor.MeknucReactorOpenGuiPacket;
 import meknuc.reactor.tile.TileEntityBwrPart;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -24,9 +24,9 @@ public class MeknucBwrTab
     }
 
     public enum BwrTab implements TabType<TileEntityBwrPart> {
-        MAIN("radioactive.png", MeknucBwrLang.GUI_MAIN_TAB, MeknucBwrGuiTarget.MAIN,
+        MAIN("radioactive.png", MeknucBwrLang.GUI_MAIN_TAB, MeknucReactorGuiTarget.MAIN,
               SpecialColors.TAB_MULTIBLOCK_MAIN),
-        STAT("stats.png", MeknucBwrLang.GUI_STATS_TAB, MeknucBwrGuiTarget.STATS,
+        STAT("stats.png", MeknucBwrLang.GUI_STATS_TAB, MeknucReactorGuiTarget.STATS,
               SpecialColors.TAB_MULTIBLOCK_STATS);
 
         private final String path;
@@ -48,7 +48,7 @@ public class MeknucBwrTab
 
         @Override
         public void onClick(TileEntityBwrPart tile) {
-            PacketUtils.sendToServer(new MeknucBwrOpenGuiPacket(tile.getBlockPos(), target));
+            PacketUtils.sendToServer(new MeknucReactorOpenGuiPacket(tile.getBlockPos(), target));
         }
 
         @Override

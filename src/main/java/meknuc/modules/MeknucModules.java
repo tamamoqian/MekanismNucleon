@@ -6,7 +6,7 @@ import mekanism.common.item.ItemModule;
 import mekanism.common.registration.impl.ModuleDeferredRegister;
 import mekanism.common.registration.impl.ModuleRegistryObject;
 import meknuc.Meknuc;
-import meknuc.init.MeknucItems;
+import meknuc.items.MeknucItems;
 import net.minecraft.core.Holder;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;

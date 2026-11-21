@@ -4,7 +4,6 @@ import java.util.List;
 
 import meknuc.client.color.MeknucColorLerp;
 import meknuc.client.color.MeknucColorRainbowName;
-import meknuc.init.MeknucItems;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextColor;

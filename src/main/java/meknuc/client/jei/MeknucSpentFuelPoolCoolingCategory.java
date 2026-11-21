@@ -7,6 +7,7 @@ import meknuc.Meknuc;
 import meknuc.items.MeknucItemFuelRodBase;
 import meknuc.items.MeknucRodType;
 import meknuc.reactor.MeknucPwrLang;
+import meknuc.reactor.spentpool.MeknucSpentFuelPoolConstants;
 import meknuc.reactor.spentpool.MeknucSpentFuelPoolMultiblockData;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
@@ -63,10 +64,10 @@ public class MeknucSpentFuelPoolCoolingCategory extends AbstractRecipeCategory<M
     public void createRecipeExtras(IRecipeExtrasBuilder builder, CoolingRecipe recipe, IFocusGroup focusGroup) {
         builder.addRecipeArrowWidget().setPosition(ARROW_X, ARROW_Y);
         builder.addText(List.of(
-              MeknucPwrLang.JEI_SPENT_FUEL_POOL_TIME.translate(MeknucSpentFuelPoolMultiblockData.COOLING_TICKS,
-                    formatTime(MeknucSpentFuelPoolMultiblockData.COOLING_TICKS)),
-              MeknucPwrLang.JEI_SPENT_FUEL_POOL_WATER.translate(MeknucSpentFuelPoolMultiblockData.WATER_PER_THREAD_PER_TICK),
-              MeknucPwrLang.JEI_SPENT_FUEL_POOL_STEAM.translate(MeknucSpentFuelPoolMultiblockData.STEAM_PER_THREAD_PER_TICK),
+              MeknucPwrLang.JEI_SPENT_FUEL_POOL_TIME.translate(MeknucSpentFuelPoolConstants.COOLING_TICKS,
+                    formatTime(MeknucSpentFuelPoolConstants.COOLING_TICKS)),
+              MeknucPwrLang.JEI_SPENT_FUEL_POOL_WATER.translate(MeknucSpentFuelPoolConstants.WATER_PER_THREAD_PER_TICK),
+              MeknucPwrLang.JEI_SPENT_FUEL_POOL_STEAM.translate(MeknucSpentFuelPoolConstants.STEAM_PER_THREAD_PER_TICK),
               MeknucPwrLang.JEI_SPENT_FUEL_POOL_NOTE.translate()
         ), TEXT_X, TEXT_Y);
     }

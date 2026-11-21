@@ -1,11 +1,7 @@
 package meknuc.client.gui;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import mekanism.api.text.EnumColor;
-import mekanism.client.gui.GuiMekanismTile;
 import mekanism.client.gui.element.GuiBigLight;
 import mekanism.client.gui.element.GuiInnerScreen;
 import mekanism.client.gui.element.bar.GuiBar.IBarInfoHandler;
@@ -27,59 +23,19 @@ import meknuc.reactor.MeknucBwrContainer;
 import meknuc.reactor.MeknucBwrLang;
 import meknuc.reactor.MeknucBwrMultiblockData;
 import meknuc.reactor.tile.TileEntityBwrPart;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-public class MeknucBwrGui extends GuiMekanismTile<TileEntityBwrPart, MeknucBwrContainer> {
-
-    private static final ResourceLocation BACKGROUND = ResourceLocation.fromNamespaceAndPath("meknuc",
-          "gui/pressurized_water_reactor.png");
-    private static final int GAUGE_Y = 13;
-    private static final int GAUGE_HEIGHT = 60;
-    private static final int BAR_WIDTH = 18;
-    private static final int CONTROL_ROD_HEIGHT = 10;
-    private static final int COOLANT_GAUGE_X = 8;
-    private static final int FUEL_BAR_X = 30;
-    private static final int PANEL_X = 52;
-    private static final int PANEL_Y = 17;
-    private static final int PANEL_WIDTH = 91;
-    private static final int PANEL_HEIGHT = 56;
-    private static final int HOT_COOLANT_GAUGE_X = 147;
-    private static final int WASTE_BAR_X = 169;
-    private static final int BUTTON_Y = 75;
-    private static final int BUTTON_HEIGHT = 16;
-    private static final int TEMPERATURE_BAR_Y = 102;
-    private static final int CONTROL_ROD_BAR_Y = 124;
-    private static final int GRAPH_Y = 146;
-    private static final int GRAPH_HEIGHT = 16;
-    private static final int CACHE_FUEL_COLOR = 0xFFD21129;
-    private static final int CACHE_WASTE_COLOR = 0xFFEDB508;
-    private static final int LABEL_COLOR = 0xFF3C3E3F;
-    private static final int FRAME_DARK = 0xFF1A1A1B;
-    private static final int FRAME_TRACK = 0xFF353637;
-    private static final int FRAME_TICK = 0xFFB8BDBE;
-    private static final int CONTROL_ROD_COLOR = 0xFF02A8C1;
+public class MeknucBwrGui extends MeknucReactorGui<TileEntityBwrPart, MeknucBwrContainer> {
 
     private GuiDoubleGraph heatGraph;
     private TranslationButton activateButton;
     private TranslationButton autoStopButton;
-    private boolean draggingInsertion;
-    private int pendingInsertion = -1;
 
     public MeknucBwrGui(MeknucBwrContainer container, Inventory inv, Component title) {
         super(container, inv, title);
-        imageWidth = 195;
-        imageHeight = 256;
-        titleLabelY = 4;
-        inventoryLabelX = 16;
-        inventoryLabelY = 164;
-        dynamicSlots = true;
     }
 
     @Override
@@ -119,17 +75,20 @@ public class MeknucBwrGui extends GuiMekanismTile<TileEntityBwrPart, MeknucBwrCo
         return tile.getMultiblock();
     }
 
+    @Override
+    protected int getControlRodInsertion() {
+        return multiblock().getControlRodInsertion();
+    }
+
+    @Override
+    protected int buttonInsertion() {
+        return MeknucBwrContainer.BUTTON_INSERTION;
+    }
+
     private void refreshAutoStopButton() {
         autoStopButton.setMessage(multiblock().isAutoStopOnFuelExhausted()
               ? MeknucBwrLang.GUI_AUTO_STOP.translate(MeknucBwrLang.GUI_AUTO_STOP_ON.translate())
               : MeknucBwrLang.GUI_AUTO_STOP.translate(MeknucBwrLang.GUI_AUTO_STOP_OFF.translate()));
-    }
-
-    private void pressButton(int id) {
-        Minecraft minecraft = Minecraft.getInstance();
-        if (minecraft.gameMode != null) {
-            minecraft.gameMode.handleInventoryButtonClick(menu.containerId, id);
-        }
     }
 
     private IBarInfoHandler heatBarHandler() {
@@ -181,15 +140,6 @@ public class MeknucBwrGui extends GuiMekanismTile<TileEntityBwrPart, MeknucBwrCo
         );
     }
 
-    private static String fuelCountText(int count, int capacity) {
-        return count + "/" + capacity;
-    }
-
-    private static String formatBurnTime(int ticks) {
-        int totalSeconds = Math.max(0, ticks) / 20;
-        return String.format("%02d:%02d", totalSeconds / 60, totalSeconds % 60);
-    }
-
     @Override
     protected void drawForegroundText(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY) {
         renderTitleText(guiGraphics);
@@ -199,131 +149,13 @@ public class MeknucBwrGui extends GuiMekanismTile<TileEntityBwrPart, MeknucBwrCo
         int capacity = multiblock.getCacheCapacity();
         drawCacheBar(guiGraphics, FUEL_BAR_X, multiblock.getFuelCount(), multiblock.getInCoreCount(),
               multiblock.getFuelStack(), capacity, CACHE_FUEL_COLOR, MeknucBwrLang.GUI_FUEL, MeknucBwrLang.GUI_FUEL_HINT,
-              mouseX, mouseY);
+              MeknucBwrLang.GUI_IN_CORE, mouseX, mouseY);
         drawCacheBar(guiGraphics, WASTE_BAR_X, multiblock.getWasteCount(), 0, multiblock.getWasteStack(), capacity,
-              CACHE_WASTE_COLOR, MeknucBwrLang.GUI_WASTE, null, mouseX, mouseY);
+              CACHE_WASTE_COLOR, MeknucBwrLang.GUI_WASTE, null, MeknucBwrLang.GUI_IN_CORE, mouseX, mouseY);
         drawControlRodBar(guiGraphics);
-        drawLabels(guiGraphics, multiblock);
+        drawLabels(guiGraphics, MeknucBwrLang.GUI_TEMPERATURE_BAR, MeknucBwrLang.GUI_CONTROL_ROD,
+              MeknucBwrLang.GUI_HEAT_GRAPH);
         super.drawForegroundText(guiGraphics, mouseX, mouseY);
-    }
-
-    private void drawCacheBar(GuiGraphics guiGraphics, int x, int count, int inCore, ItemStack stack, int capacity,
-          int color, MeknucBwrLang label, MeknucBwrLang hint, int mouseX, int mouseY) {
-        drawBarFrame(guiGraphics, x, GAUGE_Y, BAR_WIDTH, GAUGE_HEIGHT);
-        int stored = Math.min(capacity, count + inCore);
-        int fill = capacity <= 0 ? 0 : (int) ((GAUGE_HEIGHT - 4) * (stored / (double) capacity));
-        if (fill > 0) {
-            guiGraphics.fill(x + 2, GAUGE_Y + GAUGE_HEIGHT - 2 - fill, x + BAR_WIDTH - 2, GAUGE_Y + GAUGE_HEIGHT - 2, color);
-        }
-        if (isHovering(mouseX - leftPos, mouseY - topPos, x, GAUGE_Y, BAR_WIDTH, GAUGE_HEIGHT)) {
-            List<Component> lines = new ArrayList<>();
-            lines.add(label.translate(EnumColor.WHITE, Component.literal(fuelCountText(count, capacity))));
-            if (!stack.isEmpty()) {
-                lines.add(stack.getHoverName());
-            }
-            if (inCore > 0) {
-                lines.add(MeknucBwrLang.GUI_IN_CORE.translate(EnumColor.AQUA, Component.literal(Integer.toString(inCore))));
-            }
-            if (hint != null && stored == 0) {
-                lines.add(hint.translate(EnumColor.GRAY));
-            }
-            drawTooltip(guiGraphics, mouseX, mouseY, lines);
-        }
-    }
-
-    private void drawControlRodBar(GuiGraphics guiGraphics) {
-        drawBarFrame(guiGraphics, 8, CONTROL_ROD_BAR_Y, imageWidth - 16, CONTROL_ROD_HEIGHT);
-        int width = imageWidth - 20;
-        int fill = (int) Math.round(width * Mth.clamp(displayedInsertion() / 100.0, 0.0, 1.0));
-        if (fill > 0) {
-            guiGraphics.fill(10, CONTROL_ROD_BAR_Y + 2, 10 + fill, CONTROL_ROD_BAR_Y + CONTROL_ROD_HEIGHT - 2, CONTROL_ROD_COLOR);
-        }
-        guiGraphics.fill(9 + fill, CONTROL_ROD_BAR_Y + 1, 11 + fill, CONTROL_ROD_BAR_Y + CONTROL_ROD_HEIGHT - 1, FRAME_TICK);
-    }
-
-    private int displayedInsertion() {
-        int server = multiblock().getControlRodInsertion();
-        if (pendingInsertion >= 0 && pendingInsertion != server) {
-            return pendingInsertion;
-        }
-        pendingInsertion = -1;
-        return server;
-    }
-
-    private boolean isOverInsertionBar(double mouseX, double mouseY) {
-        return isHovering((int) mouseX - leftPos, (int) mouseY - topPos, 8, CONTROL_ROD_BAR_Y, imageWidth - 16,
-              CONTROL_ROD_HEIGHT);
-    }
-
-    private void updateInsertionFromMouse(double mouseX) {
-        double fraction = Mth.clamp((mouseX - leftPos - 10.0) / (imageWidth - 20.0), 0.0, 1.0);
-        int percent = (int) Math.round(fraction * 100.0);
-        if (percent != displayedInsertion()) {
-            pendingInsertion = percent;
-            pressButton(MeknucBwrContainer.BUTTON_INSERTION + percent);
-        }
-    }
-
-    @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if (button == 0 && isOverInsertionBar(mouseX, mouseY)) {
-            draggingInsertion = true;
-            updateInsertionFromMouse(mouseX);
-            return true;
-        }
-        return super.mouseClicked(mouseX, mouseY, button);
-    }
-
-    @Override
-    public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
-        if (draggingInsertion) {
-            updateInsertionFromMouse(mouseX);
-            return true;
-        }
-        return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
-    }
-
-    @Override
-    public boolean mouseReleased(double mouseX, double mouseY, int button) {
-        if (draggingInsertion && button == 0) {
-            draggingInsertion = false;
-            updateInsertionFromMouse(mouseX);
-            return true;
-        }
-        return super.mouseReleased(mouseX, mouseY, button);
-    }
-
-    private void drawBarFrame(GuiGraphics guiGraphics, int x, int y, int width, int height) {
-        guiGraphics.fill(x, y, x + width, y + height, FRAME_DARK);
-        guiGraphics.fill(x + 1, y + 1, x + width - 1, y + height - 1, FRAME_TRACK);
-        if (height > 20) {
-            for (int i = 1; i <= 5; i++) {
-                int tickY = y + 2 + i * (height - 4) / 6;
-                guiGraphics.fill(x + 2, tickY, x + width - 2, tickY + 1, FRAME_TICK);
-            }
-        }
-    }
-
-    private void drawLabels(GuiGraphics guiGraphics, MeknucBwrMultiblockData multiblock) {
-        guiGraphics.drawString(font, MeknucBwrLang.GUI_TEMPERATURE_BAR.translate().getString(), 8, TEMPERATURE_BAR_Y - 10,
-              LABEL_COLOR, false);
-        guiGraphics.drawString(font, MeknucBwrLang.GUI_CONTROL_ROD.translate().getString(), 8, CONTROL_ROD_BAR_Y - 10,
-              LABEL_COLOR, false);
-        guiGraphics.drawString(font, MeknucBwrLang.GUI_HEAT_GRAPH.translate().getString(), 8, GRAPH_Y - 10, LABEL_COLOR, false);
-        String percent = displayedInsertion() + "%";
-        guiGraphics.drawString(font, percent, imageWidth - 10 - font.width(percent), CONTROL_ROD_BAR_Y + 1, 0xFFFFFFFF, false);
-    }
-
-    private static boolean isHovering(int mouseX, int mouseY, int x, int y, int width, int height) {
-        return mouseX >= x && mouseX < x + width && mouseY >= y && mouseY < y + height;
-    }
-
-    private void drawTooltip(GuiGraphics guiGraphics, int mouseX, int mouseY, List<Component> lines) {
-        PoseStack pose = guiGraphics.pose();
-        pose.pushPose();
-        pose.translate(-leftPos, -topPos, 0.0F);
-        guiGraphics.renderTooltip(font, lines, Optional.empty(), mouseX, mouseY);
-        pose.popPose();
     }
 
     @Override
@@ -333,10 +165,5 @@ public class MeknucBwrGui extends GuiMekanismTile<TileEntityBwrPart, MeknucBwrCo
         if (heatGraph != null) {
             heatGraph.addData(multiblock().getTemperature());
         }
-    }
-
-    @Override
-    protected void renderBg(@NotNull GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
-        guiGraphics.blit(BACKGROUND, leftPos, topPos, 0, 0, imageWidth, imageHeight, imageWidth, imageHeight);
     }
 }

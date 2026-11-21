@@ -11,7 +11,6 @@ import mekanism.common.registration.impl.TileEntityTypeRegistryObject;
 import mekanism.common.tile.base.TileEntityMekanism;
 import meknuc.blockentities.MeknucBlockEntityReactorPart;
 import meknuc.blockentities.MeknucBlockEntityReactorPort;
-import meknuc.blockentities.MeknucTileEntityTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
@@ -25,11 +24,11 @@ public class MeknucWasteStorageBlockTypes {
 
     public static final BlockTypeTile<MeknucBlockEntityReactorPart> RADIATION_RESISTANT_WASTE_STORAGE_CASING =
           createExternal(MeknucBlockReactorLang.RADIATION_RESISTANT_WASTE_STORAGE_CASING,
-                () -> MeknucTileEntityTypes.RADIATION_RESISTANT_WASTE_STORAGE_CASING);
+                () -> MeknucBlockTileEntityTypes.RADIATION_RESISTANT_WASTE_STORAGE_CASING);
 
     public static final BlockTypeTile<MeknucBlockEntityReactorPort> RADIATION_RESISTANT_WASTE_STORAGE_PORT =
           createPort(MeknucBlockReactorLang.RADIATION_RESISTANT_WASTE_STORAGE_PORT,
-                () -> MeknucTileEntityTypes.RADIATION_RESISTANT_WASTE_STORAGE_PORT, MODE_ATTRIBUTE);
+                () -> MeknucBlockTileEntityTypes.RADIATION_RESISTANT_WASTE_STORAGE_PORT, MODE_ATTRIBUTE);
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     private static <TILE extends TileEntityMekanism> BlockTypeTile<TILE> createExternal(

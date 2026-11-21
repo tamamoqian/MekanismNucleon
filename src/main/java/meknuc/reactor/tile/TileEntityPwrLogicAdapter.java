@@ -13,9 +13,10 @@ import mekanism.common.inventory.container.MekanismContainer;
 import mekanism.common.inventory.container.sync.SyncableEnum;
 import mekanism.common.tile.interfaces.IRedstoneControl.RedstoneControl;
 import mekanism.common.util.NBTUtils;
-import meknuc.init.MeknucItems;
+import meknuc.reactor.MeknucPwrConstants;
 import meknuc.reactor.MeknucPwrLang;
 import meknuc.reactor.MeknucPwrMultiblockData;
+import meknuc.reactor.MeknucReactorComponents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup.Provider;
@@ -107,7 +108,7 @@ public class TileEntityPwrLogicAdapter extends TileEntityPwrPart {
                     }
                     break;
                 case HIGH_TEMPERATURE:
-                    if (multiblock.getTemperature() >= MeknucPwrMultiblockData.DERATE_TEMPERATURE) {
+                    if (multiblock.getTemperature() >= MeknucPwrConstants.DERATE_TEMPERATURE) {
                         return RedstoneStatus.OUTPUTTING;
                     }
                     break;
@@ -168,13 +169,13 @@ public class TileEntityPwrLogicAdapter extends TileEntityPwrPart {
     @Override
     protected void collectImplicitComponents(DataComponentMap.Builder builder) {
         super.collectImplicitComponents(builder);
-        builder.set(MeknucItems.PWR_LOGIC_TYPE, logicType);
+        builder.set(MeknucReactorComponents.PWR_LOGIC_TYPE, logicType);
     }
 
     @Override
     protected void applyImplicitComponents(BlockEntity.DataComponentInput input) {
         super.applyImplicitComponents(input);
-        logicType = input.getOrDefault(MeknucItems.PWR_LOGIC_TYPE, logicType);
+        logicType = input.getOrDefault(MeknucReactorComponents.PWR_LOGIC_TYPE, logicType);
     }
 
     @Override

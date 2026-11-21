@@ -16,8 +16,6 @@ import mekanism.common.lib.multiblock.Structure;
 import mekanism.common.registries.MekanismBlocks;
 import mekanism.common.util.WorldUtils;
 import mekanism.generators.common.registries.GeneratorsBlocks;
-import meknuc.blocks.BlockParticleAcceleratorController;
-import meknuc.blocks.MeknucParticleAcceleratorBlocks;
 import meknuc.particle.tile.TileEntityParticleAcceleratorController;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

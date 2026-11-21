@@ -21,8 +21,8 @@ public class MeknucSpentFuelPoolCache extends MultiblockCache<MeknucSpentFuelPoo
     private static final String THREADS_TAG = "cooling_threads";
 
     /** 当前版本的槽位总数（输入缓存 + 输出缓存），用于对齐旧存档缓存。 */
-    private static final int SLOT_COUNT = MeknucSpentFuelPoolMultiblockData.INPUT_SLOT_COUNT
-          + MeknucSpentFuelPoolMultiblockData.MAX_COOLED_RODS;
+    private static final int SLOT_COUNT = MeknucSpentFuelPoolConstants.INPUT_SLOT_COUNT
+          + MeknucSpentFuelPoolConstants.MAX_COOLED_RODS;
 
     private List<MeknucSpentFuelPoolMultiblockData.RodThread> threads = new ArrayList<>();
 
@@ -79,7 +79,7 @@ public class MeknucSpentFuelPoolCache extends MultiblockCache<MeknucSpentFuelPoo
             return;
         }
         // 旧布局固定为“若干输入槽 + 64 个输出缓存槽”
-        int legacyInput = Math.max(0, legacy.size() - MeknucSpentFuelPoolMultiblockData.MAX_COOLED_RODS);
+        int legacyInput = Math.max(0, legacy.size() - MeknucSpentFuelPoolConstants.MAX_COOLED_RODS);
         for (int i = 0; i < legacy.size(); i++) {
             ItemStack stack = legacy.get(i);
             if (stack.isEmpty()) {
@@ -87,7 +87,7 @@ public class MeknucSpentFuelPoolCache extends MultiblockCache<MeknucSpentFuelPoo
             }
             int target = i < legacyInput
                   ? i
-                  : MeknucSpentFuelPoolMultiblockData.INPUT_SLOT_COUNT + (i - legacyInput);
+                  : MeknucSpentFuelPoolConstants.INPUT_SLOT_COUNT + (i - legacyInput);
             if (target < 0 || target >= slots.size()) {
                 continue;
             }

@@ -35,7 +35,7 @@ public class MeknucSpentFuelPoolContainer extends MekanismTileContainer<TileEnti
     public List<ItemStack> getStoredRods() {
         List<ItemStack> rods = new ArrayList<>();
         List<IInventorySlot> slots = tile.getMultiblock().getInventorySlots(null);
-        for (int i = MeknucSpentFuelPoolMultiblockData.INPUT_SLOT_COUNT; i < slots.size(); i++) {
+        for (int i = MeknucSpentFuelPoolConstants.INPUT_SLOT_COUNT; i < slots.size(); i++) {
             ItemStack stack = slots.get(i).getStack();
             if (!stack.isEmpty()) {
                 rods.add(stack);
